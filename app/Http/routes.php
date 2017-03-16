@@ -15,6 +15,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::post('auth/login', 'AuthController@login')->name('auth.login');
+
 Route::post('user/login', 'UserController@login')->name('user.login');
 Route::post('user/login/facebook', 'UserController@loginFacebook')->name('user.loginFacebook');
 
