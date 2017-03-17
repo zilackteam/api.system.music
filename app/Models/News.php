@@ -28,7 +28,6 @@ class News extends VeoModel {
         $common = [
             'title' => 'required',
             'content' => 'required',
-            'singer_id' => 'required',
         ];
         $rules = [
             'create' => array_merge($common, [

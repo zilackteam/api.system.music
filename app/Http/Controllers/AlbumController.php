@@ -17,7 +17,7 @@ class AlbumController extends Controller {
      * @apiName GetAlbum
      * @apiGroup Album
      *
-     * @apiParam {Integer} singer_id Filter albums by singer's id
+     * @apiParam {Integer} content_id Filter albums by content id
      * @apiParam {String} with
      * - song - Return songs in album
      *
@@ -36,22 +36,19 @@ class AlbumController extends Controller {
      *      }
      */
     public function index(Request $request) {
-        //
         try {
             $albums = Album::query();
-            if ($request->has('singer_id')) {
-                $albums->where('singer_id', $request->get('singer_id'));
+            if ($request->has('content_id')) {
+                $albums->where('content_id', $request->get('content_id'));
             }
-            
+
             if ($request->has('with')) {
                 if ($request->get('with') == 'song') {
                     $albums->with('songs');
                 }
             }
             
-            if ($request->has('cms')) {
-            
-            } else {
+            if (!$request->has('cms')) {
                 $albums->where('is_public', true);
             }
             
@@ -61,8 +58,8 @@ class AlbumController extends Controller {
                 $albums->where('is_single', false);
             }
             
-            $albums->orderBy('is_feature', 'desc')
-                ->orderBy('updated_at', 'desc');
+            $albums->orderBy('is_feature', 'DESC')
+                ->orderBy('updated_at', 'DESC');
             
             $albums = $albums->get();
             return $this->responseSuccess($albums);

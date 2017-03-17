@@ -6,8 +6,7 @@ namespace App\Models;
  * App\Models\Song
  *
  * @property integer $id
- * @property integer $singer_id
- * @property integer $album_id
+ * @property integer $content_id
  * @property string $performer
  * @property string $author
  * @property string $name
@@ -17,11 +16,11 @@ namespace App\Models;
  * @property string $file128
  * @property string $file320
  * @property string $file_lossless
- * @property integer $staff_id
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * @property \Carbon\Carbon $deleted_at
  */
+
 class Song extends VeoModel {
 
     protected $table = 'songs';
@@ -41,7 +40,7 @@ class Song extends VeoModel {
         ];
         $rules = [
             'create' => array_merge($common, [
-                'singer_id' => 'required',
+
             ]),
             'update' => array_merge($common, [
 
@@ -51,20 +50,22 @@ class Song extends VeoModel {
     }
 
     public function getThumbImgAttribute($value) {
-        return $value ? url('resources/uploads/' . $this->attributes['singer_id'] . '/song/' . $this->attributes['id'] . '/thumb_' . $value) : '';
+        return $value ? url('resources/uploads/' . $this->attributes['content_id'] . '/song/' . $this->attributes['id'] . '/thumb_' . $value) : '';
     }
 
     public function getFile128Attribute($value) {
         $value = $this->attributes['file128'];
-        return $value ? url('resources/uploads/' . $this->attributes['singer_id'] . '/song/' . $this->attributes['id'] . '/' . $value) : '';
+        return $value ? url('resources/uploads/' . $this->attributes['content_id'] . '/song/' . $this->attributes['id'] . '/' . $value) : '';
     }
+
     public function getFile320Attribute($value) {
         $value = $this->attributes['file320'];
-        return $value ? url('resources/uploads/' . $this->attributes['singer_id'] . '/song/' . $this->attributes['id'] . '/' . $value) : '';
+        return $value ? url('resources/uploads/' . $this->attributes['content_id'] . '/song/' . $this->attributes['id'] . '/' . $value) : '';
     }
+
     public function getFileLosslessAttribute($value) {
         $value = $this->attributes['file_lossless'];
-        return $value ? url('resources/uploads/' . $this->attributes['singer_id'] . '/song/' . $this->attributes['id'] . '/' . $value) : '';
+        return $value ? url('resources/uploads/' . $this->attributes['content_id'] . '/song/' . $this->attributes['id'] . '/' . $value) : '';
     }
 
     /**

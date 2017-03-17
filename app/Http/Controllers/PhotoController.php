@@ -33,8 +33,8 @@ class PhotoController extends Controller {
         //
         try {
             $photos = Photo::query();
-            if ($request->has('singer_id')) {
-                $photos->where('singer_id', $request->get('singer_id'));
+            if ($request->has('content_id')) {
+                $photos->where('content_id', $request->get('content_id'));
             }
             
             if ($request->has('category')) {

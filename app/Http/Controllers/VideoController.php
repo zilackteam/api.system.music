@@ -16,11 +16,8 @@ class VideoController extends Controller {
      * @apiName LístVideo
      * @apiGroup Video
      *
-     * @apiParam {Integer} singer_id Filter videos by singer's id
-     * @apiParam {Integer} song_id Filter videos by song's id
-     * @apiParam {String} with Separate by "," character
-     * - `singer`   : Return with singer info
-     * - `song`     : Return with song info
+     * @apiParam {Integer} content_id Filter videos by content id
+     * @apiParam {Integer} category  Filter videos by content id
      *
      * @apiSuccessExample Success-Response:
      *     HTTP/1.1 200 OK
@@ -41,24 +38,10 @@ class VideoController extends Controller {
         //
         try {
             $videos = Video::query();
-            if ($request->has('singer_id')) {
-                $videos->where('singer_id', $request->get('singer_id'));
+            if ($request->has('content_id')) {
+                $videos->where('content_id', $request->get('content_id'));
             }
-            if ($request->has('song_id')) {
-                $videos->where('song_id', $request->get('song_id'));
-            }
-            if ($request->has('with')) {
-                $with = explode(',', $request->get('with'));
-                foreach ($with as $param) {
-                    if ($param == 'song') {
-                        $videos->with('song');
-                    }
-                    if ($param == 'singer') {
-                        $videos->with('singer');
-                    }
-                }
-            }
-            
+
             if ($request->has('category')) {
                 $videos->where('category', $request->get('category'));
             }

@@ -15,13 +15,15 @@ use Illuminate\Support\Facades\Validator;
 class NewsController extends Controller {
 
     public function index(Request $request) {
-        //
         try {
             $news = News::query();
-            if ($request->has('singer_id')) {
-                $news->where('singer_id', $request->get('singer_id'));
+
+            if ($request->has('content_id')) {
+                $news->where('content_id', $request->get('content_id'));
             }
+
             $news->orderBy('created_at', 'DESC');
+
             $news = $news->get();
 
             return $this->responseSuccess($news);

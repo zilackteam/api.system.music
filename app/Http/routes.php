@@ -16,24 +16,19 @@ Route::get('/', function () {
 });
 
 Route::post('auth/login', 'AuthController@login')->name('auth.login');
-
-Route::post('user/login', 'UserController@login')->name('user.login');
-Route::post('user/login/facebook', 'UserController@loginFacebook')->name('user.loginFacebook');
+Route::post('auth/refresh-token', 'AuthController@refreshToken')->name('auth.refresh-token');
+Route::post('auth/login/facebook', 'AuthController@loginFacebook')->name('auth.loginFacebook');
 
 Route::post('password/email', 'Auth\PasswordController@email');
 Route::get('password/verify-token/{token}', 'Auth\PasswordController@verify');
 Route::post('password/reset', 'Auth\PasswordController@reset');
 
-Route::post('user/refresh-token', 'UserController@refreshToken')->name('user.refresh-token');
-
 Route::post('user', 'UserController@store')->name('user.store');
-
 Route::get('search', 'UserController@search')->name('global.search');
 
 //No permission needed
 //Route::group(['middleware' => ['jwt.auth']], function() {
 Route::group(['middleware' => []], function () {
-
     // /user/
     Route::get('user/authenticated', 'UserController@authenticated')->name('user.authenticated')->middleware('jwt.auth');
     Route::resource('user', 'UserController', ['except' => ['create', 'store', 'edit']]);

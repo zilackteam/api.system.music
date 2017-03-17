@@ -17,7 +17,7 @@ class SongController extends Controller {
      * @apiName GetSong
      * @apiGroup Song
      *
-     * @apiParam {Integer} singer_id Filter songs by singer's id
+     * @apiParam {Integer} content_id Filter songs by content id
      *
      * @apiSuccessExample Success-Response:
      *     HTTP/1.1 200 OK
@@ -34,22 +34,19 @@ class SongController extends Controller {
      *      }
      */
     public function index(Request $request) {
-        //
         try {
             $songs = Song::query();
-            if ($request->has('singer_id')) {
-                $songs->where('singer_id', $request->get('singer_id'));
+            if ($request->has('content_id')) {
+                $songs->where('content_id', $request->get('content_id'));
             }
-            
-            if ($request->has('cms')) {
-                
-            } else {
+
+            if (!$request->has('cms')) {
                 $songs->where('is_public', true);
             }
-            
-            $songs->orderBy('is_feature', 'desc')
-                ->orderBy('updated_at', 'desc');
-            
+
+            $songs->orderBy('is_feature', 'DESC')
+                ->orderBy('updated_at', 'DESC');
+
             $songs = $songs->get();
 
             return $this->responseSuccess($songs);

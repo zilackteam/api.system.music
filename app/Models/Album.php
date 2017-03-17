@@ -46,18 +46,18 @@ class Album extends VeoModel {
 
     public function getThumbImgAttribute($value) {
         return $value ?
-            url('resources' . DS . 'uploads' . DS . $this->attributes['singer_id'] . DS . 'album' . DS . 'thumb_' . $value) :
+            url('resources' . DS . 'uploads' . DS . $this->attributes['content_id'] . DS . 'album' . DS . 'thumb_' . $value) :
             url('resources' . DS . 'assets' . DS . 'images' . DS . 'icon-music.jpg');
     }
     
     public function getFeatureImgAttribute($value) {
         return $value ?
-            url('resources' . DS . 'uploads' . DS . $this->attributes['singer_id'] . DS . 'album' . DS . $value) :
+            url('resources' . DS . 'uploads' . DS . $this->attributes['content_id'] . DS . 'album' . DS . $value) :
             url('resources' . DS . 'assets' . DS . 'images' . DS . 'icon-music.jpg');
     }
 
-    public function songs() {
-        return $this->hasMany('App\Models\Song')->where('is_public', true);
+    public function songs()
+    {
+        return $this->belongsToMany('App\Models\Song', 'album_songs', 'album_id', 'song_id');
     }
-
 }
