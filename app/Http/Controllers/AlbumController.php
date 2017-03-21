@@ -4,11 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Album;
 use Illuminate\Http\Request;
-
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Facades\Image;
+use App\Http\Queries\AlbumQueryBuilder;
 
 class AlbumController extends Controller {
 
@@ -18,8 +18,8 @@ class AlbumController extends Controller {
      * @apiGroup Album
      *
      * @apiParam {Integer} content_id Filter albums by content id
-     * @apiParam {String} with
-     * - song - Return songs in album
+     * @apiParam {String} includes
+     * - songs - Return songs in album
      *
      * @apiSuccessExample Success-Response:
      *     HTTP/1.1 200 OK
@@ -37,31 +37,10 @@ class AlbumController extends Controller {
      */
     public function index(Request $request) {
         try {
-            $albums = Album::query();
-            if ($request->has('content_id')) {
-                $albums->where('content_id', $request->get('content_id'));
-            }
+            $queryBuilder = new AlbumQueryBuilder(new Album, $request);
 
-            if ($request->has('with')) {
-                if ($request->get('with') == 'song') {
-                    $albums->with('songs');
-                }
-            }
-            
-            if (!$request->has('cms')) {
-                $albums->where('is_public', true);
-            }
-            
-            if ($request->has('is_single')) {
-                $albums->where('is_single', true);
-            } else {
-                $albums->where('is_single', false);
-            }
-            
-            $albums->orderBy('is_feature', 'DESC')
-                ->orderBy('updated_at', 'DESC');
-            
-            $albums = $albums->get();
+            $albums = $queryBuilder->build()->get();
+
             return $this->responseSuccess($albums);
         } catch (\Exception $e) {
             return $this->responseErrorByException($e);

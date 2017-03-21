@@ -1,6 +1,6 @@
 define({
   "name": "",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "",
   "sampleUrl": false,
   "apidoc": "0.2.0",

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Http\Queries\ShowQueryBuilder;
 
 class ShowController extends Controller {
 
@@ -34,13 +35,9 @@ class ShowController extends Controller {
     public function index(Request $request) {
         //
         try {
-            $shows = Show::query();
-            if ($request->has('singer_id')) {
-                $shows->where('singer_id', $request->get('singer_id'));
-            }
-            
-            $shows->orderBy('on_datetime', 'DESC');
-            $shows = $shows->get();
+            $queryBuilder = new ShowQueryBuilder(new Show, $request);
+
+            $shows = $queryBuilder->build()->get();
 
             return $this->responseSuccess($shows);
         } catch (\Exception $e) {

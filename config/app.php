@@ -147,7 +147,7 @@ return [
         App\Providers\AuthServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-
+        Unlu\Laravel\Api\ApiQueryBuilderServiceProvider::class
     ],
 
     /*

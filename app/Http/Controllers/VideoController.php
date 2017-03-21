@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 use App\Models\Upload;
 use App\Models\Video;
 use Illuminate\Http\Request;
-
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Queries\VideoQueryBuilder;
 
 class VideoController extends Controller {
 
@@ -37,19 +37,9 @@ class VideoController extends Controller {
     public function index(Request $request) {
         //
         try {
-            $videos = Video::query();
-            if ($request->has('content_id')) {
-                $videos->where('content_id', $request->get('content_id'));
-            }
+            $queryBuilder = new VideoQueryBuilder(new Video, $request);
 
-            if ($request->has('category')) {
-                $videos->where('category', $request->get('category'));
-            }
-            
-            $videos->orderBy('is_feature', 'desc')
-                ->orderBy('updated_at', 'desc');
-            
-            $videos = $videos->get();
+            $videos = $queryBuilder->build()->get();
 
             return $this->responseSuccess($videos);
 

@@ -11,20 +11,15 @@ use App\Http\Controllers\Controller;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Queries\NewsQueryBuilder;
 
 class NewsController extends Controller {
 
     public function index(Request $request) {
         try {
-            $news = News::query();
+            $queryBuilder = new NewsQueryBuilder(new News, $request);
 
-            if ($request->has('content_id')) {
-                $news->where('content_id', $request->get('content_id'));
-            }
-
-            $news->orderBy('created_at', 'DESC');
-
-            $news = $news->get();
+            $news = $queryBuilder->build()->get();
 
             return $this->responseSuccess($news);
         } catch (\Exception $e) {

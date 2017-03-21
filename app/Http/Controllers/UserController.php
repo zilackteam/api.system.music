@@ -445,7 +445,7 @@ class UserController extends Controller {
     public function search(Request $request) {
         try {
             $keyword = $request->get('keyword');
-            $singer_id = $request->get('singer_id');
+            $content_id = $request->get('content_id');
 
             $queryAlbums = Album::query();
             
@@ -457,8 +457,8 @@ class UserController extends Controller {
             $queryAlbums->whereNull('deleted_at')
                 ->where('is_public', true);
             
-            if ($singer_id) {
-                $queryAlbums->where('singer_id', $singer_id);
+            if ($content_id) {
+                $queryAlbums->where('content_id', $content_id);
             }
                 
             $albums = $queryAlbums->get();
@@ -473,8 +473,8 @@ class UserController extends Controller {
             $querySongs->whereNull('deleted_at')
                 ->where('is_public', true);
             
-            if ($singer_id) {
-                $querySongs->where('singer_id', $singer_id);
+            if ($content_id) {
+                $querySongs->where('content_id', $content_id);
             }
             
             $songs = $querySongs->get();
@@ -488,8 +488,8 @@ class UserController extends Controller {
             
             $queryVideos->whereNull('deleted_at');
             
-            if ($singer_id) {
-                $queryVideos->where('singer_id', $singer_id);
+            if ($content_id) {
+                $queryVideos->where('content_id', $content_id);
             }
             
             $videos = $queryVideos->get();

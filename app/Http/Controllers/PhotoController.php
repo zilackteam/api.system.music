@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 use App\Models\Photo;
 use App\Models\Upload;
 use Illuminate\Http\Request;
-
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Http\Queries\PhotoQueryBuilder;
 
 class PhotoController extends Controller {
 
@@ -32,18 +32,9 @@ class PhotoController extends Controller {
     public function index(Request $request) {
         //
         try {
-            $photos = Photo::query();
-            if ($request->has('content_id')) {
-                $photos->where('content_id', $request->get('content_id'));
-            }
-            
-            if ($request->has('category')) {
-                $photos->where('category', $request->get('category'));
-            }
-            
-            $photos->orderBy('updated_at', 'desc');
-            
-            $photos = $photos->get();
+            $queryBuilder = new PhotoQueryBuilder(new Photo, $request);
+
+            $photos = $queryBuilder->build()->get();
 
             return $this->responseSuccess($photos);
         } catch (\Exception $e) {

@@ -5,10 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Song;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Intervention\Image\Facades\Image;
+use App\Http\Queries\SongQueryBuilder;
 
 class SongController extends Controller {
 
@@ -35,19 +35,9 @@ class SongController extends Controller {
      */
     public function index(Request $request) {
         try {
-            $songs = Song::query();
-            if ($request->has('content_id')) {
-                $songs->where('content_id', $request->get('content_id'));
-            }
+            $queryBuilder = new SongQueryBuilder(new Song, $request);
 
-            if (!$request->has('cms')) {
-                $songs->where('is_public', true);
-            }
-
-            $songs->orderBy('is_feature', 'DESC')
-                ->orderBy('updated_at', 'DESC');
-
-            $songs = $songs->get();
+            $songs = $queryBuilder->build()->get();
 
             return $this->responseSuccess($songs);
         } catch (\Exception $e) {
