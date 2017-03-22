@@ -26,7 +26,6 @@ Route::post('password/reset', 'Auth\PasswordController@reset');
 Route::post('user', 'UserController@store')->name('user.store');
 Route::get('search', 'UserController@search')->name('global.search');
 
-//No permission needed
 //Route::group(['middleware' => ['jwt.auth']], function() {
 Route::group(['middleware' => []], function () {
     // /user/
@@ -35,55 +34,55 @@ Route::group(['middleware' => []], function () {
     Route::post('user/change-password', 'UserController@changePassword')->name('user.change-password');
     Route::post('user/avatar', 'UserController@avatar')->name('user.avatar');
 
-    // /album/
+    // Album
     Route::resource('album', 'AlbumController', ['except' => ['create', 'edit', 'update']]);
     Route::post('album/{id}', 'AlbumController@update')->name('album.update');
 
-    // /song/
+    // Song
     Route::resource('song', 'SongController', ['except' => ['create', 'edit', 'update']]);
     Route::post('song/{id}', 'SongController@update');
 
-    // /video/
+    // Video
     Route::resource('video', 'VideoController', ['except' => ['create', 'edit']]);
     Route::post('video/upload', 'VideoController@upload')->name('video.upload');
 
-    // /show/
+    // Show
     Route::resource('show', 'ShowController', ['except' => ['create', 'edit']]);
 
-    // /news/
+    // News
     Route::get('news/listing', 'NewsController@listing')->name('news.listing');
     Route::get('news/detail/{id}', 'NewsController@detail')->name('news.detail');
     Route::resource('news', 'NewsController', ['except' => ['create', 'edit']]);
     Route::post('news/upload', 'NewsController@upload')->name('news.upload');
 
-    // /photo/
+    // Photo
     Route::resource('photo', 'PhotoController', ['except' => ['create', 'edit']]);
     Route::post('photo/upload', 'PhotoController@upload')->name('photo.upload');
 
-    // /advert/
+    // Advert
     Route::resource('advert', 'AdvertController', ['except' => ['create', 'edit']]);
     
-    // /version/
+    // Version
     Route::resource('version', 'VersionController', ['except' => []]);
     
-    // /category/
+    // Category
     Route::resource('category', 'CategoryController', ['except' => []]);
 
-    // /post/
+    // Post
     Route::get('post/', 'PostController@index');
     Route::get('post/{id}', 'PostController@show');
     Route::get('post/latest/{singerId}', 'PostController@latest');
 
-    // /comment/
+    // Comment
     Route::get('post/{post_id}/comment', 'CommentController@index');
     Route::get('comment/{id}', 'CommentController@show');
 
     //TODO  /photo/
 
-    // /static/
+    // Static
     Route::get('about', 'StaticController@about')->name('static.about');
 
-    // /website/
+    // Website
     Route::get('website/{singer_id}/content/{type?}', 'WebsiteController@content');
 
 });
