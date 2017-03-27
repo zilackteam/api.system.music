@@ -16,7 +16,7 @@ class CreateAppInfosTable extends Migration
 		{
 			$table->increments('id');
 			$table->integer('app_id');
-			$table->string('plat_form');
+			$table->string('platform');
 			$table->string('icon')->nullable();
 			$table->string('version')->nullable();
 			$table->string('store_url')->nullable();
