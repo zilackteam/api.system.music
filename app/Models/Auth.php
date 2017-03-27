@@ -11,14 +11,8 @@ use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
  * App\Models\User
  *
  * @property integer $id
- * @property string $email
- * @property string $password
- * @property string $role
- * @property integer $role_level
- * @property string $name
- * @property string $dob
- * @property string $bio
- * @property string $avatar
+ * @property string $sec_name
+ * @property string $sec_pass
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * @property \Carbon\Carbon $deleted_at
@@ -26,15 +20,35 @@ use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 class Auth extends VeoModel implements AuthenticatableContract, CanResetPasswordContract {
     use Authenticatable, CanResetPassword;
 
+    const AUTH_MANAGER = 1;
+    const AUTH_MASTER = 2;
+    const AUTH_USER = 3;
+
     protected $table = 'auths';
 
     protected $guarded = ['sec_pass'];
 
     protected $hidden = ['sec_pass'];
 
+    protected $fillable = ['sec_name', 'type'];
 
-    public static function rules() {
+    public static function rules($key = 'create', $id = '') {
+        $common = [
+            'sec_name' => 'required|max:255|unique:auths,sec_name' . ($id ? ",$id" : ''),
+            'sec_pass' => 'required|min:6|max:30',
+            'type' => 'required',
+        ];
 
+        $rules = [
+            'create' => array_merge($common, [
+
+            ]),
+            'update' => array_merge($common, [
+
+            ]),
+        ];
+
+        return array_get($rules, $key);
     }
 
     /**

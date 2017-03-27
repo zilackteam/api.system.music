@@ -7,6 +7,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Album;
+use App\Models\Auth;
 use App\Models\Song;
 use App\Models\User;
 use App\Models\Video;
@@ -63,9 +64,9 @@ class UserController extends Controller {
      *
      * @apiParamExample {json} POST Request-Example:
      *      {
+     *          'sec_name' => 'required|max:255|unique,
+     *          'sec_pass' => 'required|min:6|max:30',
      *          'name' => '',
-     *          'email' => 'required|email|unique,
-     *          'password' => 'required|min:6|max:30',
      *      }
      *
      * @apiSuccessExample Success-Response:
@@ -75,38 +76,35 @@ class UserController extends Controller {
      *          "error": false,
      *          "data": {
      *              "id": 9
-     *              "email": "fan1@example.com",
-     *              "role": "fan",
+     *              "sec_name": "fan1@example.com",
      *              "updated_at": "2016-01-11 10:58:23",
      *              "created_at": "2016-01-11 10:58:23",
      *          }
      *      }
      */
     public function store(Request $request) {
-        //
+        // Create user
         try {
             $data = $request->all();
 
-            if (empty($data['role'])) {
-                $data['role'] = 'fan';
-            }
+            $validator = Validator::make($data, Auth::rules('create'));
 
-            $validator = Validator::make($data, User::rules('create'));
             if ($validator->fails()) {
                 return $this->responseError($validator->errors()->all(), 422);
             }
-            if (!User::roles($data['role'])) {
-                return $this->responseError(['Invalid role'], 422);
-            } else if ($data['role'] != 'fan') {
 
+            $auth = new Auth($data);
+            $auth->sec_pass = \Hash::make($data['sec_pass']);
+            $auth->level = Auth::AUTH_USER;
+
+            if ($auth->save()) {
+                $user = new User($data);
+                $user->auth_id = $auth->id;
+
+                $user->save();
             }
 
-            $user = new User($data);
-            $user->password = \Hash::make($data['password']);
-            $user->role = $data['role'];
-            $user->save();
-
-            return $this->responseSuccess($user);
+            return $this->responseSuccess($auth);
 
 
         } catch (\Exception $e) {

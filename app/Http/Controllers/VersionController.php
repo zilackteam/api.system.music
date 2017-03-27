@@ -19,12 +19,16 @@ class VersionController extends Controller {
                 ->where('app_infos.platform', $request->platform)
                 ->first();
 
-            $data = array(
-                'content_id' => $app->content_id,
-                'version' => $app->latestInfo->version
-            );
+            if ($app) {
+                $data = array(
+                    'content_id' => $app->content_id,
+                    'version' => $app->latestInfo->version
+                );
 
-            return $this->responseSuccess($data);
+                return $this->responseSuccess($data);
+            } else {
+                return $this->responseSuccess('Cannot find app info');
+            }
         } catch (\Exception $e) {
             return $this->responseErrorByException($e);
         }
