@@ -270,5 +270,83 @@ define({ "api": [
     "version": "1.0.0",
     "filename": "app/Http/Controllers/PhotoController.php",
     "groupTitle": "Photo"
+  },
+  {
+    "type": "get",
+    "url": "/version/",
+    "title": "Get latest version",
+    "name": "GetVersion",
+    "group": "Version",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "bundle_id",
+            "description": "<p>Bundle id. Eg: com.zilack.music.thuphuong</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "plat_form",
+            "description": "<p>Platform. Eg: ios, android</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n\n {\n     \"error\": false,\n     \"data\": [\n         \"content_id\": 1,\n         \"version\": 1.0.1,\n     ]\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "1.0.0",
+    "filename": "app/Http/Controllers/VersionController.php",
+    "groupTitle": "Version"
+  },
+  {
+    "type": "get",
+    "url": "/search/",
+    "title": "Search data",
+    "name": "GetSearch",
+    "group": "Search",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Integer",
+            "optional": false,
+            "field": "content_id",
+            "description": "<p>Search song, album, video by content id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "keyword",
+            "description": "<p>Keyword search</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n\n {\n     \"error\": false,\n     \"data\": [\n         \"albums\": {...},\n         \"songs\": {...},\n         \"videos\": {...}\n     ]\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "1.0.0",
+    "filename": "app/Http/Controllers/UserController.php",
+    "groupTitle": "Search"
   }
 ] });
