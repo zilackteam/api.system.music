@@ -223,4 +223,26 @@ class SongController extends Controller {
         }
     }
 
+    public function suggestion() {
+        // Get suggestion list
+        try {
+            $suggestion = array();
+            $songs = Song::all();
+
+            foreach ($songs as $song) {
+                $data = array(
+                    'name' => $song->name,
+                    'tag' => stripVietnamese($song->name)
+                );
+
+                $suggestion[] = $data;
+            }
+
+            return $this->responseSuccess($suggestion);
+        } catch (\Exception $e) {
+            return $this->responseErrorByException($e);
+        }
+    }
+
+
 }

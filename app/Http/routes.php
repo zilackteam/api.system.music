@@ -25,6 +25,7 @@ Route::post('password/reset', 'Auth\PasswordController@reset');
 
 Route::post('user', 'UserController@store')->name('user.store');
 Route::get('search', 'UserController@search')->name('global.search');
+Route::get('suggestion', 'SongController@suggestion')->name('global.suggestion');
 
 //Route::group(['middleware' => ['jwt.auth']], function() {
 Route::group(['middleware' => []], function () {

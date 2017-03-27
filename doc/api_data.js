@@ -387,5 +387,31 @@ define({ "api": [
     "version": "1.0.0",
     "filename": "app/Http/Controllers/UserController.php",
     "groupTitle": "User"
+  },
+  {
+    "type": "get",
+    "url": "/suggestion/",
+    "title": "Suggestion",
+    "name": "GetSuggestion",
+    "group": "User",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n\n {\n     \"error\": false,\n     \"data\": [\n         {\n              \"name\": \"Anh yêu em\",\n              \"tag\": \"Anh yeu em\"\n         },\n         ...\n     ]\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "1.0.0",
+    "filename": "app/Http/Controllers/UserController.php",
+    "groupTitle": "User"
   }
 ] });
