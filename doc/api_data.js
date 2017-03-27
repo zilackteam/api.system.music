@@ -348,5 +348,44 @@ define({ "api": [
     "version": "1.0.0",
     "filename": "app/Http/Controllers/UserController.php",
     "groupTitle": "Search"
+  },
+  {
+    "type": "post",
+    "url": "/auth/",
+    "title": "Login",
+    "name": "PostLogin",
+    "group": "User",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sec_name",
+            "description": "<p>Login name is email or phone ...</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sec_pass",
+            "description": "<p>Login password</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n\n {\n     \"error\": false,\n     \"data\": [\n         \"token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIU...\",\n         \"auth\": {...}\n     ]\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "1.0.0",
+    "filename": "app/Http/Controllers/UserController.php",
+    "groupTitle": "User"
   }
 ] });
