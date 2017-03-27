@@ -291,7 +291,7 @@ define({ "api": [
             "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "plat_form",
+            "field": "platform",
             "description": "<p>Platform. Eg: ios, android</p>"
           }
         ]

@@ -16,7 +16,7 @@ class VersionController extends Controller {
             $app = App::join('app_infos', 'apps.id', '=', 'app_infos.app_id')
                 ->with('latestInfo')
                 ->where('bundle_id', $request->bundle_id)
-                ->where('app_infos.platform', $request->plat_form)
+                ->where('app_infos.platform', $request->platform)
                 ->first();
 
             $data = array(
