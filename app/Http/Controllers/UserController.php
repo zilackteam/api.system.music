@@ -118,9 +118,9 @@ class UserController extends Controller {
                         $m->to($auth->sec_name, $user->name)->subject('Active account Zilack');
                     });
                 }
-
-                return $this->responseSuccess($auth);
             }
+
+            return $this->responseSuccess($auth);
         } catch (\Exception $e) {
             return $this->responseErrorByException($e);
         }
