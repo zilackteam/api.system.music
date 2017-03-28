@@ -19,6 +19,7 @@ class CreateAuthsTable extends Migration
 			$table->string('sec_pass')->nullable();
 			$table->string('level')->nullable();
 			$table->integer('type')->nullable();
+			$table->integer('status')->default(0);
 			$table->timestamps();
 			$table->softDeletes();
 		});

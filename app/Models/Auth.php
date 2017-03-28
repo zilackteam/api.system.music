@@ -8,7 +8,7 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 
 /**
- * App\Models\User
+ * App\Models\Auth
  *
  * @property integer $id
  * @property string $sec_name
@@ -23,6 +23,12 @@ class Auth extends VeoModel implements AuthenticatableContract, CanResetPassword
     const AUTH_MANAGER = 1;
     const AUTH_MASTER = 2;
     const AUTH_USER = 3;
+
+    const AUTH_TYPE_FACEBOOK = 1;
+    const AUTH_TYPE_EMAIL = 2;
+    const AUTH_TYPE_PHONE = 3;
+
+    const AUTH_STATUS_ACTIVE = 1;
 
     protected $table = 'auths';
 

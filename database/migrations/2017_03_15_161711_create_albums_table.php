@@ -17,6 +17,7 @@ class CreateAlbumsTable extends Migration
 			$table->increments('id');
 			$table->integer('content_id');
 			$table->string('name')->nullable();
+			$table->string('performer')->nullable();
 			$table->text('description')->nullable();
 			$table->string('thumb_url')->nullable();
 			$table->string('feature_url')->nullable();

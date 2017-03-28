@@ -18,6 +18,7 @@ Route::get('/', function () {
 Route::post('auth/login', 'AuthController@login')->name('auth.login');
 Route::post('auth/refresh-token', 'AuthController@refreshToken')->name('auth.refresh-token');
 Route::post('auth/login/facebook', 'AuthController@loginFacebook')->name('auth.loginFacebook');
+Route::get('user/active/{token}', 'UserController@active')->name('user.active');
 
 Route::post('password/email', 'Auth\PasswordController@email');
 Route::get('password/verify-token/{token}', 'Auth\PasswordController@verify');

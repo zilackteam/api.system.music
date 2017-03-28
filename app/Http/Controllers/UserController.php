@@ -7,7 +7,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Album;
+use App\Models\AppUser;
 use App\Models\Auth;
+use App\Models\AuthToken;
 use App\Models\Song;
 use App\Models\User;
 use App\Models\Video;
@@ -22,6 +24,7 @@ use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Validator;
+use Mail;
 
 class UserController extends Controller {
 
@@ -102,11 +105,42 @@ class UserController extends Controller {
                 $user->auth_id = $auth->id;
 
                 $user->save();
+
+                if ($auth->type == Auth::AUTH_TYPE_EMAIL) {
+                    $token = new AuthToken();
+                    $token->auth_id = $auth->id;
+                    $token->token = md5($auth->sec_name . date('YmdHis'));
+
+                    $token->save();
+
+                    Mail::send('emails.active', ['token' => $token->token], function ($m) use ($auth, $user) {
+                        $m->from('support@zilack.com', 'Support Zilack');
+                        $m->to($auth->sec_name, $user->name)->subject('Active account Zilack');
+                    });
+                }
+
+                return $this->responseSuccess($auth);
             }
+        } catch (\Exception $e) {
+            return $this->responseErrorByException($e);
+        }
+    }
 
-            return $this->responseSuccess($auth);
+    public function active($token) {
+        try {
+            $token = AuthToken::where('token', $token)->first();
 
+            if ($token) {
+                // Active user
+                $auth = Auth::where('id', $token->auth_id)->first();
+                $auth->status = Auth::AUTH_STATUS_ACTIVE;
+                $auth->save();
 
+                // Delete token
+                $token->delete();
+
+                return $this->responseSuccess(array('active' => true));
+            }
         } catch (\Exception $e) {
             return $this->responseErrorByException($e);
         }
