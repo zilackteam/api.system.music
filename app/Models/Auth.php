@@ -32,9 +32,9 @@ class Auth extends VeoModel implements AuthenticatableContract, CanResetPassword
 
     protected $table = 'auths';
 
-    protected $guarded = ['sec_pass'];
+    protected $guarded = ['sec_pass', 'level'];
 
-    protected $hidden = ['sec_pass'];
+    protected $hidden = ['sec_pass', 'level'];
 
     protected $fillable = ['sec_name', 'type'];
 

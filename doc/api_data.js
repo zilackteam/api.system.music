@@ -61,6 +61,45 @@ define({ "api": [
   },
   {
     "type": "get",
+    "url": "/album/:id",
+    "title": "Get detail of Album",
+    "name": "GetAlbumDetail",
+    "group": "Album",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Integer",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Album unique ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "includes",
+            "description": "<ul> <li>songs - Return songs in album</li> </ul>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n\n {\n     \"error\": false,\n     \"data\": {\n     }\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "1.0.0",
+    "filename": "app/Http/Controllers/AlbumController.php",
+    "groupTitle": "Album"
+  },
+  {
+    "type": "get",
     "url": "/song/",
     "title": "Get list of Song",
     "name": "GetSong",
@@ -104,6 +143,38 @@ define({ "api": [
         {
           "title": "Success-Response:",
           "content": "HTTP/1.1 200 OK\n\n {\n     \"error\": false,\n     \"data\": [\n         {\n             \"id\": 1,\n             ...\n         },\n         {..}\n     ]\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "1.0.0",
+    "filename": "app/Http/Controllers/SongController.php",
+    "groupTitle": "Song"
+  },
+  {
+    "type": "get",
+    "url": "/song/:id",
+    "title": "Get detail of Song",
+    "name": "GetSongDetail",
+    "group": "Song",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Integer",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Song unique ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n\n {\n     \"error\": false,\n     \"data\": {\n     }\n }",
           "type": "json"
         }
       ]
@@ -167,6 +238,38 @@ define({ "api": [
   },
   {
     "type": "get",
+    "url": "/video/:id",
+    "title": "Get detail of Video",
+    "name": "GetVideoDetail",
+    "group": "Video",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Integer",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Video unique ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n\n {\n     \"error\": false,\n     \"data\": {\n     }\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "1.0.0",
+    "filename": "app/Http/Controllers/VideoController.php",
+    "groupTitle": "Video"
+  },
+  {
+    "type": "get",
     "url": "/news/",
     "title": "Get list of News",
     "name": "GetNews",
@@ -210,6 +313,38 @@ define({ "api": [
         {
           "title": "Success-Response:",
           "content": "HTTP/1.1 200 OK\n\n {\n     \"error\": false,\n     \"data\": [\n         {\n             \"id\": 1,\n             ...\n         },\n         {..}\n     ]\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "1.0.0",
+    "filename": "app/Http/Controllers/NewsController.php",
+    "groupTitle": "News"
+  },
+  {
+    "type": "get",
+    "url": "/news/:id",
+    "title": "Get detail of News",
+    "name": "GetNewsDetail",
+    "group": "News",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Integer",
+            "optional": false,
+            "field": "id",
+            "description": "<p>News unique ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n\n {\n     \"error\": false,\n     \"data\": {\n     }\n }",
           "type": "json"
         }
       ]
@@ -270,6 +405,123 @@ define({ "api": [
     "version": "1.0.0",
     "filename": "app/Http/Controllers/PhotoController.php",
     "groupTitle": "Photo"
+  },
+  {
+    "type": "get",
+    "url": "/photo/:id",
+    "title": "Get detail of Photo",
+    "name": "GetPhotoDetail",
+    "group": "Photo",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Integer",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Photo unique ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n\n {\n     \"error\": false,\n     \"data\": {\n     }\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "1.0.0",
+    "filename": "app/Http/Controllers/PhotoController.php",
+    "groupTitle": "Photo"
+  },
+  {
+    "type": "get",
+    "url": "/show/",
+    "title": "Get list of Show",
+    "name": "GetShow",
+    "group": "Show",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Integer",
+            "optional": false,
+            "field": "content_id",
+            "description": "<p>Filter show by content id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Integer",
+            "optional": false,
+            "field": "page",
+            "description": "<p>Number of page</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Integer",
+            "optional": false,
+            "field": "limit",
+            "description": "<p>Number of record</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "columns",
+            "description": "<p>List columns data. Eg: id,name</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n\n {\n     \"error\": false,\n     \"data\": [\n         {\n             \"id\": 1,\n             ...\n         },\n         {..}\n     ]\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "1.0.0",
+    "filename": "app/Http/Controllers/ShowController.php",
+    "groupTitle": "Show"
+  },
+  {
+    "type": "get",
+    "url": "/show/:id",
+    "title": "Get detail of Show",
+    "name": "GetShowDetail",
+    "group": "Show",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Integer",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Show unique ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n\n {\n     \"error\": false,\n     \"data\": {\n     }\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "1.0.0",
+    "filename": "app/Http/Controllers/ShowController.php",
+    "groupTitle": "Show"
   },
   {
     "type": "get",
@@ -480,5 +732,37 @@ define({ "api": [
     "version": "1.0.0",
     "filename": "app/Http/Controllers/UserController.php",
     "groupTitle": "User"
+  },
+  {
+    "type": "get",
+    "url": "/category/",
+    "title": "Get list of Cagegory",
+    "name": "GetCategory",
+    "group": "Category",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Integer",
+            "optional": false,
+            "field": "type",
+            "description": "<p>Type of category<ul><li>1 : Photo</li><li>2: Video</li></ul></p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n\n {\n     \"error\": false,\n     \"data\": [\n         {\n             \"id\": 1,\n             \"name\": \"Ảnh tư liệu\",\n             ...\n         },\n         {..}\n     ]\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "1.0.0",
+    "filename": "app/Http/Controllers/CategoryController.php",
+    "groupTitle": "Category"
   }
 ] });

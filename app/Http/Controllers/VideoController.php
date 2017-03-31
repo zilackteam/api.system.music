@@ -73,9 +73,6 @@ class VideoController extends Controller {
      * @apiGroup Video
      *
      * @apiParam {Integer} id Video unique ID.
-     * @apiParam {String} with Separate by "," character
-     * - `singer`   : Return with singer info
-     * - `song`     : Return with song info
      *
      * @apiSuccessExample Success-Response:
      *     HTTP/1.1 200 OK
@@ -91,17 +88,6 @@ class VideoController extends Controller {
         //
         try {
             $video = Video::findOrFail($id);
-            if ($request->has('with')) {
-                $with = explode(',', $request->get('with'));
-                foreach ($with as $param) {
-                    if ($param == 'song') {
-                        $video->song;
-                    }
-                    if ($param == 'singer') {
-                        $video->singer;
-                    }
-                }
-            }
 
             return $this->responseSuccess($video);
         } catch (\Exception $e) {

@@ -137,8 +137,8 @@ class AlbumController extends Controller {
         //
         try {
             $album = Album::findOrFail($id);
-            if ($request->has('with')) {
-                if ($request->get('with') == 'song') {
+            if ($request->has('includes')) {
+                if ($request->get('includes') == 'songs') {
                     $album->songs;
                 }
             }

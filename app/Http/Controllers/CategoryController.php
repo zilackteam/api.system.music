@@ -15,9 +15,7 @@ class CategoryController extends Controller {
         try {
             if ($request->has('type')) {
                 $categories = Category::query();
-                
                 $categories->where('type', $request->get('type'));
-                
                 $categories->orderBy('is_feature', 'desc');
                 
                 $data = $categories->get();
