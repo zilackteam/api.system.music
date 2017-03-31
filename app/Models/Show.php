@@ -19,13 +19,17 @@ namespace App\Models;
  */
 class Show extends VeoModel {
 
+    const SHOW_NOT_START = 1;
+    const SHOW_PROCESS = 2;
+    const SHOW_END = 3;
+
     protected $table = 'shows';
 
     protected $guarded = [];
 
     protected $hidden = [];
     
-    protected $appends = array('is_ending');
+    protected $appends = array('status');
 
     public static function rules($key = 'create') {
         $common = [
@@ -49,12 +53,14 @@ class Show extends VeoModel {
         }
     }
     
-    public function getIsEndingAttribute() {
-        if ($this->end_date > date('Y-m-d')) {
-            return false;
+    public function getStatusAttribute() {
+        if ($this->on_datetime > date('Y-m-d H:i:s')) {
+            return self::SHOW_NOT_START;
+        } elseif ($this->end_date > date('Y-m-d')) {
+            return self::SHOW_PROCESS;
+        } else {
+            return self::SHOW_END;
         }
-        
-        return true;
     }
 }
 
