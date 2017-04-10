@@ -8,7 +8,7 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 
 /**
- * App\Models\Auth
+ * App\Models\Authentication
  *
  * @property integer $id
  * @property string $sec_name
@@ -17,7 +17,7 @@ use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
  * @property \Carbon\Carbon $updated_at
  * @property \Carbon\Carbon $deleted_at
  */
-class Auth extends VeoModel implements AuthenticatableContract, CanResetPasswordContract {
+class Authentication extends VeoModel implements AuthenticatableContract, CanResetPasswordContract {
     use Authenticatable, CanResetPassword;
 
     const AUTH_MANAGER = 1;

@@ -64,7 +64,7 @@ return [
     |
     */
 
-    'user' => 'App\Models\Auth',
+    'user' => 'App\Models\Authentication',
 
     /*
     |--------------------------------------------------------------------------

@@ -16,6 +16,7 @@ class CreateMasterPostsTable extends Migration
 		{
 			$table->increments('id');
 			$table->integer('master_id');
+            $table->integer('content_id');
 			$table->text('content')->nullable();
 			$table->string('photo')->nullable();
 			$table->timestamps();

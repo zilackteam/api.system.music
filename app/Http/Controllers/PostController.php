@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use App\Http\Queries\PostQueryBuilder;
 
 class PostController extends Controller {
 
@@ -19,10 +20,11 @@ class PostController extends Controller {
      * @apiName GetPost
      * @apiGroup Post
      *
-     * @apiParam {Integer} singer_id    Filter posts by singer's id
-     * @apiParam {String} with          Separate by "," character
-     * - `singer`   : Return with singer info
-     * - `meta`     : Return with meta info of post such as Like count, Comment count..
+     * @apiParam {Integer} content_id    Filter posts by content id
+     * @apiParam {String} includes       Separate by "," character
+     * - `comments`      : Return with comments
+     * - `commentsCount` : Return with meta info comment count..
+     * - `likesCount`    : Return with meta info like count..
      *
      * @apiSuccessExample Success-Response:
      *     HTTP/1.1 200 OK
@@ -41,29 +43,9 @@ class PostController extends Controller {
     public function index(Request $request) {
         //
         try {
-            $posts = Post::query();
-            if ($request->has('singer_id')) {
-                $posts->where('singer_id', $request->get('singer_id'));
-            }
-
-            if ($request->has('with')) {
-                $with = explode(',', $request->get('with'));
-                foreach ($with as $param) {
-                    if ($param == 'meta') {
-                        $posts->with('commentsCount');
-                        $posts->with('likesCount');
-                    }
-
-                    if ($param == 'singer') {
-                        $posts->with('singer');
-                    }
-                }
-            }
-
-            // Order by created field as default
-            $posts->orderBy('created_at', 'DESC');
-
-            $posts = $posts->get();
+            $queryBuilder = new PostQueryBuilder(new Post, $request);
+            
+            $posts = $queryBuilder->build()->get();
 
             return $this->responseSuccess($posts);
         } catch (\Exception $e) {
@@ -108,17 +90,16 @@ class PostController extends Controller {
 
             if ($request->file('photo') && $request->file('photo')->isValid()) {
                 $post->photo = $data['photo'];
-                $nameThumb = "post_{$post->id}_" .  date('YmdHis');
-                $uploadThumb = uploadImage($request, 'photo', post_path($post->singer_id), $nameThumb);
-                if ($uploadThumb) {
-
-                    $oldThumb = post_path($post->singer_id) . DS . $post->getAttributes()['photo'];
-                    if (is_file($oldThumb)) unlink($oldThumb);
-
-                    $oldImg = post_path($post->singer_id) . DS . 'thumb_' . $post->getAttributes()['photo'];
+                $namePhoto = "post_{$post->id}_" .  date('YmdHis');
+                $uploadPhoto = uploadImage($request, 'photo', post_path($post->content_id), $namePhoto);
+                if ($uploadPhoto) {
+                    $oldImg = post_path($post->content_id) . DS . $post->getAttributes()['photo'];
                     if (is_file($oldImg)) unlink($oldImg);
 
-                    $post->photo = $uploadThumb;
+                    $oldThumb = post_path($post->content_id) . DS . 'thumb_' . $post->getAttributes()['photo'];
+                    if (is_file($oldThumb)) unlink($oldThumb);
+
+                    $post->photo = $uploadPhoto;
                     $post->save();
 
                 } else {
@@ -139,9 +120,10 @@ class PostController extends Controller {
      *
      * @apiParam {Integer} id Post unique ID.
      *
-     * @apiParam {String} with Separate by "," character
-     * - `singer`   : Return with singer info
-     * - `meta`     : Return with meta info of post such as Like count, Comment count..
+     * @apiParam {String} includes Separate by "," character
+     * - `comments`      : Return with comments
+     * - `commentsCount` : Return with meta info comment count..
+     * - `likesCount`    : Return with meta info like count..
      *
      * @apiSuccessExample Success-Response:
      *     HTTP/1.1 200 OK
@@ -158,16 +140,19 @@ class PostController extends Controller {
         try {
             $post = Post::findOrFail($id);
 
-            if ($request->has('with')) {
-                $with = explode(',', $request->get('with'));
+            if ($request->has('includes')) {
+                $with = explode(',', $request->get('includes'));
                 foreach ($with as $param) {
-                    if ($param == 'meta') {
+                    if ($param == 'commentsCount') {
                         $post->commentsCount;
+                    }
+
+                    if ($param == 'likesCount') {
                         $post->likesCount;
                     }
 
-                    if ($param == 'singer') {
-                        $post->singer;
+                    if ($param == 'comments') {
+                        $post->comments;
                     }
                 }
             }
@@ -183,11 +168,12 @@ class PostController extends Controller {
      * @apiName GetLatestPost
      * @apiGroup Post
      *
-     * @apiParam {Integer} singerId Unique user ID of Singer.
+     * @apiParam {Integer} contentId .
      *
-     * @apiParam {String} with Separate by "," character
-     * - `singer`   : Return with singer info
-     * - `meta`     : Return with meta info of post such as Like count, Comment count..
+     * @apiParam {String} includes Separate by "," character
+     * - `comments`      : Return with comments
+     * - `commentsCount` : Return with meta info comment count..
+     * - `likesCount`    : Return with meta info like count..
      *
      * @apiSuccessExample Success-Response:
      *     HTTP/1.1 200 OK
@@ -199,23 +185,26 @@ class PostController extends Controller {
      *          }
      *      }
      */
-    public function latest(Request $request, $singerId) {
+    public function latest(Request $request, $contentId) {
         //
         try {
-            $post = Post::where(['singer_id' => $singerId])
+            $post = Post::where(['content_id' => $contentId])
                 ->orderBy('created_at', 'DESC')
                 ->firstOrFail();
 
-            if ($request->has('with')) {
-                $with = explode(',', $request->get('with'));
+            if ($request->has('includes')) {
+                $with = explode(',', $request->get('includes'));
                 foreach ($with as $param) {
-                    if ($param == 'meta') {
+                    if ($param == 'commentsCount') {
                         $post->commentsCount;
+                    }
+
+                    if ($param == 'likesCount') {
                         $post->likesCount;
                     }
 
-                    if ($param == 'singer') {
-                        $post->singer;
+                    if ($param == 'comments') {
+                        $post->comments;
                     }
                 }
             }
@@ -264,18 +253,11 @@ class PostController extends Controller {
             $post->save();
 
             if ($request->file('photo') && $request->file('photo')->isValid()) {
-                $nameThumb = "post_{$post->id}_" .  date('YmdHis');
-                $uploadThumb = uploadImage($request, 'photo', post_path($post->singer_id), $nameThumb);
-                if ($uploadThumb) {
+                $namePhoto = "post_{$post->id}_" .  date('YmdHis');
+                $uploadPhoto = uploadImage($request, 'photo', post_path($post->content_id), $namePhoto);
 
-                    // Remove old files
-                    /*$oldThumb = post_path($post->singer_id) . DS . $post->getAttributes()['photo'];
-                    if (is_file($oldThumb)) unlink($oldThumb);
-
-                    $oldImg = post_path($post->singer_id) . DS . 'thumb_' . $post->getAttributes()['photo'];
-                    if (is_file($oldImg)) unlink($oldImg);*/
-
-                    $post->photo = $uploadThumb;
+                if ($uploadPhoto) {
+                    $post->photo = $uploadPhoto;
                     $post->save();
 
                 } else {
@@ -343,10 +325,12 @@ class PostController extends Controller {
     public function like($postId) {
         try {
             $post = Post::findOrFail($postId);
+
             $liked = PostLike::where([
                 'post_id' => $post->id,
                 'user_id' => Auth::user()->id
             ])->count();
+
             if ($liked)
                 return $this->responseError(['You liked the post'], 409);
 
@@ -354,6 +338,7 @@ class PostController extends Controller {
                 'post_id' => $post->id,
                 'user_id' => Auth::user()->id
             ]);
+
             $like->save();
 
             $post->likesCount;
@@ -401,31 +386,6 @@ class PostController extends Controller {
             $post->likesCount;
 
             return $this->responseSuccess($post);
-
-        } catch (\Exception $e) {
-            return $this->responseErrorByException($e);
-        }
-    }
-
-    // Paused
-    public function upload(Request $request) {
-        //
-        try {
-            $data = $request->all();
-
-            $validation = \Validator::make($data, Upload::rules('image'));
-            if ($validation->fails()) {
-                return $this->responseError($validation->errors()->all(), 422);
-            }
-
-            $name = hash('md5', date('YmdHis'));
-            $upload = uploadMedia($request, 'file', post_path($data['singer_id']), $name );
-
-            if (!$upload) {
-                return $this->responseError('Could not do the upload', 200, $data);
-            } else {
-                return json_encode(['link' => url('resources/uploads/' . $data['singer_id'] . '/post/' . $upload)]);
-            }
 
         } catch (\Exception $e) {
             return $this->responseErrorByException($e);

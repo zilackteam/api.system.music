@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Auth;
+use App\Models\Authentication;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\TransferException;
 use Illuminate\Http\Request;
@@ -60,7 +60,7 @@ class AuthController extends Controller {
                 return $this->responseError(['Invalid credentials'], 401);
             }
 
-            $auth = Auth::where('sec_name', $request->get('sec_name'))->firstOrFail();
+            $auth = Authentication::where('sec_name', $request->get('sec_name'))->firstOrFail();
 
             return $this->responseSuccess([
                 'token' => $token,
@@ -116,7 +116,7 @@ class AuthController extends Controller {
                 'sec_pass' => $response->id
             ];
 
-            $authExisted = Auth::where([
+            $authExisted = Authentication::where([
                 'sec_name' => $data['sec_name'],
             ])->first();
 
@@ -131,7 +131,7 @@ class AuthController extends Controller {
                     return $this->responseError($validator->errors()->all(), 422);
                 }
 
-                $authNew = new Auth($data);
+                $authNew = new Authentication($data);
                 $authNew->sec_pass = \Hash::make($data['sec_pass']);
 
                 if ($authNew->save()) {

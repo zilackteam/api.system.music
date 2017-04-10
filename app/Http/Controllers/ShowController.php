@@ -16,7 +16,7 @@ class ShowController extends Controller {
      * @apiName GetShow
      * @apiGroup Show
      *
-     * @apiParam {Integer} singer_id Filter shows by singer's id
+     * @apiParam {Integer} content_id Filter shows by content id
      *
      * @apiSuccessExample Success-Response:
      *     HTTP/1.1 200 OK

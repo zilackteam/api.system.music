@@ -16,9 +16,8 @@ class CreateUserCommentsTable extends Migration
 		{
 			$table->increments('id');
 			$table->integer('user_id');
-			$table->integer('master_post_id');
+			$table->integer('post_id');
 			$table->text('comment')->nullable();
-			$table->boolean('liked');
 			$table->timestamps();
 			$table->softDeletes();
 		});

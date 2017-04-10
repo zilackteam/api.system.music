@@ -28,7 +28,7 @@ return [
     |
     */
 
-    'model' => App\Models\Auth::class,
+    'model' => App\Models\Authentication::class,
 
     /*
     |--------------------------------------------------------------------------

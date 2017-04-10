@@ -8,7 +8,7 @@ use Tymon\JWTAuth\Facades\JWTAuth;
  * App\Models\Post
  *
  * @property integer $id
- * @property integer $singer_id
+ * @property integer $content_id
  * @property string $content
  * @property string $photo
  * @property integer $staff_id
@@ -18,9 +18,9 @@ use Tymon\JWTAuth\Facades\JWTAuth;
  */
 class Post extends VeoModel {
 
-    protected $table = 'posts';
+    protected $table = 'master_posts';
 
-    protected $fillable = ['id', 'singer_id', 'content'];
+    protected $fillable = ['id', 'master_id', 'content_id', 'content'];
 
     protected $hidden = [];
 
@@ -32,7 +32,7 @@ class Post extends VeoModel {
         ];
         $rules = [
             'create' => array_merge($common, [
-                'singer_id' => 'required'
+                'master_id' => 'required'
             ]),
             'update' => array_merge($common, [
             ])
@@ -43,8 +43,9 @@ class Post extends VeoModel {
     /**
      * Relationship
      */
-    public function singer() {
-        return $this->belongsTo('App\Models\User', 'singer_id');
+
+    public function master() {
+        return $this->belongsTo('App\Models\Master', 'master_id');
     }
 
     public function comments() {
@@ -90,10 +91,8 @@ class Post extends VeoModel {
     public function getIsLikedAttribute() {
         $token = JWTAuth::getToken();
         if ($token) {
-
             try {
-
-                if (! $user = JWTAuth::parseToken()->authenticate()) {
+                if (! $auth = JWTAuth::parseToken()->authenticate()) {
                     return false;
                 }
 
@@ -101,11 +100,14 @@ class Post extends VeoModel {
                 return false;
             }
 
-            if ($user) {
+            if ($auth) {
+                $user = User::where('auth_id', $auth->id)->first();
+                
                 $liked = PostLike::where([
                     'post_id' => $this->id,
                     'user_id' => $user->id,
                 ])->count();
+                
                 return $liked ? true : false;
             }
         }
@@ -117,19 +119,19 @@ class Post extends VeoModel {
      */
     public function getPhotoAttribute() {
         return ($this->attributes['photo']) ?
-            url('resources' . DS . 'uploads' . DS . $this->attributes['singer_id'] . DS . 'post' . DS . $this->attributes['photo']) : '';
+            url('resources' . DS . 'uploads' . DS . $this->attributes['content_id'] . DS . 'post' . DS . $this->attributes['photo']) : '';
     }
 
     public function getContentAttribute() {
         $string = $this->attributes['content'];
-        if ($setting = Setting::first()) {
-            $filtersList = explode(PHP_EOL, trim($setting->filter));
-            foreach ($filtersList as $term) {
-                if (stristr($string, $term) !== false) {
-                    $string = str_ireplace($term, '***', $string);
-                }
-            }
-        }
+//        if ($setting = Setting::first()) {
+//            $filtersList = explode(PHP_EOL, trim($setting->filter));
+//            foreach ($filtersList as $term) {
+//                if (stristr($string, $term) !== false) {
+//                    $string = str_ireplace($term, '***', $string);
+//                }
+//            }
+//        }
 
         return $string;
     }
