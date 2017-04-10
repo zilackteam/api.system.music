@@ -36,8 +36,6 @@ class CommentController extends Controller {
     public function index(Request $request, $postId) {
         //
         try {
-            $post = Post::findOrFail($postId);
-
             $comments = Comment::query();
             $comments->where('post_id', $postId);
             $comments->with('user');
@@ -77,9 +75,13 @@ class CommentController extends Controller {
         try {
             $post = Post::findOrFail($postId);
 
+            $authId = Auth::user()->id;
+            $user = User::where('auth_id', $authId)->first();
+
             $data = $request->all();
             $data['post_id'] = $post->id;
-            $data['user_id'] = Auth::user()->id;
+            $data['user_id'] = $user->id;
+
             $validator = \Validator::make($data, Comment::rules('create'));
             if ($validator->fails())
                 return $this->responseError($validator->errors()->all(), 422);
@@ -120,13 +122,14 @@ class CommentController extends Controller {
         try {
             $comment = Comment::findOrFail($id);
 
-            if ($request->has('with')) {
+            if ($request->has('includes')) {
                 $with = explode(',', $request->get('with'));
                 foreach ($with as $param) {
                     if ($param == 'post') {
                         $comment->post;
                     }
-                    if ($param == 'singer') {
+
+                    if ($param == 'user') {
                         $comment->user;
                     }
                 }
@@ -166,8 +169,11 @@ class CommentController extends Controller {
         try {
             $comment = Comment::findOrFail($id);
 
+            $authId = Auth::user()->id;
+            $user = User::where('auth_id', $authId)->first();
+
             $data = $request->all();
-            $data['user_id'] = \Auth::user()->id;
+            $data['user_id'] = $user->id;
             $validator = \Validator::make($data, Comment::rules('update'));
             if ($validator->fails())
                 return $this->responseError($validator->errors()->all(), 422);

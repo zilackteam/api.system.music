@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Master;
 use App\Models\Post;
 use App\Models\PostLike;
 use App\Models\Upload;
+use App\Models\User;
 use Auth;
 use Illuminate\Http\Request;
 
@@ -61,7 +63,6 @@ class PostController extends Controller {
      *
      * @apiParamExample {json} POST Request-Example:
      *      {
-     *          'singer_id' : 2
      *          'content': 'Post content'
      *          'photo' : File
      *      }
@@ -80,6 +81,15 @@ class PostController extends Controller {
         //
         try {
             $data = $request->all();
+
+            $authId = Auth::user()->id;
+            $master = Master::where('auth_id', $authId)->first();
+
+            if ($master) {
+                $data['master_id'] = $master->id;
+                $data['content_id'] = $master->content_id;
+            }
+
             $validator = \Validator::make($data, Post::rules('create'));
             if ($validator->fails())
                 return $this->responseError($validator->errors()->all(), 422);
@@ -325,10 +335,13 @@ class PostController extends Controller {
     public function like($postId) {
         try {
             $post = Post::findOrFail($postId);
+            $authId = Auth::user()->id;
+
+            $user = User::where('auth_id', $authId)->first();
 
             $liked = PostLike::where([
                 'post_id' => $post->id,
-                'user_id' => Auth::user()->id
+                'user_id' => $user->id
             ])->count();
 
             if ($liked)
@@ -336,7 +349,7 @@ class PostController extends Controller {
 
             $like = new PostLike([
                 'post_id' => $post->id,
-                'user_id' => Auth::user()->id
+                'user_id' => $user->id
             ]);
 
             $like->save();
@@ -374,9 +387,13 @@ class PostController extends Controller {
     public function unlike($postId) {
         try {
             $post = Post::findOrFail($postId);
+            $authId = Auth::user()->id;
+
+            $user = User::where('auth_id', $authId)->first();
+
             $liked = PostLike::where([
                 'post_id' => $post->id,
-                'user_id' => Auth::user()->id
+                'user_id' => $user->id
             ]);
             if (!$liked->count())
                 return $this->responseError(['You did not like the post before'], 409);
