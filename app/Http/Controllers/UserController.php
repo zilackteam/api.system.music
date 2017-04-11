@@ -9,6 +9,7 @@ namespace App\Http\Controllers;
 use App\Models\Album;
 use App\Models\AppUser;
 use App\Models\Auth;
+use App\Models\Authentication;
 use App\Models\AuthToken;
 use App\Models\Song;
 use App\Models\User;
@@ -90,15 +91,15 @@ class UserController extends Controller {
         try {
             $data = $request->all();
 
-            $validator = Validator::make($data, Auth::rules('create'));
+            $validator = Validator::make($data, Authentication::rules('create'));
 
             if ($validator->fails()) {
                 return $this->responseError($validator->errors()->all(), 422);
             }
 
-            $auth = new Auth($data);
+            $auth = new Authentication($data);
             $auth->sec_pass = \Hash::make($data['sec_pass']);
-            $auth->level = Auth::AUTH_USER;
+            $auth->level = Authentication::AUTH_USER;
 
             if ($auth->save()) {
                 $user = new User($data);
@@ -106,7 +107,7 @@ class UserController extends Controller {
 
                 $user->save();
 
-                if ($auth->type == Auth::AUTH_TYPE_EMAIL) {
+                if ($auth->type == Authentication::AUTH_TYPE_EMAIL) {
                     $token = new AuthToken();
                     $token->auth_id = $auth->id;
                     $token->token = md5($auth->sec_name . date('YmdHis'));
@@ -132,8 +133,8 @@ class UserController extends Controller {
 
             if ($token) {
                 // Active user
-                $auth = Auth::where('id', $token->auth_id)->first();
-                $auth->status = Auth::AUTH_STATUS_ACTIVE;
+                $auth = Authentication::where('id', $token->auth_id)->first();
+                $auth->status = Authentication::AUTH_STATUS_ACTIVE;
                 $auth->save();
 
                 // Delete token
@@ -443,19 +444,6 @@ class UserController extends Controller {
             return $this->responseErrorByException($e);
         }
     }
-
-    /**
-     * @api {get} /user/authenticated Get User from Token
-     * @apiName UserAuthenticated
-     * @apiGroup User
-     *
-     */
-    public function authenticated() {
-        $user = $this->getAuthenticatedUser();
-        return $this->responseSuccess($user);
-    }
-
-
 
     /**
      * @api {get} /search/  Search some pre-defined regions

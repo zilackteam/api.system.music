@@ -16,6 +16,7 @@ Route::get('/', function () {
 });
 
 Route::post('auth/login', 'AuthController@login')->name('auth.login');
+Route::post('auth/manager', 'AuthController@manager')->name('auth.manager');
 Route::post('auth/refresh-token', 'AuthController@refreshToken')->name('auth.refresh-token');
 Route::post('auth/login/facebook', 'AuthController@loginFacebook')->name('auth.loginFacebook');
 Route::get('user/active/{token}', 'UserController@active')->name('user.active');
@@ -28,10 +29,15 @@ Route::post('user', 'UserController@store')->name('user.store');
 Route::get('search', 'UserController@search')->name('global.search');
 Route::get('suggestion', 'SongController@suggestion')->name('global.suggestion');
 
+// /apps/
+Route::resource('apps', 'AppController');
+
 //Route::group(['middleware' => ['jwt.auth']], function() {
 Route::group(['middleware' => []], function () {
+    // Auth
+    Route::get('auth/authenticated', 'AuthController@authenticated')->name('auth.authenticated')->middleware('jwt.auth');
+
     // /user/
-    Route::get('user/authenticated', 'UserController@authenticated')->name('user.authenticated')->middleware('jwt.auth');
     Route::resource('user', 'UserController', ['except' => ['create', 'store', 'edit']]);
     Route::post('user/change-password', 'UserController@changePassword')->name('user.change-password');
     Route::post('user/avatar', 'UserController@avatar')->name('user.avatar');
@@ -91,7 +97,6 @@ Route::group(['middleware' => []], function () {
 
 //Require permission
 Route::group(['middleware' => ['jwt.auth']], function () {
-
     // /post/
     Route::post('post/', 'PostController@store');
     Route::post('post/{id}', 'PostController@update');

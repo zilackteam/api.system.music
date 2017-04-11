@@ -20,6 +20,7 @@ use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 class Authentication extends VeoModel implements AuthenticatableContract, CanResetPasswordContract {
     use Authenticatable, CanResetPassword;
 
+    const AUTH_ADMIN = 0;
     const AUTH_MANAGER = 1;
     const AUTH_MASTER = 2;
     const AUTH_USER = 3;

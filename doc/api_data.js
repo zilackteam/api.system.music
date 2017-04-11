@@ -603,7 +603,7 @@ define({ "api": [
   },
   {
     "type": "post",
-    "url": "/auth/",
+    "url": "/auth/login",
     "title": "Login",
     "name": "PostLogin",
     "group": "User",

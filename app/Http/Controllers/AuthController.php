@@ -46,7 +46,7 @@ class AuthController extends Controller {
         $credentials = $request->only('sec_name', 'sec_pass');
 
         $validator = \Validator::make($credentials, array(
-            'sec_name' => 'required|email',
+            'sec_name' => 'required',
             'sec_pass' => 'required|min:6|max:30'
         ));
 
@@ -168,7 +168,18 @@ class AuthController extends Controller {
     }
 
     /**
-     * @api {post} /user/refresh-token Refresh Token
+     * @api {get} /auth/authenticated Get Auth from Token
+     * @apiName UserAuthenticated
+     * @apiGroup User
+     *
+     */
+    public function authenticated() {
+        $auth = $this->getAuthenticatedUser();
+        return $this->responseSuccess($auth);
+    }
+
+    /**
+     * @api {post} /auth/refresh-token Refresh Token
      * @apiName UserRefreshToken
      * @apiGroup User
      *
@@ -192,6 +203,38 @@ class AuthController extends Controller {
             return $this->responseError('token_expired', $e->getStatusCode());
         } catch (JWTException $e) {
             return $this->responseError('token_invalid', $e->getStatusCode());
+        }
+    }
+
+
+    public function manager(Request $request) {
+        $credentials = $request->only('sec_name', 'sec_pass');
+
+        $validator = \Validator::make($credentials, array(
+            'sec_name' => 'required',
+            'sec_pass' => 'required|min:6|max:30'
+        ));
+
+        if ($validator->fails()) {
+            return $this->responseError($validator->errors()->all(), 422);
+        }
+
+        try {
+            $token = JWTAuth::attempt(array('sec_name' => $request->sec_name, 'password' => $request->sec_pass));
+
+            if (!$token) {
+                return $this->responseError(['Invalid credentials'], 401);
+            }
+
+            $auth = Authentication::where('sec_name', $request->get('sec_name'))->where('level', '<=', Authentication::AUTH_MANAGER)->firstOrFail();
+
+            return $this->responseSuccess([
+                'token' => $token,
+                'auth' => $auth
+            ]);
+        } catch (\Exception $e) {
+            // something went wrong whilst attempting to encode the token
+            return $this->responseErrorByException($e);
         }
     }
 }
