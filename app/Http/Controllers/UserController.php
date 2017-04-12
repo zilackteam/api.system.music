@@ -506,7 +506,8 @@ class UserController extends Controller {
                     ->orWhere('keywords', 'like', "%$keyword%");
             });
             
-            $queryVideos->whereNull('deleted_at');
+            $queryVideos->whereNull('deleted_at')
+                ->where('is_public', true);
             
             if ($content_id) {
                 $queryVideos->where('content_id', $content_id);

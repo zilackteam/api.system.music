@@ -59,11 +59,6 @@ class AlbumController extends Controller {
             $album->save();
 
             //Upload image
-            $imgSaved = false;
-            $thumbSaved = false;
-            $featureSaved = false;
-            $fileName = '';
-            
             if ($request->hasFile('thumb_url') && $request->file('thumb_url')->isValid()) {
                 $image = $request->file('thumb_url');
                 $imageType = $image->getClientOriginalExtension();
@@ -155,6 +150,7 @@ class AlbumController extends Controller {
             $data = $request->all();
 
             if (array_get($data, 'thumb_url') == $album->thumb_url) unset($data['thumb_url']);
+            if (array_get($data, 'feature_url') == $album->feature_url) unset($data['feature_url']);
 
             $validator = \Validator::make($data, Album::rules('update'));
             if ($validator->fails()) {
@@ -222,39 +218,5 @@ class AlbumController extends Controller {
         } catch (\Exception $e) {
             return $this->responseErrorByException($e);
         }
-    }
-
-    public function image(Request $request) {
-        try {
-            $data = $request->all();
-
-            $validator = Validator::make($data, Album::rules('image'));
-            if ($validator->fails())
-                return $this->responseError($validator->errors()->all(), 422);
-
-            $album = Album::findOrFail($data['id']);
-
-            if ($request->file('thumb_url')) {
-                $nameThumb = 'album_' . $album->id . date('YmdHis');
-                $uploadThumb = uploadImage($request, 'thumb_url', album_path($album->content_id), $nameThumb);
-
-                if ($uploadThumb) {
-                    if ($album->getAttributes()['thumb_url']) {
-                        unlink(album_path($album->content_id) . DS . $album->getAttributes()['thumb_url']);
-                        unlink(album_path($album->content_id) . DS . 'thumb_' . $album->getAttributes()['thumb_url']);
-                    }
-
-                    $album->thumb_url = $uploadThumb;
-                    $album->save();
-                    return $this->responseSuccess($album->thumb_img);
-                } else {
-                    return $this->responseError(['Could not upload image'], 200, $album);
-                }
-            }
-
-        } catch (\Exception $e) {
-            return $this->responseErrorByException($e);
-        }
-
     }
 }

@@ -23,6 +23,8 @@ class CreateVideosTable extends Migration
 			$table->string('thumb_url')->nullable();
 			$table->integer('is_feature')->nullable();
 			$table->datetime('publish_time')->nullable();
+			$table->integer('is_public')->nullable();
+			$table->string('keywords')->nullable();
 			$table->timestamps();
 			$table->softDeletes();
 		});
