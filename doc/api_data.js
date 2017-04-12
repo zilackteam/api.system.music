@@ -19,6 +19,13 @@ define({ "api": [
             "group": "Parameter",
             "type": "Integer",
             "optional": false,
+            "field": "is_public",
+            "description": "<p>If is_public = 1, get data public only</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Integer",
+            "optional": false,
             "field": "limit",
             "description": "<p>Number of record</p>"
           },
@@ -118,6 +125,13 @@ define({ "api": [
             "group": "Parameter",
             "type": "Integer",
             "optional": false,
+            "field": "is_public",
+            "description": "<p>If is_public = 1, get data public only</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Integer",
+            "optional": false,
             "field": "limit",
             "description": "<p>Number of record</p>"
           },
@@ -198,6 +212,13 @@ define({ "api": [
             "optional": false,
             "field": "content_id",
             "description": "<p>Filter videos by content id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Integer",
+            "optional": false,
+            "field": "is_public",
+            "description": "<p>If is_public = 1, get data public only</p>"
           },
           {
             "group": "Parameter",
