@@ -64,13 +64,13 @@ class AlbumController extends Controller {
             $featureSaved = false;
             $fileName = '';
             
-            if ($request->hasFile('thumb_img') && $request->file('thumb_img')->isValid()) {
-                $image = $request->file('thumb_img');
+            if ($request->hasFile('thumb_url') && $request->file('thumb_url')->isValid()) {
+                $image = $request->file('thumb_url');
                 $imageType = $image->getClientOriginalExtension();
 
                 $fileName = 'album_'.$album->id .'_'.date('YmdHis') . '.' . $imageType;
 
-                $dir = album_path($album->singer_id);
+                $dir = album_path($album->content_id);
                 if (! \File::isDirectory($dir)) {
                     \File::makeDirectory($dir, 0775, true);
                 }
@@ -82,16 +82,16 @@ class AlbumController extends Controller {
                     return $this->responseError('cant_save_image', 507);
                 }
 
-                $album->thumb_img = $fileName;
+                $album->thumb_url = $fileName;
             }
             
-            if ($request->hasFile('feature_img') && $request->file('feature_img')->isValid()) {
-                $image = $request->file('feature_img');
+            if ($request->hasFile('feature_url') && $request->file('feature_url')->isValid()) {
+                $image = $request->file('feature_url');
                 $imageType = $image->getClientOriginalExtension();
             
                 $fileName = 'feature_album_'.$album->id .'_'.date('YmdHis') . '.' . $imageType;
             
-                $dir = album_path($album->singer_id);
+                $dir = album_path($album->content_id);
                 if (! \File::isDirectory($dir)) {
                     \File::makeDirectory($dir, 0775, true);
                 }
@@ -102,7 +102,7 @@ class AlbumController extends Controller {
                     return $this->responseError('cant_save_image', 507);
                 }
             
-                $album->feature_img = $fileName;
+                $album->feature_url = $fileName;
             }
 
             $album->save();
@@ -154,7 +154,7 @@ class AlbumController extends Controller {
             $album = Album::findOrFail($id);
             $data = $request->all();
 
-            if (array_get($data, 'thumb_img') == $album->thumb_img) unset($data['thumb_img']);
+            if (array_get($data, 'thumb_url') == $album->thumb_url) unset($data['thumb_url']);
 
             $validator = \Validator::make($data, Album::rules('update'));
             if ($validator->fails()) {
@@ -164,13 +164,13 @@ class AlbumController extends Controller {
             $album->fill($data);
 
             //Upload image
-            if ($request->hasFile('thumb_img') && $request->file('thumb_img')->isValid()) {
-                $image = $request->file('thumb_img');
+            if ($request->hasFile('thumb_url') && $request->file('thumb_url')->isValid()) {
+                $image = $request->file('thumb_url');
                 $imageType = $image->getClientOriginalExtension();
 
                 $fileName = 'album_'.$album->id .'_'.date('YmdHis') . '.' . $imageType;
 
-                $dir = album_path($album->singer_id);
+                $dir = album_path($album->content_id);
                 if (! \File::isDirectory($dir)) {
                     \File::makeDirectory($dir, 0775, true);
                 }
@@ -182,16 +182,16 @@ class AlbumController extends Controller {
                     return $this->responseError('cant_save_image', 507);
                 }
 
-                $album->thumb_img = $fileName;
+                $album->thumb_url = $fileName;
             }
 
-            if ($request->hasFile('feature_img') && $request->file('feature_img')->isValid()) {
-                $image = $request->file('feature_img');
+            if ($request->hasFile('feature_url') && $request->file('feature_url')->isValid()) {
+                $image = $request->file('feature_url');
                 $imageType = $image->getClientOriginalExtension();
             
                 $fileName = 'feature_album_'.$album->id .'_'.date('YmdHis') . '.' . $imageType;
             
-                $dir = album_path($album->singer_id);
+                $dir = album_path($album->content_id);
                 if (! \File::isDirectory($dir)) {
                     \File::makeDirectory($dir, 0775, true);
                 }
@@ -202,7 +202,7 @@ class AlbumController extends Controller {
                     return $this->responseError('cant_save_image', 507);
                 }
             
-                $album->feature_img = $fileName;
+                $album->feature_url = $fileName;
             }
             
             $album->save();
@@ -234,17 +234,17 @@ class AlbumController extends Controller {
 
             $album = Album::findOrFail($data['id']);
 
-            if ($request->file('thumb_img')) {
+            if ($request->file('thumb_url')) {
                 $nameThumb = 'album_' . $album->id . date('YmdHis');
-                $uploadThumb = uploadImage($request, 'thumb_img', album_path($album->singer_id), $nameThumb);
+                $uploadThumb = uploadImage($request, 'thumb_url', album_path($album->content_id), $nameThumb);
 
                 if ($uploadThumb) {
-                    if ($album->getAttributes()['thumb_img']) {
-                        unlink(album_path($album->singer_id) . DS . $album->getAttributes()['thumb_img']);
-                        unlink(album_path($album->singer_id) . DS . 'thumb_' . $album->getAttributes()['thumb_img']);
+                    if ($album->getAttributes()['thumb_url']) {
+                        unlink(album_path($album->content_id) . DS . $album->getAttributes()['thumb_url']);
+                        unlink(album_path($album->content_id) . DS . 'thumb_' . $album->getAttributes()['thumb_url']);
                     }
 
-                    $album->thumb_img = $uploadThumb;
+                    $album->thumb_url = $uploadThumb;
                     $album->save();
                     return $this->responseSuccess($album->thumb_img);
                 } else {

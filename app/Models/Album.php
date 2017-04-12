@@ -44,13 +44,13 @@ class Album extends VeoModel {
         return array_get($rules, $key);
     }
 
-    public function getThumbImgAttribute($value) {
+    public function getThumbUrlAttribute($value) {
         return $value ?
             url('resources' . DS . 'uploads' . DS . $this->attributes['content_id'] . DS . 'album' . DS . 'thumb_' . $value) :
             url('resources' . DS . 'assets' . DS . 'images' . DS . 'icon-music.jpg');
     }
     
-    public function getFeatureImgAttribute($value) {
+    public function getFeatureUrlAttribute($value) {
         return $value ?
             url('resources' . DS . 'uploads' . DS . $this->attributes['content_id'] . DS . 'album' . DS . $value) :
             url('resources' . DS . 'assets' . DS . 'images' . DS . 'icon-music.jpg');

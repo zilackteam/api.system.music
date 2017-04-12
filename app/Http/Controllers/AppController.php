@@ -13,12 +13,6 @@ class AppController extends Controller {
         //
         try {
             $apps = App::query();
-//
-//            if (Auth::user()->level == Authentication::AUTH_ADMIN) {
-//
-//            } else {
-//
-//            }
 
             $apps = $apps->get();
 
@@ -26,6 +20,5 @@ class AppController extends Controller {
         } catch (\Exception $e) {
             return $this->responseErrorByException($e);
         }
-
     }
 }
