@@ -139,7 +139,7 @@ class NewsController extends Controller {
      * @apiName GetListNews
      * @apiGroup News
      *
-     * @apiParam {Integer} singer_id Get list news of singer.
+     * @apiParam {Integer} content_id Get list news of content_id.
      *
      */
     public function listing(Request $request) {
@@ -149,8 +149,8 @@ class NewsController extends Controller {
             $perPage = 10;
             $news = News::query();
 
-            if ($request->has('singer_id')) {
-                $news->where('singer_id', $request->get('singer_id'));
+            if ($request->has('content_id')) {
+                $news->where('content_id', $request->get('content_id'));
             } else {
                 die('Invalid access');
             }
@@ -198,7 +198,7 @@ class NewsController extends Controller {
 
             $totalRelate = 5;
             $relatedNews = News::where('id', '<>', $id)
-                ->where('singer_id', $news->singer_id)
+                ->where('content_id', $news->content_id)
                 ->orderBy('updated_at', 'DESC')
                 ->take($totalRelate)
                 ->get();

@@ -355,6 +355,52 @@ define({ "api": [
   },
   {
     "type": "get",
+    "url": "/news/detail/:id",
+    "title": "Get detail of News (HTML)",
+    "name": "GetDetailNews",
+    "group": "News",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Integer",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Get ID of News</p>"
+          }
+        ]
+      }
+    },
+    "version": "1.0.0",
+    "filename": "app/Http/Controllers/NewsController.php",
+    "groupTitle": "News"
+  },
+  {
+    "type": "get",
+    "url": "/news/listing/",
+    "title": "Get list of News (HTML)",
+    "name": "GetListNews",
+    "group": "News",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Integer",
+            "optional": false,
+            "field": "content_id",
+            "description": "<p>Get list news of content_id.</p>"
+          }
+        ]
+      }
+    },
+    "version": "1.0.0",
+    "filename": "app/Http/Controllers/NewsController.php",
+    "groupTitle": "News"
+  },
+  {
+    "type": "get",
     "url": "/photo/",
     "title": "Get list of Photo",
     "name": "GetPhoto",

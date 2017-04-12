@@ -18,7 +18,7 @@
             @foreach($relatedNews as $related)
                 <article class="single-news row">
                     <div class="col-xs-4">
-                        <a href="{{ route('news.detail', ['id' => $related->id]) }}" class="feature-img"><img src="{{ $related->feature_img }}" alt=""></a>
+                        <a href="{{ route('news.detail', ['id' => $related->id]) }}" class="feature-img"><img src="{{ $related->feature_url }}" alt=""></a>
                     </div>
                     <div class="col-xs-8">
                         <a href="{{ route('news.detail', ['id' => $related->id]) }}" class="title"><h2>{{ $related->title }}</h2></a>
