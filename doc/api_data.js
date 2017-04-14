@@ -1147,7 +1147,7 @@ define({ "api": [
         }
       ]
     },
-    "version": "0.0.0",
+    "version": "1.0.0",
     "filename": "app/Http/Controllers/CommentController.php",
     "groupTitle": "Comment"
   },
@@ -1179,7 +1179,7 @@ define({ "api": [
         }
       ]
     },
-    "version": "0.0.0",
+    "version": "1.0.0",
     "filename": "app/Http/Controllers/CommentController.php",
     "groupTitle": "Comment"
   },
@@ -1211,7 +1211,7 @@ define({ "api": [
         }
       ]
     },
-    "version": "0.0.0",
+    "version": "1.0.0",
     "filename": "app/Http/Controllers/CommentController.php",
     "groupTitle": "Comment"
   },
@@ -1243,7 +1243,7 @@ define({ "api": [
         }
       ]
     },
-    "version": "0.0.0",
+    "version": "1.0.0",
     "filename": "app/Http/Controllers/CommentController.php",
     "groupTitle": "Comment"
   },
@@ -1282,7 +1282,7 @@ define({ "api": [
         }
       ]
     },
-    "version": "0.0.0",
+    "version": "1.0.0",
     "filename": "app/Http/Controllers/CommentController.php",
     "groupTitle": "Comment"
   },
