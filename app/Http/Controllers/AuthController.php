@@ -62,9 +62,16 @@ class AuthController extends Controller {
 
             $auth = Authentication::where('sec_name', $request->get('sec_name'))->firstOrFail();
 
+            if ($auth->level == Authentication::AUTH_MASTER) {
+                $info = $auth->master;
+            } else {
+                $info = $auth->user;
+            }
+
             return $this->responseSuccess([
                 'token' => $token,
-                'auth' => $auth
+                'auth' => $auth,
+                'info' => $info
             ]);
         } catch (\Exception $e) {
             // something went wrong whilst attempting to encode the token

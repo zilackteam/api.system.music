@@ -67,4 +67,14 @@ class Authentication extends VeoModel implements AuthenticatableContract, CanRes
     {
         return $this->sec_pass;
     }
+
+    public function master()
+    {
+        return $this->hasOne('App\Models\Master', 'auth_id', 'id');
+    }
+
+    public function user()
+    {
+        return $this->hasOne('App\Models\User', 'auth_id', 'id');
+    }
 }
