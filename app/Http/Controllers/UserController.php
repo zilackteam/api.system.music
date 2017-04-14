@@ -214,44 +214,15 @@ class UserController extends Controller {
 
             $data = $request->all();
             $rules = User::rules('update', $id);
-            if (!array_get($data, 'password')) {
-                unset($rules['password']);
-            }
-            if (!array_get($data, 'role')) {
-                unset($rules['role']);
-            } elseif (!User::roles($data['role'])) {
-                return $this->responseError(['Invalid role'], 422);
-            }
-            
+
             $validator = Validator::make($data, $rules);
             if ($validator->fails()) {
                 return $this->responseError($validator->errors()->all(), 422);
             }
 
             $user->fill($data);
-            if (array_get($rules, 'role')) {
-                //TODO Only admin could change role
-                $user->role = $data['role'];
-            }
-            
-            if (array_get($rules, 'password')) $user->password = \Hash::make($data['password']);
-            
-            if (isset($user->singer)) {
-                $affectedRows = ManagerSinger::where('mod_id',  $user->id)->delete();
-                foreach ($user->singer as $singer) {
-                    $manage = new ManagerSinger();
-                    $manage->singer_id = $singer;
-                    $manage->mod_id = $user->id;
-                    $manage->save();
-                }
-                
-                unset($user->singer);
-            }
-
             $user->save();
             
-            $user->singer = $data['singer'];
-
             return $this->responseSuccess($user);
         } catch (\Exception $e) {
             return $this->responseErrorByException($e);
