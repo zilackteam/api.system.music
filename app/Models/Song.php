@@ -25,9 +25,11 @@ class Song extends VeoModel {
 
     protected $table = 'songs';
 
-    protected $guarded = ['file128', 'file320', 'file_lossless', 'thumb_img'];
+    protected $guarded = ['file128', 'file320', 'file_lossless', 'thumb_url'];
 
     protected $hidden = ['deleted_at'];
+
+    protected $fillable = ['performer', 'content_id', 'author', 'name', 'lyrics', 'description', 'thumb_url'];
 
     public static function rules($key = 'create') {
         $common = [
@@ -49,7 +51,7 @@ class Song extends VeoModel {
         return array_get($rules, $key);
     }
 
-    public function getThumbImgAttribute($value) {
+    public function getThumbUrlAttribute($value) {
         return $value ? url('resources/uploads/' . $this->attributes['content_id'] . '/song/' . $this->attributes['id'] . '/thumb_' . $value) : '';
     }
 

@@ -28,17 +28,17 @@ class Album extends VeoModel {
     public static function rules($key = 'create') {
         $rules = [
             'create' => [
-                'singer_id' => 'required',
+                'content_id' => 'required',
                 'name' => 'required',
-                'thumb_img' => 'mimes:jpeg,jpg,png'
+                'thumb_url' => 'mimes:jpeg,jpg,png'
             ],
             'update' => [
                 'name' => 'required',
-                'thumb_img' => 'mimes:jpeg,jpg,png'
+                'thumb_url' => 'mimes:jpeg,jpg,png'
             ],
             'image' => [
                 'id' => 'required',
-                'thumb_img' => 'required|mimes:jpeg,jpg,png'
+                'thumb_url' => 'required|mimes:jpeg,jpg,png'
             ]
         ];
         return array_get($rules, $key);

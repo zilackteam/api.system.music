@@ -21,7 +21,7 @@ class CreateAlbumsTable extends Migration
 			$table->text('description')->nullable();
 			$table->string('thumb_url')->nullable();
 			$table->string('feature_url')->nullable();
-			$table->integer('is_feature')->nullable();
+			$table->integer('is_feature')->nullable()->default(0);
 			$table->integer('is_public')->nullable();
 			$table->integer('is_single')->nullable();
 			$table->string('keywords')->nullable();

@@ -22,7 +22,7 @@ class CreateSongsTable extends Migration
 			$table->text('lyrics')->nullable();
 			$table->text('description')->nullable();
 			$table->string('thumb_url')->nullable();
-			$table->integer('is_feature')->nullable();
+			$table->integer('is_feature')->nullable()->default(0);
 			$table->integer('is_public')->nullable();
 			$table->string('file128')->nullable();
 			$table->string('file320')->nullable();

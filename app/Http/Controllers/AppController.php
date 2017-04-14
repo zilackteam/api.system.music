@@ -21,4 +21,15 @@ class AppController extends Controller {
             return $this->responseErrorByException($e);
         }
     }
+
+    public function show(Request $request, $id) {
+        //
+        try {
+            $app = App::where('content_id', $id)->first();
+
+            return $this->responseSuccess($app);
+        } catch (\Exception $e) {
+            return $this->responseErrorByException($e);
+        }
+    }
 }

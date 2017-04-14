@@ -831,5 +831,459 @@ define({ "api": [
     "version": "1.0.0",
     "filename": "app/Http/Controllers/CategoryController.php",
     "groupTitle": "Category"
-  }
+  },
+  {
+    "type": "post",
+    "url": "/post/",
+    "title": "Create new Post",
+    "name": "CreatePost",
+    "group": "Post",
+    "parameter": {
+      "examples": [
+        {
+          "title": "POST Request-Example:",
+          "content": "{\n    'content_id' : 3\n    'content': 'Post content'\n    'photo' : File\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n\n {\n     \"error\": false,\n     \"data\": {\n         \"id\": 1,\n     }\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "1.0.0",
+    "filename": "app/Http/Controllers/PostController.php",
+    "groupTitle": "Post"
+  },
+  {
+    "type": "delete",
+    "url": "/post/:id",
+    "title": "Soft-delete existing Post",
+    "name": "DeletePost",
+    "group": "Post",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Integer",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Post unique ID.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n\n {\n     \"error\": false,\n     \"data\": {\n\n     }\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "1.0.0",
+    "filename": "app/Http/Controllers/PostController.php",
+    "groupTitle": "Post"
+  },
+  {
+    "type": "get",
+    "url": "/post/latest/:content_id",
+    "title": "Get latest Post of a app",
+    "name": "GetLatestPost",
+    "group": "Post",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Integer",
+            "optional": false,
+            "field": "content_id",
+            "description": "<p>Unique user ID of Singer.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Integer",
+            "optional": false,
+            "field": "includes",
+            "description": "<p>Includes: <ul><li>commentsCount</li><li>likesCount</li><li>comments</li></ul></p>"
+          },
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n\n {\n     \"error\": false,\n     \"data\": {\n\n     }\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "1.0.0",
+    "filename": "app/Http/Controllers/PostController.php",
+    "groupTitle": "Post"
+  },
+  {
+    "type": "get",
+    "url": "/post/",
+    "title": "Get list of Post",
+    "name": "GetPost",
+    "group": "Post",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Integer",
+            "optional": false,
+            "field": "content_id",
+            "description": "<p>Filter posts by content_id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Integer",
+            "optional": false,
+            "field": "includes",
+            "description": "<p>Includes: <ul><li>commentsCount</li><li>likesCount</li><li>comments</li></ul></p>"
+          },
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n\n {\n     \"error\": false,\n     \"data\": [\n         {\n             \"id\": 1,\n             ...\n         },\n         {..}\n     ]\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "1.0.0",
+    "filename": "app/Http/Controllers/PostController.php",
+    "groupTitle": "Post"
+  },
+  {
+    "type": "get",
+    "url": "/post/:id",
+    "title": "Get detail of a Post",
+    "name": "GetPostDetail",
+    "group": "Post",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Integer",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Post unique ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Integer",
+            "optional": false,
+            "field": "includes",
+            "description": "<p>Includes: <ul><li>commentsCount</li><li>likesCount</li><li>comments</li></ul></p>"
+          },
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n\n {\n     \"error\": false,\n     \"data\": {\n\n     }\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "1.0.0",
+    "filename": "app/Http/Controllers/PostController.php",
+    "groupTitle": "Post"
+  },
+  {
+    "type": "post",
+    "url": "post/:post_id/like/",
+    "title": "Like a post",
+    "name": "LikePost",
+    "group": "Post",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Integer",
+            "optional": false,
+            "field": "post_id",
+            "description": "<p>Post's ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n\n {\n     \"error\": false,\n     \"data\": {\n         ...\n         \"likes_count\": {\n             \"post_id\": 1,\n             \"total\": 1\n         }\n     }\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "1.0.0",
+    "filename": "app/Http/Controllers/PostController.php",
+    "groupTitle": "Post"
+  },
+  {
+    "type": "post",
+    "url": "post/:post_id/unlike/",
+    "title": "Unlike a post",
+    "name": "UnlikePost",
+    "group": "Post",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Integer",
+            "optional": false,
+            "field": "post_id",
+            "description": "<p>Post's ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n\n {\n     \"error\": false,\n     \"data\": {\n         ...\n         \"likes_count\": {\n             \"post_id\": 1,\n             \"total\": 0\n         }\n     }\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "1.0.0",
+    "filename": "app/Http/Controllers/PostController.php",
+    "groupTitle": "Post"
+  },
+  {
+    "type": "post",
+    "url": "/post/:id",
+    "title": "Update existing Post",
+    "name": "UpdatePost",
+    "group": "Post",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Integer",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Post unique ID.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "POST Request-Example:",
+          "content": "{\n     'id' : 2\n     'content': 'Post content'\n     'photo' : File\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n\n {\n     \"error\": false,\n     \"data\": {\n\n     }\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "1.0.0",
+    "filename": "app/Http/Controllers/PostController.php",
+    "groupTitle": "Post"
+  },
+  {
+    "type": "post",
+    "url": "post/:post_id/comment/",
+    "title": "Create new Comment",
+    "name": "CreateComment",
+    "group": "Comment",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Integer",
+            "optional": false,
+            "field": "post_id",
+            "description": "<p>Post that comments belong to</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "POST Request-Example:",
+          "content": "{\n    'content' : 'Comment message'\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n\n {\n     \"error\": false,\n     \"data\": {\n         \"id\": 1,\n     }\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "app/Http/Controllers/CommentController.php",
+    "groupTitle": "Comment"
+  },
+  {
+    "type": "delete",
+    "url": "/comment/:id",
+    "title": "Soft-delete existing Comment",
+    "name": "DeleteComment",
+    "group": "Comment",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Integer",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Comment unique ID.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n\n {\n     \"error\": false,\n     \"data\": {\n\n     }\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "app/Http/Controllers/CommentController.php",
+    "groupTitle": "Comment"
+  },
+  {
+    "type": "get",
+    "url": "post/:post_id/comment/",
+    "title": "Get list of Comment",
+    "name": "GetComment",
+    "group": "Comment",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Integer",
+            "optional": false,
+            "field": "post_id",
+            "description": "<p>Post that comments belong to</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n\n {\n     \"error\": false,\n     \"data\": [\n         {\n             \"id\": 1,\n             ...\n         },\n         {..}\n     ]\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "app/Http/Controllers/CommentController.php",
+    "groupTitle": "Comment"
+  },
+  {
+    "type": "get",
+    "url": "/comment/:id",
+    "title": "Get detail of a Comment",
+    "name": "GetCommentDetail",
+    "group": "Comment",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Integer",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Comment unique ID.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n\n {\n     \"error\": false,\n     \"data\": {\n\n     }\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "app/Http/Controllers/CommentController.php",
+    "groupTitle": "Comment"
+  },
+  {
+    "type": "put",
+    "url": "/comment/:id",
+    "title": "Update existing Comment",
+    "name": "UpdateComment",
+    "group": "Comment",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Integer",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Comment unique ID.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "PUT Request-Example:",
+          "content": "{\n     'post_id': 1\n     'comment': 'Comment message'\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n\n {\n     \"error\": false,\n     \"data\": {\n\n     }\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "app/Http/Controllers/CommentController.php",
+    "groupTitle": "Comment"
+  },
 ] });

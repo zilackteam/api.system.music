@@ -122,7 +122,7 @@ class SongController extends Controller {
             $data = $request->all();
 
             //If media input does not change -> ignore it
-            if (!empty($data['thumb_img']) && $data['thumb_img'] == $song->thumb_img) unset ($data['thumb_img']);
+            if (!empty($data['thumb_url']) && $data['thumb_url'] == $song->thumb_url) unset ($data['thumb_url']);
             if (array_get($data, 'file128') == $song->file128) unset ($data['file128']);
             if (array_get($data, 'file320') == $song->file320) unset ($data['file320']);
             if (array_get($data, 'file_lossless') == $song->file_lossless) unset ($data['file_lossless']);
@@ -138,11 +138,11 @@ class SongController extends Controller {
 
             if ($request->file('file128') && $request->file('file128')->isValid()) {
                 $name128 = 'song_128_' . date('YmdHis');
-                $uploadSong = uploadMedia($request, 'file128', song_path($song->singer_id, $song->id), $name128 );
+                $uploadSong = uploadMedia($request, 'file128', song_path($song->content_id, $song->id), $name128 );
                 if ($uploadSong) {
 
                     //Delete if old file existed
-                    $oldFile = song_path($song->singer_id, $song->id) . DS . $song->getAttributes()['file128'];
+                    $oldFile = song_path($song->content_id, $song->id) . DS . $song->getAttributes()['file128'];
                     if (is_file($oldFile)) unlink($oldFile);
 
                     $song->file128 = $uploadSong;
@@ -155,11 +155,11 @@ class SongController extends Controller {
 
             if ($request->file('file320') && $request->file('file320')->isValid()) {
                 $name320 = 'song_320_' . date('YmdHis');
-                $uploadSong = uploadMedia($request, 'file320', song_path($song->singer_id, $song->id), $name320);
+                $uploadSong = uploadMedia($request, 'file320', song_path($song->content_id, $song->id), $name320);
                 if ($uploadSong) {
 
                     //Delete if old file existed
-                    $oldFile = song_path($song->singer_id, $song->id) . DS . $song->getAttributes()['file320'];
+                    $oldFile = song_path($song->content_id, $song->id) . DS . $song->getAttributes()['file320'];
                     if (is_file($oldFile)) unlink($oldFile);
 
                     $song->file320 = $uploadSong;
@@ -172,11 +172,11 @@ class SongController extends Controller {
 
             if ($request->file('file_lossless') && $request->file('file_lossless')->isValid()) {
                 $nameLL = 'song_lossless_' . date('YmdHis');
-                $uploadSong = uploadMedia($request, 'file_lossless', song_path($song->singer_id, $song->id), $nameLL );
+                $uploadSong = uploadMedia($request, 'file_lossless', song_path($song->content_id, $song->id), $nameLL );
                 if ($uploadSong) {
 
                     //Delete if old file existed
-                    $oldFile = song_path($song->singer_id, $song->id) . DS . $song->getAttributes()['file_lossless'];
+                    $oldFile = song_path($song->content_id, $song->id) . DS . $song->getAttributes()['file_lossless'];
                     if (is_file($oldFile)) unlink($oldFile);
 
                     $song->file_lossless = $uploadSong;
@@ -187,18 +187,18 @@ class SongController extends Controller {
                 }
             }
 
-            if ($request->file('thumb_img') && $request->file('thumb_img')->isValid()) {
+            if ($request->file('thumb_url') && $request->file('thumb_url')->isValid()) {
                 $nameThumb = 'image_' .  date('YmdHis');
-                $uploadThumb = uploadImage($request, 'thumb_img', song_path($song->singer_id, $song->id), $nameThumb);
+                $uploadThumb = uploadImage($request, 'thumb_url', song_path($song->content_id, $song->id), $nameThumb);
                 if ($uploadThumb) {
 
-                    $oldThumb = song_path($song->singer_id, $song->id) . DS . $song->getAttributes()['thumb_img'];
+                    $oldThumb = song_path($song->content_id, $song->id) . DS . $song->getAttributes()['thumb_url'];
                     if (is_file($oldThumb)) unlink($oldThumb);
 
-                    $oldImg = song_path($song->singer_id, $song->id) . DS . 'thumb_' . $song->getAttributes()['thumb_img'];
+                    $oldImg = song_path($song->content_id, $song->id) . DS . 'thumb_' . $song->getAttributes()['thumb_url'];
                     if (is_file($oldImg)) unlink($oldImg);
 
-                    $song->thumb_img = $uploadThumb;
+                    $song->thumb_url = $uploadThumb;
                     $song->save();
 
                 } else {

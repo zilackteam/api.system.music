@@ -33,9 +33,9 @@ class Authentication extends VeoModel implements AuthenticatableContract, CanRes
 
     protected $table = 'auths';
 
-    protected $guarded = ['sec_pass', 'level'];
+    protected $guarded = ['sec_pass'];
 
-    protected $hidden = ['sec_pass', 'level'];
+    protected $hidden = ['sec_pass'];
 
     protected $fillable = ['sec_name', 'type'];
 
