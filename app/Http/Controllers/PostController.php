@@ -164,6 +164,10 @@ class PostController extends Controller {
                     if ($param == 'comments') {
                         $post->comments;
                     }
+
+                    if ($param == 'master') {
+                        $post->master;
+                    }
                 }
             }
 
@@ -216,6 +220,10 @@ class PostController extends Controller {
 
                         if ($param == 'comments') {
                             $post->comments;
+                        }
+
+                        if ($param == 'master') {
+                            $post->master;
                         }
                     }
                 }
