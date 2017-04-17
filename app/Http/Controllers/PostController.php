@@ -202,19 +202,21 @@ class PostController extends Controller {
                 ->orderBy('created_at', 'DESC')
                 ->first();
 
-            if ($request->has('includes')) {
-                $with = explode(',', $request->get('includes'));
-                foreach ($with as $param) {
-                    if ($param == 'commentCount') {
-                        $post->commentCount;
-                    }
+            if ($post) {
+                if ($request->has('includes')) {
+                    $with = explode(',', $request->get('includes'));
+                    foreach ($with as $param) {
+                        if ($param == 'commentCount') {
+                            $post->commentCount;
+                        }
 
-                    if ($param == 'likeCount') {
-                        $post->likeCount;
-                    }
+                        if ($param == 'likeCount') {
+                            $post->likeCount;
+                        }
 
-                    if ($param == 'comments') {
-                        $post->comments;
+                        if ($param == 'comments') {
+                            $post->comments;
+                        }
                     }
                 }
             }
