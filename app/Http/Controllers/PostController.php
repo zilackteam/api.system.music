@@ -200,7 +200,7 @@ class PostController extends Controller {
         try {
             $post = Post::where(['content_id' => $contentId])
                 ->orderBy('created_at', 'DESC')
-                ->firstOrFail();
+                ->first();
 
             if ($request->has('includes')) {
                 $with = explode(',', $request->get('includes'));

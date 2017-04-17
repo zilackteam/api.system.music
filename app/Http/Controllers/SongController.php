@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AlbumSong;
 use App\Models\Song;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -58,6 +59,10 @@ class SongController extends Controller {
             $song = new Song();
             $song->fill($data);
             $song->save();
+
+            if ($request->has('album_id')) {
+                $song->albums()->sync(array($request->get('album_id')));
+            }
 
             /*$name128 = 'song_128_' . date('YmdHis');
             $uploadSong = uploadMedia($request, 'file128', song_path($song->singer_id, $song->id), $name128 );
@@ -135,6 +140,9 @@ class SongController extends Controller {
             $song->fill($data);
             $song->save();
 
+            if ($request->has('album_id')) {
+                $song->albums()->sync(array($request->get('album_id')));
+            }
 
             if ($request->file('file128') && $request->file('file128')->isValid()) {
                 $name128 = 'song_128_' . date('YmdHis');

@@ -73,11 +73,9 @@ class Song extends VeoModel {
     /**
      * Relationship
      */
-    public function album() {
-        return $this->belongsTo('App\Models\Post');
+
+    public function albums() {
+        return $this->belongsToMany('App\Models\Album', 'album_songs', 'song_id', 'album_id');
     }
-    public function videos() {
-        return $this->hasMany('App\Models\Video');
-    }
-    
+
 }

@@ -6,11 +6,10 @@ namespace App\Models;
  * App\Models\Album
  *
  * @property integer $id
- * @property integer $singer_id
+ * @property integer $content_id
  * @property string $name
  * @property string $description
- * @property string $thumb_img
- * @property integer $staff_id
+ * @property string $thumb_url
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * @property \Carbon\Carbon $deleted_at
