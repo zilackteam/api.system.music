@@ -52,17 +52,17 @@ class Post extends VeoModel {
         return $this->hasMAny('App\Models\Comment', 'post_id');
     }
 
-    public function commentsCount() {
+    public function commentCount() {
         return $this->hasOne('App\Models\Comment')
             ->selectRaw('post_id, count(*) as total')
             ->groupBy('post_id');
     }
 
-    public function getCommentsCountAttribute() {
+    public function getCommentCountAttribute() {
         // if relation is not loaded already, let's do it first
-        if (!$this->relationLoaded('commentsCount')) $this->load('commentsCount');
+        if (!$this->relationLoaded('commentCount')) $this->load('commentCount');
 
-        $related = $this->getRelation('commentsCount');
+        $related = $this->getRelation('commentCount');
 
         // then return the count directly
         return ($related) ? (int) $related->total : 0;
@@ -72,17 +72,17 @@ class Post extends VeoModel {
         return $this->hasMAny('App\Models\PostLike', 'post_id');
     }
 
-    public function likesCount() {
+    public function likeCount() {
         return $this->hasOne('App\Models\PostLike')
             ->selectRaw('post_id, count(*) as total')
             ->groupBy('post_id');
     }
 
-    public function getLikesCountAttribute() {
+    public function getLikeCountAttribute() {
         // if relation is not loaded already, let's do it first
-        if (!$this->relationLoaded('likesCount')) $this->load('likesCount');
+        if (!$this->relationLoaded('likeCount')) $this->load('likeCount');
 
-        $related = $this->getRelation('likesCount');
+        $related = $this->getRelation('likeCount');
 
         // then return the count directly
         return ($related) ? (int) $related->total : 0;

@@ -25,8 +25,8 @@ class PostController extends Controller {
      * @apiParam {Integer} content_id    Filter posts by content id
      * @apiParam {String} includes       Separate by "," character
      * - `comments`      : Return with comments
-     * - `commentsCount` : Return with meta info comment count..
-     * - `likesCount`    : Return with meta info like count..
+     * - `commentCount` : Return with meta info comment count..
+     * - `likeCount`    : Return with meta info like count..
      *
      * @apiSuccessExample Success-Response:
      *     HTTP/1.1 200 OK
@@ -132,8 +132,8 @@ class PostController extends Controller {
      *
      * @apiParam {String} includes Separate by "," character
      * - `comments`      : Return with comments
-     * - `commentsCount` : Return with meta info comment count..
-     * - `likesCount`    : Return with meta info like count..
+     * - `commentCount` : Return with meta info comment count..
+     * - `likeCount`    : Return with meta info like count..
      *
      * @apiSuccessExample Success-Response:
      *     HTTP/1.1 200 OK
@@ -153,12 +153,12 @@ class PostController extends Controller {
             if ($request->has('includes')) {
                 $with = explode(',', $request->get('includes'));
                 foreach ($with as $param) {
-                    if ($param == 'commentsCount') {
-                        $post->commentsCount;
+                    if ($param == 'commentCount') {
+                        $post->commentCount;
                     }
 
-                    if ($param == 'likesCount') {
-                        $post->likesCount;
+                    if ($param == 'likeCount') {
+                        $post->likeCount;
                     }
 
                     if ($param == 'comments') {
@@ -182,8 +182,8 @@ class PostController extends Controller {
      *
      * @apiParam {String} includes Separate by "," character
      * - `comments`      : Return with comments
-     * - `commentsCount` : Return with meta info comment count..
-     * - `likesCount`    : Return with meta info like count..
+     * - `commentCount` : Return with meta info comment count..
+     * - `likeCount`    : Return with meta info like count..
      *
      * @apiSuccessExample Success-Response:
      *     HTTP/1.1 200 OK
@@ -205,12 +205,12 @@ class PostController extends Controller {
             if ($request->has('includes')) {
                 $with = explode(',', $request->get('includes'));
                 foreach ($with as $param) {
-                    if ($param == 'commentsCount') {
-                        $post->commentsCount;
+                    if ($param == 'commentCount') {
+                        $post->commentCount;
                     }
 
-                    if ($param == 'likesCount') {
-                        $post->likesCount;
+                    if ($param == 'likeCount') {
+                        $post->likeCount;
                     }
 
                     if ($param == 'comments') {
@@ -354,7 +354,7 @@ class PostController extends Controller {
 
             $like->save();
 
-            $post->likesCount;
+            $post->likeCount;
 
             return $this->responseSuccess($post);
 
@@ -400,7 +400,7 @@ class PostController extends Controller {
 
             $liked->delete();
 
-            $post->likesCount;
+            $post->likeCount;
 
             return $this->responseSuccess($post);
 
