@@ -913,7 +913,7 @@ define({ "api": [
             "type": "Integer",
             "optional": false,
             "field": "includes",
-            "description": "<p>Includes: <ul><li>commentCount</li><li>likeCount</li><li>comments</li></ul></p>"
+            "description": "<p>Includes: <ul><li>commentCount</li><li>likeCount</li><li>comments</li><li>master</li></ul></p>"
           },
         ]
       }
