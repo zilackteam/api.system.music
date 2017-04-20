@@ -1127,13 +1127,20 @@ define({ "api": [
             "optional": false,
             "field": "post_id",
             "description": "<p>Post that comments belong to</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "comment",
+            "description": "<p>Post that comments</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "POST Request-Example:",
-          "content": "{\n    'content' : 'Comment message'\n}",
+          "content": "{\n    'comment' : 'Comment message'\n}",
           "type": "json"
         }
       ]

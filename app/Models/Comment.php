@@ -21,9 +21,11 @@ class Comment extends VeoModel {
 
     protected $hidden = [];
 
+    protected $fillable = ['id', 'user_id', 'post_id', 'comment'];
+
     public static function rules($key = 'create') {
         $common = [
-            'content' => 'required'
+            'comment' => 'required'
         ];
         $rules = [
             'create' => array_merge($common, [
