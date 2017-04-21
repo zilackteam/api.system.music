@@ -36,12 +36,12 @@ class NewsController extends Controller {
                 return $this->responseError($validator->errors()->all(), 422);
             
             $name = 'thumb_' . hash('md5', date('YmdHis'));
-            $upload = saveThumb($data['thumb_feature_img'], news_path($data['singer_id']), $name);
+            $upload = saveThumb($data['thumb_url'], news_path($data['content_id']), $name);
             
             if ($upload) {
-                $data['thumb_feature_img'] = url('resources/uploads/' . $data['singer_id'] . '/news/' . $upload);
+                $data['thumb_url'] = url('resources/uploads/' . $data['content_id'] . '/news/' . $upload);
             } else {
-                $data['thumb_feature_img'] = '';
+                $data['thumb_url'] = '';
             }
 
             $news = new News();
@@ -76,17 +76,17 @@ class NewsController extends Controller {
             if ($validator->fails())
                 return $this->responseError($validator->errors()->all(), 422);
             
-            if (!empty($data['thumb_feature_img'])) {
+            if (!empty($data['thumb_url'])) {
                 $name = 'thumb_' . hash('md5', date('YmdHis'));
-                $upload = saveThumb($data['thumb_feature_img'], news_path($data['singer_id']), $name);
+                $upload = saveThumb($data['thumb_url'], news_path($data['content_id']), $name);
                 
                 if ($upload) {
-                    $data['thumb_feature_img'] = url('resources/uploads/' . $data['singer_id'] . '/news/' . $upload);
+                    $data['thumb_url'] = url('resources/uploads/' . $data['content_id'] . '/news/' . $upload);
                 } else {
-                    $data['thumb_feature_img'] = '';
+                    $data['thumb_url'] = '';
                 }
             } else {
-                unset($data['thumb_feature_img']);
+                unset($data['thumb_url']);
             }
 
             $news->fill($data);
@@ -120,12 +120,12 @@ class NewsController extends Controller {
                 return $this->responseError($validation->errors()->all(), 422);
             }
             $name = hash('md5', date('YmdHis'));
-            $upload = uploadPhoto($request, 'file', news_path($data['singer_id']), $name );
+            $upload = uploadPhoto($request, 'file', news_path($data['content_id']), $name );
 
             if (!$upload) {
                 return $this->responseError('Could not do the upload', 200, $data);
             } else {
-                return json_encode(['link' => url('resources/uploads/' . $data['singer_id'] . '/news/' . $upload)]);
+                return json_encode(['link' => url('resources/uploads/' . $data['content_id'] . '/news/' . $upload)]);
             }
 
         } catch (\Exception $e) {

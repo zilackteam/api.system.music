@@ -18,8 +18,6 @@ class PhotoQueryBuilder extends QueryBuilder
             ],
         ];
 
-        $this->limit = config('api-query-builder.limit');
-
         $this->excludedParameters = array_merge($this->excludedParameters, config('api-query-builder.excludedParameters'));
 
         $this->model = $model;

@@ -13,7 +13,7 @@ class Upload extends VeoModel {
 
     public static function rules($key = '') {
         $common = [
-            'singer_id' => 'required'
+            'content_id' => 'required'
         ];
         $rules = [
             'image' => array_merge($common, [

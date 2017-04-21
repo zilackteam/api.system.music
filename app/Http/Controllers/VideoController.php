@@ -138,12 +138,12 @@ class VideoController extends Controller {
             }
 
             $name = hash('md5', date('YmdHis'));
-            $upload = uploadMedia($request, 'file', video_path($data['singer_id']), $name );
+            $upload = uploadMedia($request, 'file', video_path($data['content_id']), $name );
 
             if (!$upload) {
                 return $this->responseError('Could not do the upload', 200, $data);
             } else {
-                return json_encode(['link' => url('resources/uploads/' . $data['singer_id'] . '/video/' . $upload)]);
+                return json_encode(['link' => url('resources/uploads/' . $data['content_id'] . '/video/' . $upload)]);
             }
 
         } catch (\Exception $e) {

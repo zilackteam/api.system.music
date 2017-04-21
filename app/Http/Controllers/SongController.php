@@ -111,7 +111,7 @@ class SongController extends Controller {
     public function show($id) {
         //
         try {
-            $song = Song::findOrFail($id);
+            $song = Song::with('albums')->findOrFail($id);
 
             return $this->responseSuccess($song);
         } catch (\Exception $e) {

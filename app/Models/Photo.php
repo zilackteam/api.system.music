@@ -24,9 +24,11 @@ class Photo extends VeoModel {
     
     public $thumb_data;
 
+    protected $fillable = ['category', 'content_id', 'file_path', 'thumb_url', 'caption'];
+
     public static function rules($key = 'create') {
         $common = [
-            'singer_id' => 'required',
+            'content_id' => 'required',
             'file_path' => 'required'
         ];
         $rules = [

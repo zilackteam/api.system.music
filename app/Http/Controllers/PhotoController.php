@@ -72,12 +72,12 @@ class PhotoController extends Controller {
                 return $this->responseError($validator->errors()->all(), 422);
             
             $name = 'thumb_' . hash('md5', date('YmdHis'));
-            $upload = saveThumb($data['thumb_path'], photo_path($data['singer_id']), $name);
+            $upload = saveThumb($data['thumb_url'], photo_path($data['content_id']), $name);
             
             if ($upload) {
-                $data['thumb_path'] = url('resources/uploads/' . $data['singer_id'] . '/photo/' . $upload);
+                $data['thumb_url'] = url('resources/uploads/' . $data['content_id'] . '/photo/' . $upload);
             } else {
-                $data['thumb_path'] = '';
+                $data['thumb_url'] = '';
             }
             
             $photo = new Photo();
@@ -150,17 +150,17 @@ class PhotoController extends Controller {
             if ($validator->fails())
                 return $this->responseError($validator->errors()->all(), 422);
             
-            if (!empty($data['thumb_path'])) {
+            if (!empty($data['thumb_url'])) {
                 $name = 'thumb_' . hash('md5', date('YmdHis'));
-                $upload = saveThumb($data['thumb_path'], photo_path($data['singer_id']), $name);
-                
+                $upload = saveThumb($data['thumb_url'], photo_path($data['content_id']), $name);
+
                 if ($upload) {
-                    $data['thumb_path'] = url('resources/uploads/' . $data['singer_id'] . '/photo/' . $upload);
+                    $data['thumb_url'] = url('resources/uploads/' . $data['content_id'] . '/photo/' . $upload);
                 } else {
-                    $data['thumb_path'] = '';
+                    $data['thumb_url'] = '';
                 }
             } else {
-                unset($data['thumb_path']);
+                unset($data['thumb_url']);
             }
 
             $photo->fill($data);
@@ -206,20 +206,15 @@ class PhotoController extends Controller {
         try {
             $data = $request->all();
 
-//             $validation = \Validator::make($data, Upload::rules('image'));
-//             if ($validation->fails()) {
-//                 return $this->responseError($validation->errors()->all(), 422);
-//             }
-
             $name = hash('md5', date('YmdHis'));
-            $upload = uploadPhoto($request, 'file', photo_path($data['singer_id']), $name );
+            $upload = uploadPhoto($request, 'file', photo_path($data['content_id']), $name );
 
             if (!$upload) {
                 return $this->responseError('Could not do the upload', 200, $data);
             } else {
                 return json_encode([
-                    'link' => url('resources/uploads/' . $data['singer_id'] . '/photo/' . $upload),
-                    'thumb' => url('resources/uploads/' . $data['singer_id'] . '/photo/' . $upload),
+                    'link' => url('resources/uploads/' . $data['content_id'] . '/photo/' . $upload),
+                    'thumb' => url('resources/uploads/' . $data['content_id'] . '/photo/' . $upload),
                 ]);
             }
 
