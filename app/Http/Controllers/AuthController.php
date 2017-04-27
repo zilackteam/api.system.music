@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Authentication;
+use App\Models\AuthType;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\TransferException;
 use Illuminate\Http\Request;
@@ -244,4 +245,21 @@ class AuthController extends Controller {
             return $this->responseErrorByException($e);
         }
     }
+
+    public function type(Request $request) {
+
+        try {
+            $authType = AuthType::withTrashed()->get();
+            if (!$authType) {
+                return $this->responseError(['Invalid credentials'], 401);
+            }
+
+            return $this->responseSuccess($authType);
+        } catch (\Exception $e) {
+            // something went wrong whilst attempting to encode the token
+            return $this->responseErrorByException($e);
+        }
+
+    }
+
 }

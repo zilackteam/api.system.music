@@ -32,26 +32,15 @@ class UserController extends Controller {
     public function index(Request $request) {
         //
         try {
+            $auth = Authentication::findOrFail($request->auth_id);
+
             $users = User::query();
 
-            if ($request->has('singer')) {
-                $users->where('role', 'singer');
-            }
-            
-            if ($request->has('is_admin')) {
-                if (!$request->get('is_admin')) {
-                    $currentUser = $this->getAuthenticatedUser();
-                    $singers = ManagerSinger::where('mod_id',  $currentUser->id)->get();
-                    
-                    if ($singers) {
-                        $userId = $singers->pluck('singer_id');
-                        $users->whereIn('id', $userId);
-                    }
-                }
+            if ($auth->level == Authentication::AUTH_MANAGER) {
+                $currentUser = $this->getAuthenticatedUser();
             }
 
-            //If role != admin, only list singer/role
-
+            $users->with('authentication');
             $users = $users->get();
 
             return $this->responseSuccess($users);
@@ -170,15 +159,8 @@ class UserController extends Controller {
     public function show($id) {
         //
         try {
-            $user = User::findOrFail($id);
+            $user = User::with('authentication')->findOrFail($id);
             
-            if ($user->role == "mod") {
-                $singers = ManagerSinger::where('mod_id',  $user->id)->get();
-                if ($singers) {
-                    $user->singer = $singers->pluck('singer_id');
-                }
-            }
-
             return $this->responseSuccess($user);
         } catch (\Exception $e) {
             return $this->responseErrorByException($e);
@@ -222,7 +204,26 @@ class UserController extends Controller {
 
             $user->fill($data);
             $user->save();
-            
+
+            $auth = Authentication::findOrFail($user->auth_id);
+
+            $rules = Authentication::rules('update', $auth->id);
+            $validator = Validator::make($data, $rules);
+
+            if ($validator->fails()) {
+                return $this->responseError($validator->errors()->all(), 422);
+            }
+
+            $auth->fill($data);
+
+            if (isset($data['sec_pass']) && !empty($data['sec_pass'])) {
+                $auth->sec_pass = \Hash::make($data['sec_pass']);
+            }
+
+            $auth->save();
+
+            $user->authentication;
+
             return $this->responseSuccess($user);
         } catch (\Exception $e) {
             return $this->responseErrorByException($e);
@@ -235,7 +236,10 @@ class UserController extends Controller {
         try {
             $user = User::findOrFail($id);
 
+            $auth = Authentication::findOrFail($user->auth_id);
+
             // TODO Only Admin could delete user
+            $auth->delete();
             $user->delete();
 
             return $this->responseSuccess(['User is deleted']);
@@ -244,68 +248,6 @@ class UserController extends Controller {
         }
 
     }
-
-    /**
-     * @api {post} /user/login Login
-     * @apiName UserLogin
-     * @apiGroup User
-     *
-     * @apiParamExample {json} PUT Request-Example:
-     *     {
-     *          "email" : "fan1@examole.com",
-     *          "password": "123456"
-     *      }
-     *
-     * @apiSuccessExample Success-Response:
-     *     HTTP/1.1 200 OK
-     *
-     *      {
-     *          "error": false,
-     *          "data": {
-     *              "id": 9
-     *              "email": "fan1@example.com",
-     *              "role": "fan",
-     *              ...
-     *          }
-     *      }
-     */
-    public function login(Request $request) {
-        $credentials = $request->only('email', 'password');
-
-        $validator = \Validator::make($credentials, array(
-            'email' => 'required|email',
-            'password' => 'required|min:6|max:30'
-        ));
-
-        if ($validator->fails()) {
-            return $this->responseError($validator->errors()->all(), 422);
-        }
-
-        try {
-            $token = JWTAuth::attempt($credentials);
-            if (!$token) {
-                return $this->responseError(['Invalid credentials'], 401);
-            }
-
-            $user = User::where('email', $request->get('email'))->firstOrFail();
-            
-            if ($request->has('singer_id')) {
-                $singer_id = $request->get('singer_id');
-                if ($user->id != $singer_id && $user->role == "singer") {
-                    $user->role = "fan";
-                }
-            }
-
-            return $this->responseSuccess([
-                'token' => $token,
-                'user' => $user
-            ]);
-        } catch (\Exception $e) {
-            // something went wrong whilst attempting to encode the token
-            return $this->responseErrorByException($e);
-        }
-    }
-
 
     /**
      * @api {post} /user/change-password Change Password
@@ -405,6 +347,7 @@ class UserController extends Controller {
 
                     $user->avatar = $uploadThumb;
                     $user->save();
+
                     return $this->responseSuccess(['avatar' => $user->avatar]);
                 } else {
                     return $this->responseError(['Could not upload avatar'], 200, $user);

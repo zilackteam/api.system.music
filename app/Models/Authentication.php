@@ -42,13 +42,12 @@ class Authentication extends VeoModel implements AuthenticatableContract, CanRes
     public static function rules($key = 'create', $id = '') {
         $common = [
             'sec_name' => 'required|max:255|unique:auths,sec_name' . ($id ? ",$id" : ''),
-            'sec_pass' => 'required|min:6|max:30',
-            'type' => 'required',
         ];
 
         $rules = [
             'create' => array_merge($common, [
-
+                'sec_pass' => 'required|min:6|max:30',
+                'type' => 'required'
             ]),
             'update' => array_merge($common, [
 

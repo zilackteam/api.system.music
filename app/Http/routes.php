@@ -36,6 +36,7 @@ Route::resource('apps', 'AppController');
 Route::group(['middleware' => []], function () {
     // Auth
     Route::get('auth/authenticated', 'AuthController@authenticated')->name('auth.authenticated')->middleware('jwt.auth');
+    Route::get('auth/type', 'AuthController@type')->name('auth.type');
 
     // /user/
     Route::resource('user', 'UserController', ['except' => ['create', 'store', 'edit']]);
