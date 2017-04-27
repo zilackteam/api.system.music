@@ -71,6 +71,7 @@ Route::group(['middleware' => []], function () {
     Route::resource('advert', 'AdvertController', ['except' => ['create', 'edit']]);
     
     // Version
+    Route::get('version/listing', 'VersionController@listing')->name('version.listing');
     Route::resource('version', 'VersionController', ['except' => []]);
     
     // Category
