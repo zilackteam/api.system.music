@@ -42,10 +42,10 @@ class Website extends VeoModel {
         ];
         $rules = [
             'create' => array_merge($common, [
-                'singer_id' => 'required',
+                'content_id' => 'required',
             ]),
             'update' => array_merge($common, [
-                'singer_id' => 'sometimes|required',
+                'content_id' => 'sometimes|required',
             ])
         ];
         return array_get($rules, $key);

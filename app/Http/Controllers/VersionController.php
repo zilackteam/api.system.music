@@ -99,4 +99,15 @@ class VersionController extends Controller {
             return $this->responseErrorByException($e);
         }
     }
+
+    public function destroy($id) {
+        //
+        try {
+            $appInfo = AppInfo::findOrFail($id);
+            $appInfo->delete();
+            return $this->responseSuccess('record_deleted');
+        } catch (\Exception $e) {
+            return $this->responseErrorByException($e);
+        }
+    }
 }
