@@ -17,7 +17,6 @@ class SettingController extends Controller {
     public function get() {
         //
         try {
-
             $settings = $this->setting->firstOrCreate([]);
 
             return $this->responseSuccess($settings);
