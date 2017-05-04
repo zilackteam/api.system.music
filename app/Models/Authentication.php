@@ -52,6 +52,11 @@ class Authentication extends VeoModel implements AuthenticatableContract, CanRes
             'update' => array_merge($common, [
 
             ]),
+            'changePassword' => [
+                'current_password' => 'required',
+                'new_password' => 'required|min:6|max:30|confirmed',
+                'new_password_confirmation' => 'required|min:6|max:30',
+            ]
         ];
 
         return array_get($rules, $key);

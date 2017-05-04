@@ -183,6 +183,7 @@ class AuthController extends Controller {
      */
     public function authenticated() {
         $auth = $this->getAuthenticatedUser();
+
         return $this->responseSuccess($auth);
     }
 
@@ -262,4 +263,68 @@ class AuthController extends Controller {
 
     }
 
+
+    /**
+     * @api {post} /user/change-password Change Password
+     * @apiName UserChangePassword
+     * @apiGroup User
+     *
+     *
+     * @apiParamExample {json} POST Request-Example:
+     *     {
+     *          "current_password": "Current Password",
+     *          "new_password" : "New Password",
+     *          "new_password_confirmation" : "New Password Repeat"
+     *      }
+     *
+     * @apiSuccessExample Success-Response:
+     *     HTTP/1.1 200 OK
+     *
+     *      {
+     *          "error": false,
+     *          "data": {
+     *
+     *          }
+     *      }
+     */
+    public function changePassword(Request $request) {
+        //
+        try {
+            $currentAuth = $this->getAuthenticatedUser();
+
+            $data = $request->all();
+            $validator = \Validator::make($data, Authentication::rules('changePassword'));
+            if ($validator->fails())
+                return $this->responseError($validator->errors()->all(), 422);
+
+            if (!\Hash::check($data['current_password'], $currentAuth->sec_pass))
+                return $this->responseError('Current password is incorrect', 422);
+
+            $currentAuth->sec_pass = \Hash::make($data['new_password']);
+            $currentAuth->save();
+
+            return $this->responseSuccess(['password_changed']);
+        } catch (\Exception $e) {
+            return $this->responseErrorByException($e);
+        }
+    }
+
+    public function changeInfo(Request $request) {
+        //
+        try {
+            $currentAuth = $this->getAuthenticatedUser();
+
+            $data = $request->all();
+            $validator = \Validator::make($data, Authentication::rules('update', $currentAuth->id));
+            if ($validator->fails())
+                return $this->responseError($validator->errors()->all(), 422);
+
+            $auth = Authentication::findOrFail($currentAuth->id);
+            $auth->update($data);
+
+            return $this->responseSuccess($auth);
+        } catch (\Exception $e) {
+            return $this->responseErrorByException($e);
+        }
+    }
 }

@@ -37,6 +37,8 @@ Route::group(['middleware' => []], function () {
     // Auth
     Route::get('auth/authenticated', 'AuthController@authenticated')->name('auth.authenticated')->middleware('jwt.auth');
     Route::get('auth/type', 'AuthController@type')->name('auth.type');
+    Route::post('auth/change-password', 'AuthController@changePassword')->name('auth.change-password');
+    Route::post('auth/change-info', 'AuthController@changeInfo')->name('auth.change-info');
 
     // /user/
     Route::resource('user', 'UserController', ['except' => ['create', 'store', 'edit']]);
