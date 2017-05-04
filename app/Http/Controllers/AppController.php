@@ -31,6 +31,26 @@ class AppController extends Controller {
         }
     }
 
+    public function store(Request $request) {
+        //
+        try {
+            $data = $request->all();
+
+            $validator = \Validator::make($data, App::rules('create'));
+
+            if ($validator->fails())
+                return $this->responseError($validator->errors()->all(), 422);
+
+            $app = new App();
+            $app->fill($data);
+            $app->save();
+
+            return $this->responseSuccess($app);
+        } catch (\Exception $e) {
+            return $this->responseErrorByException($e);
+        }
+    }
+
     public function show(Request $request, $id) {
         //
         try {
