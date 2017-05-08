@@ -24,7 +24,7 @@ class Post extends VeoModel {
 
     protected $hidden = [];
 
-    protected $appends = ['is_liked'];
+    protected $appends = ['is_liked', 'total_likes', 'total_comments'];
 
     public static function rules($key = 'create') {
         $common = [
@@ -68,6 +68,12 @@ class Post extends VeoModel {
         return ($related) ? (int) $related->total : 0;
     }
 
+    public function getTotalCommentsAttribute()
+    {
+        return $this->hasMany('App\Models\Comment', 'post_id')->count();
+
+    }
+
     public function likes() {
         return $this->hasMAny('App\Models\PostLike', 'post_id');
     }
@@ -86,6 +92,12 @@ class Post extends VeoModel {
 
         // then return the count directly
         return ($related) ? (int) $related->total : 0;
+    }
+
+    public function getTotalLikesAttribute()
+    {
+        return $this->hasMany('App\Models\PostLike', 'post_id')->count();
+
     }
 
     public function getIsLikedAttribute() {
