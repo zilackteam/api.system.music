@@ -124,14 +124,14 @@ class Post extends VeoModel {
 
     public function getContentAttribute() {
         $string = $this->attributes['content'];
-//        if ($setting = Setting::first()) {
-//            $filtersList = explode(PHP_EOL, trim($setting->filter));
-//            foreach ($filtersList as $term) {
-//                if (stristr($string, $term) !== false) {
-//                    $string = str_ireplace($term, '***', $string);
-//                }
-//            }
-//        }
+        if ($setting = Setting::first()) {
+            $filtersList = explode(PHP_EOL, trim($setting->filter));
+            foreach ($filtersList as $term) {
+                if (stristr($string, $term) !== false) {
+                    $string = str_ireplace($term, '***', $string);
+                }
+            }
+        }
 
         return $string;
     }
