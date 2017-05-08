@@ -17,29 +17,29 @@ if (!function_exists('upload_path')) {
     }
 }
 
-function album_path($singerId) {
-    return upload_path($singerId . DS . 'album');
+function album_path($contentId) {
+    return upload_path($contentId . DS . 'album');
 }
-function song_path($singerId, $songId) {
-    return upload_path($singerId . DS . 'song' . DS . $songId);
+function song_path($contentId, $songId) {
+    return upload_path($contentId . DS . 'song' . DS . $songId);
 }
 function avatar_path($userId) {
-    return upload_path($userId . DS . 'avatar');
+    return upload_path('users'. DS . $userId . DS . 'avatar');
 }
-function news_path($userId) {
-    return upload_path($userId . DS . 'news');
+function news_path($contentId) {
+    return upload_path($contentId . DS . 'news');
 }
-function photo_path($userId) {
-    return upload_path($userId . DS . 'photo');
+function photo_path($contentId) {
+    return upload_path($contentId . DS . 'photo');
 }
-function video_path($userId) {
-    return upload_path($userId . DS . 'video');
+function video_path($contentId) {
+    return upload_path($contentId . DS . 'video');
 }
-function post_path($userId) {
-    return upload_path($userId . DS . 'post');
+function post_path($contentId) {
+    return upload_path($contentId . DS . 'post');
 }
-function website_path($userId) {
-    return upload_path($userId . DS . 'website');
+function website_path($contentId) {
+    return upload_path($contentId . DS . 'website');
 }
 
 

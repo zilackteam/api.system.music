@@ -39,6 +39,7 @@ Route::group(['middleware' => []], function () {
     Route::get('auth/type', 'AuthController@type')->name('auth.type');
     Route::post('auth/change-password', 'AuthController@changePassword')->name('auth.change-password');
     Route::post('auth/change-info', 'AuthController@changeInfo')->name('auth.change-info');
+    Route::post('auth/avatar', 'AuthController@avatar')->name('auth.avatar');
 
     // /user/
     Route::resource('user', 'UserController', ['except' => ['create', 'store', 'edit']]);

@@ -324,7 +324,7 @@ class UserController extends Controller {
 
             $user = User::findOrFail($request->get('id'));
 
-            $id = $user->id;
+            $id = $user->auth_id;
 
             $validator = Validator::make($data, User::rules('avatar'));
             if ($validator->fails())

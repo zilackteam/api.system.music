@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Authentication;
+use App\Models\User;
 use App\Models\AuthType;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\TransferException;
@@ -323,6 +324,55 @@ class AuthController extends Controller {
             $auth->update($data);
 
             return $this->responseSuccess($auth);
+        } catch (\Exception $e) {
+            return $this->responseErrorByException($e);
+        }
+    }
+
+    public function avatar(Request $request) {
+        try {
+            $data = $request->all();
+
+            $auth = Authentication::findOrFail($request->get('id'));
+
+            $id = $auth->id;
+
+            if ($auth->level == Authentication::AUTH_USER) {
+                $user = $auth->user();
+            } elseif ($auth->level == Authentication::AUTH_MASTER) {
+                $user = $auth->master();
+            } else {
+                throw new Exception('Cannot find data.');
+            }
+
+            $validator = Validator::make($data, User::rules('avatar'));
+            if ($validator->fails())
+                return $this->responseError($validator->errors()->all(), 422);
+
+            if ($request->file('avatar')) {
+                $nameThumb = 'avatar_' . date('YmdHis');
+                $uploadThumb = uploadImage($request, 'avatar', avatar_path($id), $nameThumb);
+
+                if ($uploadThumb) {
+                    if ($user->getAttributes()['avatar']) {
+                        if (is_file(avatar_path($id) . DS . $user->getAttributes()['avatar'])) {
+                            unlink(avatar_path($id) . DS . $user->getAttributes()['avatar']);
+                        }
+
+                        if (is_file(avatar_path($id) . DS . 'thumb_' . $user->getAttributes()['avatar'])) {
+                            unlink(avatar_path($id) . DS . 'thumb_' . $user->getAttributes()['avatar']);
+                        }
+                    }
+
+                    $user->avatar = $uploadThumb;
+                    $user->save();
+
+                    return $this->responseSuccess(['avatar' => $user->avatar]);
+                } else {
+                    return $this->responseError(['Could not upload avatar'], 200, $user);
+                }
+            }
+
         } catch (\Exception $e) {
             return $this->responseErrorByException($e);
         }
