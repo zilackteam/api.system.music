@@ -367,8 +367,6 @@ class PostController extends Controller {
 
             $like->save();
 
-            $post->likeCount;
-
             return $this->responseSuccess($post);
 
         } catch (\Exception $e) {
@@ -400,7 +398,7 @@ class PostController extends Controller {
     public function unlike($postId) {
         try {
             $post = Post::findOrFail($postId);
-            
+
             $auth = $this->getAuthenticatedUser();
             $authId = $auth->id;
 
@@ -414,8 +412,6 @@ class PostController extends Controller {
                 return $this->responseError(['You did not like the post before'], 409);
 
             $liked->delete();
-
-            $post->likeCount;
 
             return $this->responseSuccess($post);
 
