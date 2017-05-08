@@ -82,7 +82,8 @@ class PostController extends Controller {
         try {
             $data = $request->all();
 
-            $authId = Auth::user()->id;
+            $auth = $this->getAuthenticatedUser();
+            $authId = $auth->id;
             $master = Master::where('auth_id', $authId)->first();
 
             if ($master) {
@@ -345,7 +346,9 @@ class PostController extends Controller {
     public function like($postId) {
         try {
             $post = Post::findOrFail($postId);
-            $authId = Auth::user()->id;
+
+            $auth = $this->getAuthenticatedUser();
+            $authId = $auth->id;
 
             $user = User::where('auth_id', $authId)->first();
 
@@ -397,7 +400,9 @@ class PostController extends Controller {
     public function unlike($postId) {
         try {
             $post = Post::findOrFail($postId);
-            $authId = Auth::user()->id;
+            
+            $auth = $this->getAuthenticatedUser();
+            $authId = $auth->id;
 
             $user = User::where('auth_id', $authId)->first();
 
