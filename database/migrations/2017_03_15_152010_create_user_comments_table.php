@@ -17,7 +17,7 @@ class CreateUserCommentsTable extends Migration
 			$table->increments('id');
 			$table->integer('user_id');
 			$table->integer('post_id');
-			$table->text('comment')->nullable();
+			$table->text('content')->nullable();
 			$table->timestamps();
 			$table->softDeletes();
 		});
