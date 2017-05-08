@@ -76,7 +76,9 @@ class CommentController extends Controller {
         try {
             $post = Post::findOrFail($postId);
 
-            $authId = Auth::user()->id;
+            $auth = $this->getAuthenticatedUser();
+            $authId = $auth->id;
+
             $user = User::where('auth_id', $authId)->first();
 
             $data = $request->all();
@@ -170,7 +172,9 @@ class CommentController extends Controller {
         try {
             $comment = Comment::findOrFail($id);
 
-            $authId = Auth::user()->id;
+            $auth = $this->getAuthenticatedUser();
+            $authId = $auth->id;
+
             $user = User::where('auth_id', $authId)->first();
 
             $data = $request->all();
