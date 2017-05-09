@@ -29,7 +29,7 @@ class VersionController extends Controller {
 
                 return $this->responseSuccess($data);
             } else {
-                return $this->responseSuccess('Cannot find app info');
+                return $this->responseError('Cannot find app info', 200);
             }
         } catch (\Exception $e) {
             return $this->responseErrorByException($e);
@@ -45,7 +45,7 @@ class VersionController extends Controller {
             if ($appInfo) {
                 return $this->responseSuccess($appInfo);
             } else {
-                return $this->responseSuccess('Cannot find app info');
+                return $this->responseError('Cannot find app info', 200);
             }
         } catch (\Exception $e) {
             return $this->responseErrorByException($e);
