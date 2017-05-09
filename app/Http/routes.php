@@ -51,8 +51,12 @@ Route::group(['middleware' => []], function () {
     Route::post('album/{id}', 'AlbumController@update')->name('album.update');
 
     // Song
+    Route::post('song/delete', 'SongController@delete');
+    Route::post('song/feature', 'SongController@feature');
+    Route::post('song/set-public', 'SongController@setPublic');
     Route::resource('song', 'SongController', ['except' => ['create', 'edit', 'update']]);
     Route::post('song/{id}', 'SongController@update');
+
 
     // Video
     Route::resource('video', 'VideoController', ['except' => ['create', 'edit']]);

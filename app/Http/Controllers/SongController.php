@@ -252,5 +252,48 @@ class SongController extends Controller {
         }
     }
 
+    public function delete(Request $request) {
+        //
+        try {
+            $data = $request->all();
 
+            $ids = explode(',', $data['id']);
+
+            Song::whereIn('id', $ids)->delete();
+
+            return $this->responseSuccess('Song is deleted!');
+        } catch (\Exception $e) {
+            return $this->responseErrorByException($e);
+        }
+    }
+
+    public function feature(Request $request) {
+        //
+        try {
+            $data = $request->all();
+
+            $ids = explode(',', $data['id']);
+
+            Song::whereIn('id', $ids)->update(['is_feature' => $data['is_feature']]);
+
+            return $this->responseSuccess('Song updated success!');
+        } catch (\Exception $e) {
+            return $this->responseErrorByException($e);
+        }
+    }
+
+    public function setPublic(Request $request) {
+        //
+        try {
+            $data = $request->all();
+
+            $ids = explode(',', $data['id']);
+
+            Song::whereIn('id', $ids)->update(['is_public' => $data['is_public']]);
+
+            return $this->responseSuccess('Song updated success!');
+        } catch (\Exception $e) {
+            return $this->responseErrorByException($e);
+        }
+    }
 }
