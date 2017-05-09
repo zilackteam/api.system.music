@@ -18,12 +18,13 @@ class VersionController extends Controller {
                 ->with('latestInfo')
                 ->where('bundle_id', $request->bundle_id)
                 ->where('app_infos.platform', $request->platform)
+                ->orderBy('app_infos.created_at', 'desc')
                 ->first();
 
             if ($app) {
                 $data = array(
                     'content_id' => $app->content_id,
-                    'version' => $app->latestInfo->version
+                    'version' => $app->version
                 );
 
                 return $this->responseSuccess($data);
