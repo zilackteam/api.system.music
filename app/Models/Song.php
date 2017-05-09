@@ -29,7 +29,7 @@ class Song extends VeoModel {
 
     protected $hidden = ['deleted_at'];
 
-    protected $fillable = ['performer', 'content_id', 'author', 'name', 'lyrics', 'description', 'thumb_url'];
+    protected $fillable = ['performer', 'content_id', 'author', 'name', 'lyrics', 'description', 'thumb_url', 'is_public', 'keywords', 'is_feature'];
 
     public static function rules($key = 'create') {
         $common = [
