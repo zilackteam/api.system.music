@@ -21,7 +21,7 @@ class Master extends VeoModel {
 
     protected $hidden = [];
 
-    protected $fillable = ['name', 'phone', 'avatar', 'dob', 'short_info', 'detail_info'];
+    protected $fillable = ['name', 'phone', 'avatar', 'dob', 'short_info', 'detail_info', 'content_id'];
 
     public static function rules($key = 'create', $id = '') {
         $common = [
@@ -50,7 +50,11 @@ class Master extends VeoModel {
 
     public function getAvatarAttribute($value) {
         return ($this->attributes['avatar']) ?
-            url('resources' . DS . 'uploads' . DS . $this->attributes['id'] . DS . 'avatar' . DS . 'thumb_' . $this->attributes['avatar']) :
+            url('resources' . DS . 'uploads' . DS . 'users' . DS . $this->attributes['auth_id'] . DS . 'avatar' . DS . 'thumb_' . $this->attributes['avatar']) :
             url('resources' . DS . 'assets' . DS . 'images' . DS . 'no_avatar.jpg');
+    }
+
+    public function authentication() {
+        return $this->belongsTo('App\Models\Authentication', 'auth_id');
     }
 }

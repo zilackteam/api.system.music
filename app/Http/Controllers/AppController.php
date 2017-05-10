@@ -61,4 +61,25 @@ class AppController extends Controller {
             return $this->responseErrorByException($e);
         }
     }
+
+    public function update(Request $request, $id) {
+        //
+        try {
+            $app = App::where('content_id', $id)->first();
+
+            $data = $request->all();
+
+            $validator = \Validator::make($data, App::rules('update'));
+
+            if ($validator->fails())
+                return $this->responseError($validator->errors()->all(), 422);
+
+            $app->fill($data);
+            $app->save();
+
+            return $this->responseSuccess($app);
+        } catch (\Exception $e) {
+            return $this->responseErrorByException($e);
+        }
+    }
 }

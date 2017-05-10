@@ -31,6 +31,7 @@ Route::get('suggestion', 'SongController@suggestion')->name('global.suggestion')
 
 // /apps/
 Route::resource('apps', 'AppController');
+Route::post('apps/{id}', 'AppController@update');
 
 //Route::group(['middleware' => ['jwt.auth']], function() {
 Route::group(['middleware' => []], function () {
@@ -45,6 +46,9 @@ Route::group(['middleware' => []], function () {
     Route::resource('user', 'UserController', ['except' => ['create', 'store', 'edit']]);
     Route::post('user/change-password', 'UserController@changePassword')->name('user.change-password');
     Route::post('user/avatar', 'UserController@avatar')->name('user.avatar');
+
+    // /master/
+    Route::resource('master', 'MasterController');
 
     // Album
     Route::resource('album', 'AlbumController', ['except' => ['create', 'edit', 'update']]);
