@@ -354,13 +354,13 @@ class AuthController extends Controller {
                 $uploadThumb = uploadImage($request, 'avatar', avatar_path($id), $nameThumb);
 
                 if ($uploadThumb) {
-                    if ($user->getAttributes()['avatar']) {
-                        if (is_file(avatar_path($id) . DS . $user->getAttributes()['avatar'])) {
-                            unlink(avatar_path($id) . DS . $user->getAttributes()['avatar']);
+                    if ($user->avatar) {
+                        if (is_file(avatar_path($id) . DS . $user->avatar)) {
+                            unlink(avatar_path($id) . DS . $user->avatar);
                         }
 
-                        if (is_file(avatar_path($id) . DS . 'thumb_' . $user->getAttributes()['avatar'])) {
-                            unlink(avatar_path($id) . DS . 'thumb_' . $user->getAttributes()['avatar']);
+                        if (is_file(avatar_path($id) . DS . 'thumb_' . $user->avatar)) {
+                            unlink(avatar_path($id) . DS . 'thumb_' . $user->avatar);
                         }
                     }
 
