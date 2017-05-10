@@ -267,8 +267,8 @@ class AuthController extends Controller {
 
 
     /**
-     * @api {post} /user/change-password Change Password
-     * @apiName UserChangePassword
+     * @api {post} /auth/change-password Change Password
+     * @apiName AuthChangePassword
      * @apiGroup User
      *
      *

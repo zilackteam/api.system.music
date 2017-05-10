@@ -708,6 +708,91 @@ define({ "api": [
     "groupTitle": "User"
   },
   {
+    "type": "post",
+    "url": "/auth/avatar",
+    "title": "Avatar",
+    "name": "PostAvatar",
+    "group": "User",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Integer",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Auth id from login</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "File",
+            "optional": false,
+            "field": "avatar",
+            "description": "<p>File avatar upload</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n\n {\n     \"error\": false,\n     \"data\": {\n         \"avatar\": \"http://...\",\n         \n     }\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "1.0.0",
+    "filename": "app/Http/Controllers/AuthController.php",
+    "groupTitle": "User"
+  },
+  {
+    "type": "post",
+    "url": "/auth/change-password",
+    "title": "Change Password",
+    "name": "AuthChangePassword",
+    "group": "User",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "current_password",
+            "description": "<p>Current Password</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "new_password",
+            "description": "<p>New Password</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "new_password_confirmation",
+            "description": "<p>New Password Repeat</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n\n {\n     \"error\": false,\n     \"data\": {\n         \"avatar\": \"http://...\",\n         \n     }\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "1.0.0",
+    "filename": "app/Http/Controllers/AuthController.php",
+    "groupTitle": "User"
+  },
+  {
     "type": "get",
     "url": "/suggestion/",
     "title": "Suggestion",
@@ -913,7 +998,7 @@ define({ "api": [
             "type": "Integer",
             "optional": false,
             "field": "includes",
-            "description": "<p>Includes: <ul><li>commentCount</li><li>likeCount</li><li>comments</li><li>master</li></ul></p>"
+            "description": "<p>Includes: <ul>comments</li><li>master</li></ul></p>"
           },
         ]
       }
@@ -952,7 +1037,7 @@ define({ "api": [
             "type": "Integer",
             "optional": false,
             "field": "includes",
-            "description": "<p>Includes: <ul><li>commentCount</li><li>likeCount</li><li>comments</li></ul></p>"
+            "description": "<p>Includes: <ul><li>comments</li></ul></p>"
           },
         ]
       }
@@ -991,7 +1076,7 @@ define({ "api": [
             "type": "Integer",
             "optional": false,
             "field": "includes",
-            "description": "<p>Includes: <ul><li>commentCount</li><li>likeCount</li><li>comments</li></ul></p>"
+            "description": "<p>Includes: <ul><li>comments</li></ul></p>"
           },
         ]
       }

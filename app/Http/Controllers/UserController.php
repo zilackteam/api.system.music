@@ -321,7 +321,6 @@ class UserController extends Controller {
         try {
             $data = $request->all();
 
-
             $user = User::findOrFail($request->get('id'));
 
             $id = $user->auth_id;
