@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Authentication;
+use App\Models\Master;
 use App\Models\User;
 use App\Models\AuthType;
 use GuzzleHttp\Client;
@@ -338,9 +339,9 @@ class AuthController extends Controller {
             $id = $auth->id;
 
             if ($auth->level == Authentication::AUTH_USER) {
-                $user = $auth->user();
+                $user = User::where('auth_id', $id)->first();
             } elseif ($auth->level == Authentication::AUTH_MASTER) {
-                $user = $auth->master();
+                $user = Master::where('auth_id', $id)->first();
             } else {
                 throw new Exception('Cannot find data.');
             }
