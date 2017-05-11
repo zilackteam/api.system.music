@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models;
+
 use Auth;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -112,7 +113,7 @@ class Post extends VeoModel {
                 return false;
             }
 
-            if ($auth) {
+            if ($auth && $auth->level == Authentication::AUTH_USER) {
                 $user = User::where('auth_id', $auth->id)->first();
                 
                 $liked = PostLike::where([
