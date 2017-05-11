@@ -57,4 +57,8 @@ class Master extends VeoModel {
     public function authentication() {
         return $this->belongsTo('App\Models\Authentication', 'auth_id');
     }
+
+    public function application() {
+        return $this->belongsTo('App\Models\App', 'content_id', 'content_id');
+    }
 }

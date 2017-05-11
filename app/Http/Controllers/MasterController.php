@@ -25,7 +25,7 @@ class MasterController extends Controller {
             $masters = Master::query();
 
             if ($currentUser->level == Authentication::AUTH_ADMIN) {
-                $masters->with('authentication');
+                $masters->with(['authentication', 'application']);
                 $masters = $masters->get();
 
                 return $this->responseSuccess($masters);
