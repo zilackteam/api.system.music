@@ -37,11 +37,12 @@ class Authentication extends VeoModel implements AuthenticatableContract, CanRes
 
     protected $hidden = ['sec_pass'];
 
-    protected $fillable = ['sec_name', 'type'];
+    protected $fillable = ['sec_name', 'type', 'name', 'phone', 'dob', 'avatar', 'short_info', 'detail_info', 'content_id'];
 
     public static function rules($key = 'create', $id = '') {
         $common = [
             'sec_name' => 'required|max:255|unique:auths,sec_name' . ($id ? ",$id" : ''),
+            'dob' => 'date'
         ];
 
         $rules = [
@@ -56,6 +57,9 @@ class Authentication extends VeoModel implements AuthenticatableContract, CanRes
                 'current_password' => 'required',
                 'new_password' => 'required|min:6|max:30|confirmed',
                 'new_password_confirmation' => 'required|min:6|max:30',
+            ],
+            'avatar' => [
+                'avatar' => 'required|mimes:jpeg,jpg,png'
             ]
         ];
 
@@ -72,13 +76,19 @@ class Authentication extends VeoModel implements AuthenticatableContract, CanRes
         return $this->sec_pass;
     }
 
-    public function master()
-    {
-        return $this->hasOne('App\Models\Master', 'auth_id', 'id');
+    public function setDobAttribute($value) {
+        if ($value) {
+            $this->attributes['dob'] = date('Y-m-d', strtotime($value));
+        }
     }
 
-    public function user()
-    {
-        return $this->hasOne('App\Models\User', 'auth_id', 'id');
+    public function getAvatarAttribute($value) {
+        return ($this->attributes['avatar']) ?
+            url('resources' . DS . 'uploads' . DS . 'users' . DS . $this->attributes['id'] . DS . 'avatar' . DS . 'thumb_' . $this->attributes['avatar']) :
+            url('resources' . DS . 'assets' . DS . 'images' . DS . 'no_avatar.jpg');
+    }
+
+    public function application() {
+        return $this->belongsTo('App\Models\App', 'content_id', 'content_id');
     }
 }

@@ -7,23 +7,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Album;
-use App\Models\AppUser;
 use App\Models\Auth;
 use App\Models\Authentication;
 use App\Models\AuthToken;
 use App\Models\Song;
-use App\Models\User;
 use App\Models\Video;
-use App\Models\ManagerSinger;
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\TransferException;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
-use App\Http\Controllers\Controller;
-use Tymon\JWTAuth\Exceptions\JWTException;
-use Tymon\JWTAuth\Exceptions\TokenExpiredException;
-use Tymon\JWTAuth\Facades\JWTAuth;
 use Validator;
 use Mail;
 
@@ -32,18 +23,15 @@ class UserController extends Controller {
     public function index(Request $request) {
         //
         try {
-            $auth = Authentication::findOrFail($request->auth_id);
+            $currentUser = $this->getAuthenticatedUser();
 
-            $users = User::query();
+            if ($currentUser->level == Authentication::AUTH_ADMIN) {
+                $auths = Authentication::all();
 
-            if ($auth->level == Authentication::AUTH_MANAGER) {
-                $currentUser = $this->getAuthenticatedUser();
+                return $this->responseSuccess($auths);
+            } else {
+                return $this->responseError('Cannot find user', 200);
             }
-
-            $users->with('authentication');
-            $users = $users->get();
-
-            return $this->responseSuccess($users);
         } catch (\Exception $e) {
             return $this->responseErrorByException($e);
         }
@@ -91,11 +79,6 @@ class UserController extends Controller {
             $auth->level = Authentication::AUTH_USER;
 
             if ($auth->save()) {
-                $user = new User($data);
-                $user->auth_id = $auth->id;
-
-                $user->save();
-
                 if ($auth->type == Authentication::AUTH_TYPE_EMAIL) {
                     $token = new AuthToken();
                     $token->auth_id = $auth->id;
@@ -103,9 +86,9 @@ class UserController extends Controller {
 
                     $token->save();
 
-                    Mail::send('emails.active', ['token' => $token->token], function ($m) use ($auth, $user) {
+                    Mail::send('emails.active', ['token' => $token->token], function ($m) use ($auth) {
                         $m->from('support@zilack.com', 'Support Zilack');
-                        $m->to($auth->sec_name, $user->name)->subject('Active account Zilack');
+                        $m->to($auth->sec_name, $auth->name)->subject('Active account Zilack');
                     });
                 }
             }
@@ -159,9 +142,9 @@ class UserController extends Controller {
     public function show($id) {
         //
         try {
-            $user = User::with('authentication')->findOrFail($id);
+            $auth = Authentication::findOrFail($id);
             
-            return $this->responseSuccess($user);
+            return $this->responseSuccess($auth);
         } catch (\Exception $e) {
             return $this->responseErrorByException($e);
         }
@@ -192,39 +175,24 @@ class UserController extends Controller {
     public function update(Request $request, $id) {
         //
         try {
-            $user = User::findOrFail($id);
+            $auth = Authentication::findOrFail($id);
 
             $data = $request->all();
-            $rules = User::rules('update', $id);
+            $rules = Authentication::rules('update', $id);
 
             $validator = Validator::make($data, $rules);
-            if ($validator->fails()) {
-                return $this->responseError($validator->errors()->all(), 422);
-            }
-
-            $user->fill($data);
-            $user->save();
-
-            $auth = Authentication::findOrFail($user->auth_id);
-
-            $rules = Authentication::rules('update', $auth->id);
-            $validator = Validator::make($data, $rules);
-
             if ($validator->fails()) {
                 return $this->responseError($validator->errors()->all(), 422);
             }
 
             $auth->fill($data);
-
             if (isset($data['sec_pass']) && !empty($data['sec_pass'])) {
                 $auth->sec_pass = \Hash::make($data['sec_pass']);
             }
 
             $auth->save();
 
-            $user->authentication;
-
-            return $this->responseSuccess($user);
+            return $this->responseSuccess($auth);
         } catch (\Exception $e) {
             return $this->responseErrorByException($e);
         }
@@ -234,128 +202,16 @@ class UserController extends Controller {
     public function destroy($id) {
         //
         try {
-            $user = User::findOrFail($id);
-
-            $auth = Authentication::findOrFail($user->auth_id);
+            $auth = Authentication::findOrFail($id);
 
             // TODO Only Admin could delete user
             $auth->delete();
-            $user->delete();
 
             return $this->responseSuccess(['User is deleted']);
         } catch (\Exception $e) {
             return $this->responseErrorByException($e);
         }
 
-    }
-
-    /**
-     * @api {post} /user/change-password Change Password
-     * @apiName UserChangePassword
-     * @apiGroup User
-     *
-     *
-     * @apiParamExample {json} POST Request-Example:
-     *     {
-     *          "current_password": "Current Password",
-     *          "new_password" : "New Password",
-     *          "new_password_confirmation" : "New Password Repeat"
-     *      }
-     *
-     * @apiSuccessExample Success-Response:
-     *     HTTP/1.1 200 OK
-     *
-     *      {
-     *          "error": false,
-     *          "data": {
-     *
-     *          }
-     *      }
-     */
-    public function changePassword(Request $request) {
-        //
-        try {
-            $currentUser = $this->getAuthenticatedUser();
-
-            $data = $request->all();
-            $validator = \Validator::make($data, User::rules('changePassword'));
-            if ($validator->fails())
-                return $this->responseError($validator->errors()->all(), 422);
-
-            if (!\Hash::check($data['current_password'], $currentUser->password))
-                return $this->responseError('Current password is incorrect', 422);
-
-            $currentUser->password = \Hash::make($data['new_password']);
-            $currentUser->save();
-
-            return $this->responseSuccess(['password_changed']);
-        } catch (\Exception $e) {
-            return $this->responseErrorByException($e);
-        }
-    }
-
-    /**
-     * @api {post} /user/avatar Upload user avatar
-     * @apiName UserAvatarUpload
-     * @apiGroup User
-     *
-     * @apiParamExample {json} POST Request-Example:
-     *     {
-     *          'id' => 1
-     *          'avatar' => 'required|mimes:jpeg,jpg,png',
-     *      }
-     *
-     * @apiSuccessExample Success-Response:
-     *     HTTP/1.1 200 OK
-     *
-     *      {
-     *          "error": false,
-     *          "data": {
-     *              "avatar": "http://..."
-     *          }
-     *      }
-     *
-     *
-     */
-    public function avatar(Request $request) {
-        try {
-            $data = $request->all();
-
-            $user = User::findOrFail($request->get('id'));
-
-            $id = $user->auth_id;
-
-            $validator = Validator::make($data, User::rules('avatar'));
-            if ($validator->fails())
-                return $this->responseError($validator->errors()->all(), 422);
-
-            if ($request->file('avatar')) {
-                $nameThumb = 'avatar_' . date('YmdHis');
-                $uploadThumb = uploadImage($request, 'avatar', avatar_path($id), $nameThumb);
-
-                if ($uploadThumb) {
-                    if ($user->getAttributes()['avatar']) {
-                        if (is_file(avatar_path($id) . DS . $user->getAttributes()['avatar'])) {
-                            unlink(avatar_path($id) . DS . $user->getAttributes()['avatar']);    
-                        }
-
-                        if (is_file(avatar_path($id) . DS . 'thumb_' . $user->getAttributes()['avatar'])) {
-                            unlink(avatar_path($id) . DS . 'thumb_' . $user->getAttributes()['avatar']);
-                        }
-                    }
-
-                    $user->avatar = $uploadThumb;
-                    $user->save();
-
-                    return $this->responseSuccess(['avatar' => $user->avatar]);
-                } else {
-                    return $this->responseError(['Could not upload avatar'], 200, $user);
-                }
-            }
-
-        } catch (\Exception $e) {
-            return $this->responseErrorByException($e);
-        }
     }
 
     /**

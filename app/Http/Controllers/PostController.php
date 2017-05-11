@@ -83,12 +83,10 @@ class PostController extends Controller {
             $data = $request->all();
 
             $auth = $this->getAuthenticatedUser();
-            $authId = $auth->id;
-            $master = Master::where('auth_id', $authId)->first();
 
-            if ($master) {
-                $data['master_id'] = $master->id;
-                $data['content_id'] = $master->content_id;
+            if ($auth) {
+                $data['master_id'] = $auth->id;
+                $data['content_id'] = $auth->content_id;
             }
 
             $validator = \Validator::make($data, Post::rules('create'));
@@ -348,13 +346,10 @@ class PostController extends Controller {
             $post = Post::findOrFail($postId);
 
             $auth = $this->getAuthenticatedUser();
-            $authId = $auth->id;
-
-            $user = User::where('auth_id', $authId)->first();
 
             $liked = PostLike::where([
                 'post_id' => $post->id,
-                'user_id' => $user->id
+                'user_id' => $auth->id
             ])->count();
 
             if ($liked)
@@ -362,7 +357,7 @@ class PostController extends Controller {
 
             $like = new PostLike([
                 'post_id' => $post->id,
-                'user_id' => $user->id
+                'user_id' => $auth->id
             ]);
 
             $like->save();
@@ -400,13 +395,10 @@ class PostController extends Controller {
             $post = Post::findOrFail($postId);
 
             $auth = $this->getAuthenticatedUser();
-            $authId = $auth->id;
-
-            $user = User::where('auth_id', $authId)->first();
 
             $liked = PostLike::where([
                 'post_id' => $post->id,
-                'user_id' => $user->id
+                'user_id' => $auth->id
             ]);
             if (!$liked->count())
                 return $this->responseError(['You did not like the post before'], 409);

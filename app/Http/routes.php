@@ -44,8 +44,6 @@ Route::group(['middleware' => []], function () {
 
     // /user/
     Route::resource('user', 'UserController', ['except' => ['create', 'store', 'edit']]);
-    Route::post('user/change-password', 'UserController@changePassword')->name('user.change-password');
-    Route::post('user/avatar', 'UserController@avatar')->name('user.avatar');
 
     // /master/
     Route::resource('master', 'MasterController');

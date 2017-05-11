@@ -77,13 +77,10 @@ class CommentController extends Controller {
             $post = Post::findOrFail($postId);
 
             $auth = $this->getAuthenticatedUser();
-            $authId = $auth->id;
-
-            $user = User::where('auth_id', $authId)->first();
 
             $data = $request->all();
             $data['post_id'] = $post->id;
-            $data['user_id'] = $user->id;
+            $data['user_id'] = $auth->id;
 
             $validator = \Validator::make($data, Comment::rules('create'));
             if ($validator->fails())
@@ -173,12 +170,9 @@ class CommentController extends Controller {
             $comment = Comment::findOrFail($id);
 
             $auth = $this->getAuthenticatedUser();
-            $authId = $auth->id;
-
-            $user = User::where('auth_id', $authId)->first();
 
             $data = $request->all();
-            $data['user_id'] = $user->id;
+            $data['user_id'] = $auth->id;
             $validator = \Validator::make($data, Comment::rules('update'));
             if ($validator->fails())
                 return $this->responseError($validator->errors()->all(), 422);

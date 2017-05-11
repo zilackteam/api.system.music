@@ -65,16 +65,9 @@ class AuthController extends Controller {
 
             $auth = Authentication::where('sec_name', $request->get('sec_name'))->firstOrFail();
 
-            if ($auth->level == Authentication::AUTH_MASTER) {
-                $info = $auth->master;
-            } else {
-                $info = $auth->user;
-            }
-
             return $this->responseSuccess([
                 'token' => $token,
-                'auth' => $auth,
-                'info' => $info
+                'auth' => $auth
             ]);
         } catch (\Exception $e) {
             // something went wrong whilst attempting to encode the token
@@ -338,15 +331,7 @@ class AuthController extends Controller {
 
             $id = $auth->id;
 
-            if ($auth->level == Authentication::AUTH_USER) {
-                $user = User::where('auth_id', $id)->first();
-            } elseif ($auth->level == Authentication::AUTH_MASTER) {
-                $user = Master::where('auth_id', $id)->first();
-            } else {
-                throw new Exception('Cannot find data.');
-            }
-
-            $validator = Validator::make($data, User::rules('avatar'));
+            $validator = Validator::make($data, Authentication::rules('avatar'));
             if ($validator->fails())
                 return $this->responseError($validator->errors()->all(), 422);
 
@@ -355,22 +340,22 @@ class AuthController extends Controller {
                 $uploadThumb = uploadImage($request, 'avatar', avatar_path($id), $nameThumb);
 
                 if ($uploadThumb) {
-                    if ($user->avatar) {
-                        if (is_file(avatar_path($id) . DS . $user->avatar)) {
-                            unlink(avatar_path($id) . DS . $user->avatar);
+                    if ($auth->avatar) {
+                        if (is_file(avatar_path($id) . DS . $auth->avatar)) {
+                            unlink(avatar_path($id) . DS . $auth->avatar);
                         }
 
-                        if (is_file(avatar_path($id) . DS . 'thumb_' . $user->avatar)) {
-                            unlink(avatar_path($id) . DS . 'thumb_' . $user->avatar);
+                        if (is_file(avatar_path($id) . DS . 'thumb_' . $auth->avatar)) {
+                            unlink(avatar_path($id) . DS . 'thumb_' . $auth->avatar);
                         }
                     }
 
-                    $user->avatar = $uploadThumb;
-                    $user->save();
+                    $auth->avatar = $uploadThumb;
+                    $auth->save();
 
-                    return $this->responseSuccess(['avatar' => $user->avatar]);
+                    return $this->responseSuccess(['avatar' => $auth->avatar]);
                 } else {
-                    return $this->responseError(['Could not upload avatar'], 200, $user);
+                    return $this->responseError(['Could not upload avatar'], 200, $auth);
                 }
             }
 

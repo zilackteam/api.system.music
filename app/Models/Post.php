@@ -46,7 +46,7 @@ class Post extends VeoModel {
      */
 
     public function master() {
-        return $this->belongsTo('App\Models\Master', 'master_id');
+        return $this->belongsTo('App\Models\Authentication', 'master_id', 'id');
     }
 
     public function comments() {
