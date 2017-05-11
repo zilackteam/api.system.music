@@ -23,7 +23,7 @@ class MasterController extends Controller {
             $auths = Authentication::query();
 
             if ($currentUser->level == Authentication::AUTH_ADMIN) {
-                $auths = $auths->with('application')->get();
+                $auths = $auths->with('application')->where('level', Authentication::AUTH_MASTER)->get();
 
                 return $this->responseSuccess($auths);
             } else {

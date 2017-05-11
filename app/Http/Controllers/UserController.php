@@ -26,7 +26,7 @@ class UserController extends Controller {
             $currentUser = $this->getAuthenticatedUser();
 
             if ($currentUser->level == Authentication::AUTH_ADMIN) {
-                $auths = Authentication::all();
+                $auths = Authentication::where('level', Authentication::AUTH_USER)->get();
 
                 return $this->responseSuccess($auths);
             } else {
