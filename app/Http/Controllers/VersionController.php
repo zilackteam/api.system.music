@@ -24,7 +24,8 @@ class VersionController extends Controller {
             if ($app) {
                 $data = array(
                     'content_id' => $app->content_id,
-                    'version' => $app->version
+                    'version' => $app->version,
+                    'app_id' => $app->id
                 );
 
                 return $this->responseSuccess($data);
