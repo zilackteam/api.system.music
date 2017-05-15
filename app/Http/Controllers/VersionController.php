@@ -38,7 +38,8 @@ class VersionController extends Controller {
 
     public function listing(Request $request) {
         try {
-            $appInfo = AppInfo::join('apps', 'apps.id', '=', 'app_infos.app_id')
+            $appInfo = AppInfo::select(array('app_infos.*', 'apps.content_id'))
+                ->join('apps', 'apps.id', '=', 'app_infos.app_id')
                 ->where('apps.content_id', $request->content_id)
                 ->get();
 
