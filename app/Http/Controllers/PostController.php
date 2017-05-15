@@ -362,6 +362,8 @@ class PostController extends Controller {
 
             $like->save();
 
+            $post = Post::findOrFail($postId);
+
             return $this->responseSuccess($post);
 
         } catch (\Exception $e) {
@@ -404,6 +406,8 @@ class PostController extends Controller {
                 return $this->responseError(['You did not like the post before'], 409);
 
             $liked->delete();
+
+            $post = Post::findOrFail($postId);
 
             return $this->responseSuccess($post);
 
