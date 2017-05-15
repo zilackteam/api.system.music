@@ -231,11 +231,13 @@ class SongController extends Controller {
         }
     }
 
-    public function suggestion() {
+    public function suggestion(Request $request) {
         // Get suggestion list
         try {
             $suggestion = array();
-            $songs = Song::all();
+            $content_id = $request->get('content_id');
+
+            $songs = Song::where('content_id', $content_id)->get();
 
             foreach ($songs as $song) {
                 $data = array(

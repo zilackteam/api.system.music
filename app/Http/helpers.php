@@ -41,7 +41,9 @@ function post_path($contentId) {
 function website_path($contentId) {
     return upload_path($contentId . DS . 'website');
 }
-
+function application_path($contentId) {
+    return upload_path($contentId . DS . 'application');
+}
 
 /**
  * Upload photo

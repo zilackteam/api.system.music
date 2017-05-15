@@ -7,6 +7,7 @@ use App\Models\App;
 use App\Models\Authentication;
 use Auth;
 use Illuminate\Http\Request;
+use Intervention\Image\Facades\Image;
 
 class AppController extends Controller {
 
@@ -75,6 +76,29 @@ class AppController extends Controller {
                 return $this->responseError($validator->errors()->all(), 422);
 
             $app->fill($data);
+
+            //Upload image
+            if ($request->hasFile('thumb_url') && $request->file('thumb_url')->isValid()) {
+                $image = $request->file('thumb_url');
+                $imageType = $image->getClientOriginalExtension();
+
+                $fileName = 'app_'.$app->id .'_'.date('YmdHis') . '.' . $imageType;
+
+                $dir = application_path($app->content_id);
+                if (! \File::isDirectory($dir)) {
+                    \File::makeDirectory($dir, 0775, true);
+                }
+
+                $imgSaved = Image::make($image->getRealPath())->save($dir . DS . $fileName);
+                $thumbSaved = Image::make($image->getRealPath())->fit(300, 300)->save($dir . DS . 'thumb_' .$fileName);
+
+                if (!$imgSaved || !$thumbSaved || !$fileName) {
+                    return $this->responseError('cant_save_image', 507);
+                }
+
+                $app->thumb_url = $fileName;
+            }
+
             $app->save();
 
             return $this->responseSuccess($app);

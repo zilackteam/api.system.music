@@ -233,7 +233,7 @@ class UserController extends Controller {
      */
     public function search(Request $request) {
         try {
-            $keyword = $request->get('keyword');
+            $keyword = stripVietnamese($request->get('keyword'));
             $content_id = $request->get('content_id');
 
             $queryAlbums = Album::query();

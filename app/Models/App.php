@@ -32,4 +32,10 @@ class App extends VeoModel {
     {
         return $this->hasOne('App\Models\AppInfo')->latest();
     }
+
+    public function getThumbUrlAttribute($value) {
+        return ($this->attributes['thumb_url']) ?
+            url('resources' . DS . 'uploads' . DS . $this->attributes['content_id'] . DS . 'application' . DS . 'thumb_' . $value) :
+            url('resources' . DS . 'assets' . DS . 'images' . DS . 'no_avatar.jpg');
+    }
 }

@@ -19,7 +19,7 @@ class CreateAppsTable extends Migration
 			$table->string('name', 255);
 			$table->text('description')->nullable();;
 			$table->integer('content_id')->nullable();
-			$table->string('avatar')->nullable();
+			$table->string('thumb_url')->nullable();
 			$table->timestamps();
 			$table->softDeletes();
 		});
