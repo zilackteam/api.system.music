@@ -113,12 +113,10 @@ class Post extends VeoModel {
                 return false;
             }
 
-            if ($auth && $auth->level == Authentication::AUTH_USER) {
-                $user = User::where('auth_id', $auth->id)->first();
-                
+            if ($auth) {
                 $liked = PostLike::where([
                     'post_id' => $this->id,
-                    'user_id' => $user->id,
+                    'user_id' => $auth->id,
                 ])->count();
                 
                 return $liked ? true : false;
