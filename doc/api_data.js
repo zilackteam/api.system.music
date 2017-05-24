@@ -1378,4 +1378,57 @@ define({ "api": [
     "filename": "app/Http/Controllers/CommentController.php",
     "groupTitle": "Comment"
   },
+  {
+    "type": "post",
+    "url": "device/",
+    "title": "Add new device token",
+    "name": "CreateDevice",
+    "group": "Device",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Integer",
+            "optional": false,
+            "field": "app_id",
+            "description": "<p>Post that app id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "device_token",
+            "description": "<p>Post that device token</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "platform",
+            "description": "<p>Platform: ex: ios, android</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "POST Request-Example:",
+          "content": "{\n    'app_id' : '1'\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n\n {\n     \"error\": false,\n     \"data\": {\n         \"id\": 1,\n     }\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "1.0.0",
+    "filename": "app/Http/Controllers/DeviceController.php",
+    "groupTitle": "Device"
+  },
 ] });

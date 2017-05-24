@@ -33,6 +33,12 @@ Route::get('suggestion', 'SongController@suggestion')->name('global.suggestion')
 Route::resource('apps', 'AppController');
 Route::post('apps/{id}', 'AppController@update');
 
+// /device/
+Route::resource('device', 'DeviceController', ['except' => ['create', 'edit']]);
+
+// /notification/
+Route::resource('notification', 'NotificationController', ['except' => ['create', 'edit']]);
+
 //Route::group(['middleware' => ['jwt.auth']], function() {
 Route::group(['middleware' => []], function () {
     // Auth
