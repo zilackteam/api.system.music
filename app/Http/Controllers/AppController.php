@@ -70,6 +70,8 @@ class AppController extends Controller {
 
             $data = $request->all();
 
+            if (array_get($data, 'thumb_url') == $app->thumb_url) unset($data['thumb_url']);
+
             $validator = \Validator::make($data, App::rules('update'));
 
             if ($validator->fails())
