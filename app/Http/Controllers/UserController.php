@@ -77,6 +77,7 @@ class UserController extends Controller {
             $auth = new Authentication($data);
             $auth->sec_pass = \Hash::make($data['sec_pass']);
             $auth->level = Authentication::AUTH_USER;
+            $auth->status = Authentication::AUTH_STATUS_ACTIVE;
 
             if ($auth->save()) {
                 if ($auth->type == Authentication::AUTH_TYPE_EMAIL) {
@@ -86,10 +87,10 @@ class UserController extends Controller {
 
                     $token->save();
 
-                    Mail::send('emails.active', ['token' => $token->token], function ($m) use ($auth) {
-                        $m->from('support@zilack.com', 'Support Zilack');
-                        $m->to($auth->sec_name, $auth->name)->subject('Active account Zilack');
-                    });
+//                    Mail::send('emails.active', ['token' => $token->token], function ($m) use ($auth) {
+//                        $m->from('support@zilack.com', 'Support Zilack');
+//                        $m->to($auth->sec_name, $auth->name)->subject('Active account Zilack');
+//                    });
                 }
             }
 
