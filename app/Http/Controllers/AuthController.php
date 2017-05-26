@@ -48,6 +48,8 @@ class AuthController extends Controller {
      */
 
     public function login(Request $request) {
+        $data = $request->all();
+
         $credentials = $request->only('sec_name', 'sec_pass');
 
         $validator = \Validator::make($credentials, array(
@@ -67,7 +69,7 @@ class AuthController extends Controller {
 
             $auth = Authentication::where('sec_name', $request->get('sec_name'))->firstOrFail();
 
-            $app = App::where('id', $request->app_id)->first();
+            $app = App::where('id', $data['app_id'])->first();
 
             // Check app_id
             if ($auth->level == Authentication::AUTH_MASTER) {
