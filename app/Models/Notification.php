@@ -38,4 +38,32 @@ class Notification extends VeoModel {
 
         return array_get($rules, $key);
     }
+
+    public static function sendPushNotification($data) {
+        $notification = new Notification();
+        $notification->fill($data);
+        $notification->save();
+
+        $app = App::where('content_id', $data['content_id'])->first();
+
+        $ios_key = $app->ios_server_key;
+        $ios_tokens = Device::where('platform', 'ios')->get()->pluck('device_token');
+
+        if ($ios_key && $ios_tokens) {
+            $result = send_notification($ios_key, $ios_tokens, array('title' => $data['title'], 'text' => $data['content']));
+        }
+
+        $android_key = $app->android_server_key;
+        $android_tokens = Device::where('platform', 'android')->get()->pluck('device_token');
+
+        if ($android_key && $android_tokens) {
+            $result = send_notification($android_key, $android_tokens, array('title' => $data['title'], 'text' => $data['content']));
+        }
+
+        if (!isset($result)) {
+            return false;
+        } else {
+            return $notification;
+        }
+    }
 }

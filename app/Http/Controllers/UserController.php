@@ -7,6 +7,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Album;
+use App\Models\AppUser;
 use App\Models\Auth;
 use App\Models\Authentication;
 use App\Models\AuthToken;
@@ -91,6 +92,14 @@ class UserController extends Controller {
 //                        $m->from('support@zilack.com', 'Support Zilack');
 //                        $m->to($auth->sec_name, $auth->name)->subject('Active account Zilack');
 //                    });
+                }
+
+                if (isset($data['app_id'])) {
+                    $appUser = new AppUser();
+                    $appUser->user_id = $auth->id;
+                    $appUser->app_id = $data['app_id'];
+
+                    $appUser->save();
                 }
             }
 

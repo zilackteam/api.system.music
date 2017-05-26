@@ -14,6 +14,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Http\Queries\PostQueryBuilder;
+use App\Models\Notification;
 
 class PostController extends Controller {
 
@@ -114,6 +115,17 @@ class PostController extends Controller {
                 } else {
                     return $this->responseError('Could not update song file', 200, $post);
                 }
+            }
+
+            $dataPush = array(
+                'title' => '',
+                'content' => substr($data['content'], 0, 50),
+            );
+
+            $notification = Notification::sendPushNotification($dataPush);
+
+            if (!$notification) {
+                return $this->responseError('Please add server key', 422);
             }
 
             return $this->responseSuccess($post);

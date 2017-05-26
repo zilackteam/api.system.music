@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\App;
+use App\Models\AppUser;
 use App\Models\Authentication;
 use App\Models\Master;
 use App\Models\User;
@@ -64,6 +66,21 @@ class AuthController extends Controller {
             }
 
             $auth = Authentication::where('sec_name', $request->get('sec_name'))->firstOrFail();
+
+            $app = App::where('app_id', $request->app_id)->first();
+
+            // Check app_id
+            if ($auth->level == Authentication::AUTH_MASTER) {
+                if ($app->content_id != $auth->content_id) {
+                    return $this->responseError(['Cannot permission'], 401);
+                }
+            } elseif ($auth->level == Authentication::AUTH_USER) {
+                $appUser = AppUser::where('app_id', $app->id)->where('user_id', $auth->id)->first();
+
+                if (!$appUser) {
+
+                }
+            }
 
             return $this->responseSuccess([
                 'token' => $token,
