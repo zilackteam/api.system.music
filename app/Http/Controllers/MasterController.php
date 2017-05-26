@@ -146,6 +146,8 @@ class MasterController extends Controller {
             $data = $request->all();
             $rules = Authentication::rules('update', $id);
 
+            if (array_get($data, 'avatar') == $auth->avatar) unset($data['avatar']);
+
             $validator = Validator::make($data, $rules);
             if ($validator->fails()) {
                 return $this->responseError($validator->errors()->all(), 422);

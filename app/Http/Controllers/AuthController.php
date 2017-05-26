@@ -67,7 +67,7 @@ class AuthController extends Controller {
 
             $auth = Authentication::where('sec_name', $request->get('sec_name'))->firstOrFail();
 
-            $app = App::where('app_id', $request->app_id)->first();
+            $app = App::where('id', $request->app_id)->first();
 
             // Check app_id
             if ($auth->level == Authentication::AUTH_MASTER) {
