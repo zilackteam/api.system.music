@@ -24,7 +24,7 @@ class Device extends VeoModel {
     public static function rules($key = 'create') {
         $common = [
             'app_id' => 'required',
-            'device_token' => 'required'
+            'device_token' => 'required|unique'
         ];
         $rules = [
             'create' => array_merge($common, [
