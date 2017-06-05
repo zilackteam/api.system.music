@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Master;
 use App\Models\Post;
 use App\Models\PostLike;
+use App\Models\Comment;
 use App\Models\Upload;
 use App\Models\User;
 use Auth;
@@ -326,6 +327,10 @@ class PostController extends Controller {
         try {
             $post = Post::findOrFail($id);
             $post->delete();
+
+            $comments = Comment::where('post_id', $id)->delete();
+
+            $likes = PostLike::where('post_id', $id)->delete();
 
             return $this->responseSuccess('Post is deleted!');
         } catch (\Exception $e) {
