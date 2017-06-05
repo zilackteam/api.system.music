@@ -118,6 +118,7 @@ class PostController extends Controller {
             }
 
             $dataPush = array(
+                'content_id' => $auth->content_id,
                 'title' => '',
                 'content' => substr($data['content'], 0, 50),
             );
