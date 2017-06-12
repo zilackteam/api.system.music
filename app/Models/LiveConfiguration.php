@@ -15,7 +15,7 @@ namespace App\Models;
  */
 class LiveConfiguration extends VeoModel {
 
-    const PROTOCOL_RMTP = 1;
+    const PROTOCOL_RTMP = 1;
     const PROTOCOL_RTSP = 2;
     const PROTOCOL_HTTP = 3;
 
@@ -27,9 +27,10 @@ class LiveConfiguration extends VeoModel {
 
     protected $appends = ['protocol_str'];
 
+    protected $fillable = ['app_id', 'protocol', 'address', 'port', 'application'];
+
     public static function rules($key = 'create') {
         $common = [
-            'app_id' => 'required',
             'protocol' => 'required',
             'address' => 'required',
             'port' => 'required',
@@ -49,11 +50,11 @@ class LiveConfiguration extends VeoModel {
 
     public function getProtocolStrAttribute()
     {
-        if ($this->attributes['protocol'] == self::PROTOCOL_RMTP) {
-            return 'rmtp';
-        } elseif ($this->attributes['protocol'] == self::PROTOCOL_RMTP) {
+        if ($this->attributes['protocol'] == self::PROTOCOL_RTMP) {
+            return 'rtmp';
+        } elseif ($this->attributes['protocol'] == self::PROTOCOL_RTSP) {
             return 'rtsp';
-        } elseif ($this->attributes['protocol'] == self::PROTOCOL_RMTP) {
+        } elseif ($this->attributes['protocol'] == self::PROTOCOL_HTTP) {
             return 'http';
         }
 

@@ -2,22 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\App;
 use App\Models\LiveConfiguration;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 
 class LiveConfigurationController extends Controller {
 
-    public function show(Request $request) {
+    public function show($content_id) {
         try {
-            $data = $request->all();
-
-            if ($request->has('app_id')) {
-                $config = LiveConfiguration::where('app_id', $data['app_id'])->first();
+            if ($content_id) {
+                $app = App::where('content_id', $content_id)->first();
+                $config = LiveConfiguration::where('app_id', $app->id)->first();
 
                 return $this->responseSuccess($config);
             } else {
-                return $this->responseError(['App ID required'], 404);
+                return $this->responseError(['Content ID required'], 404);
             }
         } catch (\Exception $e) {
             return $this->responseErrorByException($e);
@@ -32,7 +32,29 @@ class LiveConfigurationController extends Controller {
             if ($validator->fails())
                 return $this->responseError($validator->errors()->all(), 422);
 
+            $app = App::where('content_id', $data['content_id'])->first();
+
             $config = new LiveConfiguration();
+            $config->fill($data);
+            $config->app_id = $app->id;
+            $config->save();
+
+            return $this->responseSuccess($config);
+        } catch (\Exception $e) {
+            return $this->responseErrorByException($e);
+        }
+    }
+
+    public function update($id, Request $request) {
+        try {
+            $data = $request->all();
+
+            $validator = \Validator::make($data, LiveConfiguration::rules('update'));
+            if ($validator->fails())
+                return $this->responseError($validator->errors()->all(), 422);
+
+            $config = LiveConfiguration::findOrFail($id);
+
             $config->fill($data);
             $config->save();
 
