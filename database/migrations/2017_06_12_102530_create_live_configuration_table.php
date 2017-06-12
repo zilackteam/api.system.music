@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateDevicesTable extends Migration
+class CreateLiveConfigurationTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,12 +12,14 @@ class CreateDevicesTable extends Migration
      */
     public function up()
     {
-        Schema::create('devices', function(Blueprint $table)
+        Schema::create('live_configuration', function(Blueprint $table)
         {
             $table->increments('id');
             $table->integer('app_id');
-            $table->string('device_token');
-            $table->string('platform');
+            $table->integer('protocol');
+            $table->string('address');
+            $table->integer('port');
+            $table->string('application');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -30,6 +32,6 @@ class CreateDevicesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('devices');
+        Schema::drop('live_configuration');
     }
 }
