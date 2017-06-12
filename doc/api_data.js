@@ -1431,4 +1431,75 @@ define({ "api": [
     "filename": "app/Http/Controllers/DeviceController.php",
     "groupTitle": "Device"
   },
+  {
+    "type": "post",
+    "url": "/live/",
+    "title": "Create new live event",
+    "name": "LiveCreate",
+    "group": "Live",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Integer",
+            "optional": false,
+            "field": "app_id",
+            "description": "<p>App unique ID.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n\n {\n     \"error\": false,\n     \"data\": {\n             \"id\": 1,\n             ...\n         }\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "app/Http/Controllers/LiveController.php",
+    "groupTitle": "Live"
+  },
+  {
+    "type": "put",
+    "url": "/live/",
+    "title": "Update live event",
+    "name": "LiveUpdate",
+    "group": "Live",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Integer",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Live unique ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>Live title.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n\n {\n     \"error\": false,\n     \"data\": {\n             \"id\": 1,\n             ...\n         }\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "app/Http/Controllers/LiveController.php",
+    "groupTitle": "Live"
+  }
 ] });
