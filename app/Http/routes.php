@@ -143,6 +143,14 @@ Route::group(['middleware' => ['jwt.auth']], function () {
     Route::get('setting/', 'SettingController@get');
     Route::post('setting/', 'SettingController@manage');
 
+    // /live config/
+    Route::get('live_config/', 'LiveConfigurationController@show');
+    Route::post('live_config/', 'LiveConfigurationController@store');
+
+    // /live config/
+    Route::post('live/', 'LiveController@store');
+    Route::put('live/', 'LiveController@update');
+
 });
 
 
