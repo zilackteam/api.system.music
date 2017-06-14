@@ -85,20 +85,26 @@ class LiveController extends Controller {
             $data = $request->all();
 
             $config = LiveConfiguration::where('app_id', $data['app_id'])->first();
-            $live = Live::where('app_id', $data['app_id'])->where('status', 1)
+            $live = Live::where('app_id', $data['app_id'])
                 ->orderBy('updated_at', 'DESC')
                 ->first();
 
-            $result = [
-                'id' => $live->id,
-                'protocol' => $config->protocol_str,
-                'address' => $config->address,
-                'port' => $config->port,
-                'application' => $config->application,
-                'name' => $live->name,
-                'title' => $live->title,
-                'status' => $live->status,
-            ];
+            if ($live->status == 1) {
+                $result = [
+                    'id' => $live->id,
+                    'protocol' => $config->protocol_str,
+                    'address' => $config->address,
+                    'port' => $config->port,
+                    'application' => $config->application,
+                    'name' => $live->name,
+                    'title' => $live->title,
+                    'status' => $live->status,
+                ];
+            } else {
+                $result = [
+
+                ];
+            }
 
             return $this->responseSuccess($result);
         } catch (\Exception $e) {
