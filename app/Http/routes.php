@@ -39,6 +39,9 @@ Route::resource('device', 'DeviceController', ['except' => ['create', 'edit']]);
 // /notification/
 Route::resource('notification', 'NotificationController', ['except' => ['create', 'edit']]);
 
+// /live/
+Route::get('live/', 'LiveController@getCurrentLive');
+
 //Route::group(['middleware' => ['jwt.auth']], function() {
 Route::group(['middleware' => []], function () {
     // Auth
@@ -148,9 +151,10 @@ Route::group(['middleware' => ['jwt.auth']], function () {
     Route::post('live_config/', 'LiveConfigurationController@store');
     Route::put('live_config/{id}', 'LiveConfigurationController@update');
 
-    // /live config/
+    // /live/
     Route::post('live/', 'LiveController@store');
     Route::put('live/', 'LiveController@update');
+    Route::post('live/finish', 'LiveController@finish');
 
 });
 

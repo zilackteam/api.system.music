@@ -1466,7 +1466,7 @@ define({ "api": [
   {
     "type": "put",
     "url": "/live/",
-    "title": "Update live event",
+    "title": "Active live event and push notification",
     "name": "LiveUpdate",
     "group": "Live",
     "parameter": {
@@ -1485,6 +1485,70 @@ define({ "api": [
             "optional": false,
             "field": "title",
             "description": "<p>Live title.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n\n {\n     \"error\": false,\n     \"data\": {\n             \"id\": 1,\n             ...\n         }\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "app/Http/Controllers/LiveController.php",
+    "groupTitle": "Live"
+  },
+  {
+    "type": "post",
+    "url": "/live/finish",
+    "title": "Finish live event",
+    "name": "LiveFinish",
+    "group": "Live",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Integer",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Live unique ID.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n\n {\n     \"error\": false,\n     \"data\": {\n             \"id\": 1,\n             ...\n         }\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "app/Http/Controllers/LiveController.php",
+    "groupTitle": "Live"
+  },
+  {
+    "type": "get",
+    "url": "/live/",
+    "title": "Get current live event",
+    "name": "LiveCurrentEvent",
+    "group": "Live",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Integer",
+            "optional": false,
+            "field": "app_id",
+            "description": "<p>App unique ID.</p>"
           }
         ]
       }

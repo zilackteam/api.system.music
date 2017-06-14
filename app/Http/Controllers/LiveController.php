@@ -47,7 +47,6 @@ class LiveController extends Controller {
     public function update(Request $request) {
         try {
             $data = $request->all();
-            $auth = $this->getAuthenticatedUser();
 
             $live = Live::findOrFail($data['id']);
             $live->fill($data);
@@ -76,6 +75,47 @@ class LiveController extends Controller {
             ];
 
             return $this->responseSuccess($result);
+        } catch (\Exception $e) {
+            return $this->responseErrorByException($e);
+        }
+    }
+
+    public function getCurrentLive(Request $request) {
+        try {
+            $data = $request->all();
+
+            $config = LiveConfiguration::where('app_id', $data['app_id'])->first();
+            $live = Live::where('app_id', $data['app_id'])->where('status', 1)
+                ->orderBy('updated_at', 'DESC')
+                ->first();
+
+            $result = [
+                'id' => $live->id,
+                'protocol' => $config->protocol_str,
+                'address' => $config->address,
+                'port' => $config->port,
+                'application' => $config->application,
+                'name' => $live->name,
+                'status' => $live->status,
+            ];
+
+            return $this->responseSuccess($result);
+        } catch (\Exception $e) {
+            return $this->responseErrorByException($e);
+        }
+    }
+
+    public function finish(Request $request) {
+        try {
+            $data = $request->all();
+
+            $live = Live::findOrFail($data['id']);
+            $live->fill($data);
+            $live->status = 2;
+
+            $live->save();
+
+            return $this->responseSuccess($live);
         } catch (\Exception $e) {
             return $this->responseErrorByException($e);
         }
