@@ -3,7 +3,7 @@
 namespace App\Models;
 
 /**
- * App\Models\Song
+ * App\Models\Beat
  *
  * @property integer $id
  * @property integer $content_id
@@ -11,7 +11,6 @@ namespace App\Models;
  * @property string $author
  * @property string $name
  * @property string $description
- * @property string $lyrics
  * @property string $thumb_url
  * @property string $file128
  * @property string $file320
@@ -21,15 +20,15 @@ namespace App\Models;
  * @property \Carbon\Carbon $deleted_at
  */
 
-class Song extends VeoModel {
+class Beat extends VeoModel {
 
-    protected $table = 'songs';
+    protected $table = 'beats';
 
     protected $guarded = ['file128', 'file320', 'file_lossless', 'thumb_url'];
 
     protected $hidden = ['deleted_at'];
 
-    protected $fillable = ['performer', 'content_id', 'author', 'name', 'lyrics', 'description', 'thumb_url', 'is_public', 'keywords', 'is_feature'];
+    protected $fillable = ['performer', 'content_id', 'author', 'name', 'description', 'thumb_url', 'is_public', 'keywords', 'is_feature'];
 
     public static function rules($key = 'create') {
         $common = [
@@ -52,30 +51,21 @@ class Song extends VeoModel {
     }
 
     public function getThumbUrlAttribute($value) {
-        return $value ? url('resources/uploads/' . $this->attributes['content_id'] . '/song/' . $this->attributes['id'] . '/thumb_' . $value) : '';
+        return $value ? url('resources/uploads/' . $this->attributes['content_id'] . '/beat/' . $this->attributes['id'] . '/thumb_' . $value) : '';
     }
 
     public function getFile128Attribute($value) {
         $value = $this->attributes['file128'];
-        return $value ? url('resources/uploads/' . $this->attributes['content_id'] . '/song/' . $this->attributes['id'] . '/' . $value) : '';
+        return $value ? url('resources/uploads/' . $this->attributes['content_id'] . '/beat/' . $this->attributes['id'] . '/' . $value) : '';
     }
 
     public function getFile320Attribute($value) {
         $value = $this->attributes['file320'];
-        return $value ? url('resources/uploads/' . $this->attributes['content_id'] . '/song/' . $this->attributes['id'] . '/' . $value) : '';
+        return $value ? url('resources/uploads/' . $this->attributes['content_id'] . '/beat/' . $this->attributes['id'] . '/' . $value) : '';
     }
 
     public function getFileLosslessAttribute($value) {
         $value = $this->attributes['file_lossless'];
-        return $value ? url('resources/uploads/' . $this->attributes['content_id'] . '/song/' . $this->attributes['id'] . '/' . $value) : '';
+        return $value ? url('resources/uploads/' . $this->attributes['content_id'] . '/beat/' . $this->attributes['id'] . '/' . $value) : '';
     }
-
-    /**
-     * Relationship
-     */
-
-    public function albums() {
-        return $this->belongsToMany('App\Models\Album', 'album_songs', 'song_id', 'album_id');
-    }
-
 }

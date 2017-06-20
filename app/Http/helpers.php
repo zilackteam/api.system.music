@@ -23,6 +23,9 @@ function album_path($contentId) {
 function song_path($contentId, $songId) {
     return upload_path($contentId . DS . 'song' . DS . $songId);
 }
+function beat_path($contentId, $beatId) {
+    return upload_path($contentId . DS . 'beat' . DS . $beatId);
+}
 function avatar_path($userId) {
     return upload_path('users'. DS . $userId . DS . 'avatar');
 }

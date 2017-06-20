@@ -68,6 +68,12 @@ Route::group(['middleware' => []], function () {
     Route::resource('song', 'SongController', ['except' => ['create', 'edit', 'update']]);
     Route::post('song/{id}', 'SongController@update');
 
+    // Beat
+    Route::post('beat/delete', 'BeatController@delete');
+    Route::post('beat/feature', 'BeatController@feature');
+    Route::post('beat/set-public', 'BeatController@setPublic');
+    Route::resource('beat', 'BeatController', ['except' => ['create', 'edit', 'update']]);
+    Route::post('beat/{id}', 'BeatController@update');
 
     // Video
     Route::resource('video', 'VideoController', ['except' => ['create', 'edit']]);
