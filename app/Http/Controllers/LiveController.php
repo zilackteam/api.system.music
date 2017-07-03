@@ -60,7 +60,7 @@ class LiveController extends Controller {
             $dataPush = array(
                 'content_id' => $app->content_id,
                 'title' => '',
-                'content' => 'Live stream ' . $app->name,
+                'content' => 'Đang phát trực tiếp ' . $live->title,
             );
 
             $notification = Notification::sendPushNotification($dataPush);
