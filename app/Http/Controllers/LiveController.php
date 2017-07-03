@@ -71,6 +71,7 @@ class LiveController extends Controller {
                 'port' => $config->port,
                 'application' => $config->application,
                 'name' => $live->name,
+                'title' => $live->title,
                 'status' => $live->status
             ];
 
