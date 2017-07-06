@@ -49,7 +49,7 @@ abstract class Controller extends BaseController {
      */
     public function responseSuccess($data) {
         return response()->json(array(
-            'error' => false,
+            'error' => '',
             'data' => $data
         ));
     }
