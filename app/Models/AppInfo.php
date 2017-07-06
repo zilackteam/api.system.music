@@ -28,4 +28,8 @@ class AppInfo extends VeoModel {
 
         return array_get($rules, $key);
     }
+
+    public function getLatestAttribute($value) {
+        return !empty($this->attributes['latest']) ? 1 : 0;
+    }
 }

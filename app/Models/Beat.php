@@ -26,7 +26,7 @@ class Beat extends VeoModel {
 
     protected $guarded = ['file128', 'file320', 'file_lossless', 'thumb_url'];
 
-    protected $hidden = ['deleted_at'];
+    protected $hidden = ['deleted_at', 'file320', 'file_lossless'];
 
     protected $fillable = ['performer', 'content_id', 'author', 'name', 'description', 'thumb_url', 'is_public', 'keywords', 'is_feature'];
 

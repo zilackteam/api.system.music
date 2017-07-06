@@ -18,6 +18,7 @@ class VersionController extends Controller {
                 ->with('latestInfo')
                 ->where('bundle_id', $request->bundle_id)
                 ->where('app_infos.platform', $request->platform)
+                ->orderBy('app_infos.latest', 'desc')
                 ->orderBy('app_infos.created_at', 'desc')
                 ->first();
 
@@ -75,6 +76,11 @@ class VersionController extends Controller {
 
                 $appInfo = new AppInfo();
                 $appInfo->fill($data);
+
+                if ($data['latest']) {
+                    $appInfo->latest = date('Y-m-d H:i:s');
+                }
+
                 $appInfo->app_id = $app->id;
                 $appInfo->save();
 
@@ -97,6 +103,13 @@ class VersionController extends Controller {
                 return $this->responseError($validator->errors()->all(), 422);
 
             $appInfo->fill($data);
+
+            if ($data['latest']) {
+                $appInfo->latest = date('Y-m-d H:i:s');
+            } else {
+                $appInfo->latest = null;
+            }
+
             $appInfo->save();
 
             return $this->responseSuccess($appInfo);
