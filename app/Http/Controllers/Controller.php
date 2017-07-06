@@ -36,6 +36,9 @@ abstract class Controller extends BaseController {
      */
     public function responseError($message, $code = 200, $data = array()) {
         // TODO Implement Logging here
+        if (is_array($message)) {
+            $message = implode(',', $message);
+        }
         return response()->json(array(
             'error' => $message,
             'data' => $data
