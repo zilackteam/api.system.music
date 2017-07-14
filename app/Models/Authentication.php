@@ -83,9 +83,15 @@ class Authentication extends VeoModel implements AuthenticatableContract, CanRes
     }
 
     public function getAvatarAttribute($value) {
-        return ($this->attributes['avatar']) ?
-            url('resources' . DS . 'uploads' . DS . 'users' . DS . $this->attributes['id'] . DS . 'avatar' . DS . 'thumb_' . $this->attributes['avatar']) :
-            url('resources' . DS . 'assets' . DS . 'images' . DS . 'no_avatar.jpg');
+        if ($this->attributes['avatar']) {
+            if(strpos($this->attributes['avatar'], "https://") !== false) {
+                return $this->attributes['avatar'];
+            } else {
+                return url('resources' . DS . 'uploads' . DS . 'users' . DS . $this->attributes['id'] . DS . 'avatar' . DS . 'thumb_' . $this->attributes['avatar']);
+            }
+        } else {
+            return url('resources' . DS . 'assets' . DS . 'images' . DS . 'no_avatar.jpg');
+        }
     }
 
     public function application() {

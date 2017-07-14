@@ -126,7 +126,7 @@ class AuthController extends Controller {
             $result = $client->get('https://graph.facebook.com/me', [
                 'query' => [
                     'access_token' => $request->token,
-                    'fields' => 'id,email,name'
+                    'fields' => 'id,email,name,picture'
                 ]
             ]);
             $response = json_decode($result->getBody()->getContents());
@@ -155,6 +155,9 @@ class AuthController extends Controller {
 
                 $authNew = new Authentication($data);
                 $authNew->sec_pass = \Hash::make($data['sec_pass']);
+                if (isset($response->picture->data->url)) {
+                    $authNew->avatar = $response->picture->data->url;
+                };
 
                 if ($authNew->save()) {
                     $auth = $authNew;
