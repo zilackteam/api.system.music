@@ -1217,7 +1217,7 @@ define({ "api": [
             "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "comment",
+            "field": "content",
             "description": "<p>Post that comments</p>"
           }
         ]
@@ -1225,7 +1225,7 @@ define({ "api": [
       "examples": [
         {
           "title": "POST Request-Example:",
-          "content": "{\n    'comment' : 'Comment message'\n}",
+          "content": "{\n    'content' : 'Comment message'\n}",
           "type": "json"
         }
       ]
@@ -1360,7 +1360,7 @@ define({ "api": [
       "examples": [
         {
           "title": "PUT Request-Example:",
-          "content": "{\n     'post_id': 1\n     'comment': 'Comment message'\n }",
+          "content": "{\n     'post_id': 1\n     'content': 'Comment message'\n }",
           "type": "json"
         }
       ]
