@@ -155,12 +155,23 @@ class AuthController extends Controller {
 
                 $authNew = new Authentication($data);
                 $authNew->sec_pass = \Hash::make($data['sec_pass']);
+                $authNew->level = Authentication::AUTH_USER;
+                $authNew->status = Authentication::AUTH_STATUS_ACTIVE;
+
                 if (isset($response->picture->data->url)) {
                     $authNew->avatar = $response->picture->data->url;
                 };
 
                 if ($authNew->save()) {
                     $auth = $authNew;
+
+                    if (isset($data['app_id'])) {
+                        $appUser = new AppUser();
+                        $appUser->user_id = $auth->id;
+                        $appUser->app_id = $data['app_id'];
+
+                        $appUser->save();
+                    }
                 } else {
                     return $this->responseError(['Unable to create new user from Facebook'], 500);
                 }
