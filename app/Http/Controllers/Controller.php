@@ -7,6 +7,7 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use Crypt;
 
 abstract class Controller extends BaseController {
     use DispatchesJobs, ValidatesRequests;
@@ -41,7 +42,7 @@ abstract class Controller extends BaseController {
         }
         return response()->json(array(
             'error' => $message,
-            'data' => $data
+            'data' => Crypt::encrypt($data)
         ), $code);
     }
 
@@ -53,7 +54,7 @@ abstract class Controller extends BaseController {
     public function responseSuccess($data) {
         return response()->json(array(
             'error' => '',
-            'data' => $data
+            'data' => Crypt::encrypt($data)
         ));
     }
 
