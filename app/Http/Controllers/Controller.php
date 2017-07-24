@@ -40,9 +40,10 @@ abstract class Controller extends BaseController {
         if (is_array($message)) {
             $message = implode(',', $message);
         }
+        $_json = response()->json($data)->getData();
         return response()->json(array(
             'error' => $message,
-            'data' => Crypt::encrypt($data)
+            'data' => cryptoJsAesEncrypt('llRYAcSucCE6ZWRNd0gNoKdGsMw8W6Gv', $_json)
         ), $code);
     }
 
@@ -52,9 +53,10 @@ abstract class Controller extends BaseController {
      * @return \Illuminate\Http\JsonResponse
      */
     public function responseSuccess($data) {
+        $_json = response()->json($data)->getData();
         return response()->json(array(
             'error' => '',
-            'data' => Crypt::encrypt($data)
+            'data' => cryptoJsAesEncrypt('llRYAcSucCE6ZWRNd0gNoKdGsMw8W6Gv', $_json)
         ));
     }
 
