@@ -42,7 +42,7 @@ abstract class Controller extends BaseController {
         }
         return response()->json(array(
             'error' => $message,
-            'data' => Crypt::encrypt($data)
+            'data' => $data
         ), $code);
     }
 
@@ -54,7 +54,7 @@ abstract class Controller extends BaseController {
     public function responseSuccess($data) {
         return response()->json(array(
             'error' => '',
-            'data' => Crypt::encrypt($data)
+            'data' => $data
         ));
     }
 
