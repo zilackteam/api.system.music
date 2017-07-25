@@ -44,6 +44,9 @@ class Notification extends VeoModel {
         $notification->fill($data);
         $notification->save();
 
+        $data['title'] = unescape_data($data['title']);
+        $data['content'] = unescape_data($data['content']);
+
         $app = App::where('content_id', $data['content_id'])->first();
 
         $ios_key = $app->ios_server_key;
