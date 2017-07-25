@@ -188,13 +188,17 @@ function stripVietnamese($str) {
 }
 
 function unescape_data($str) {
-    $replaced = preg_replace("/\u([0-9A-F]{1,4})/i", "&#x$1;", $str);
+    if ($str) {
+        $replaced = preg_replace("/\u([0-9A-F]{1,4})/i", "&#x$1;", $str);
 
-    $result = mb_convert_encoding($replaced, "UTF-16", "HTML-ENTITIES");
+        $result = mb_convert_encoding($replaced, "UTF-16", "HTML-ENTITIES");
 
-    $result = mb_convert_encoding($result, 'utf-8', 'utf-16');
+        $result = mb_convert_encoding($result, 'utf-8', 'utf-16');
 
-    return result;
+        return $result;
+    }
+
+    return $str;
 }
 
 function send_notification ($key, $tokens, $message)
