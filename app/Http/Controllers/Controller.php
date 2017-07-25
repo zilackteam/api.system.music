@@ -54,6 +54,7 @@ abstract class Controller extends BaseController {
      */
     public function responseSuccess($data) {
         $_json = response()->json($data)->getData();
+
         return response()->json(array(
             'error' => '',
             'data' => cryptoJsAesEncrypt('llRYAcSucCE6ZWRNd0gNoKdGsMw8W6Gv', $_json)
