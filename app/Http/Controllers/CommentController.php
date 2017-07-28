@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Queries\CommentQueryBuilder;
 
 class CommentController extends Controller {
 
@@ -37,11 +38,9 @@ class CommentController extends Controller {
     public function index(Request $request, $postId) {
         //
         try {
-            $comments = Comment::query();
-            $comments->where('post_id', $postId);
-            $comments->with('user');
+            $queryBuilder = new CommentQueryBuilder(new Comment, $request, $postId);
 
-            $comments = $comments->get();
+            $comments = $queryBuilder->build()->get();
 
             return $this->responseSuccess($comments);
         } catch (\Exception $e) {
