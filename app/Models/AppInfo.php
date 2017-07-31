@@ -32,4 +32,10 @@ class AppInfo extends VeoModel {
     public function getLatestAttribute($value) {
         return !empty($this->attributes['latest']) ? 1 : 0;
     }
+
+    public static function removeLatestVersion($appId, $platform) {
+        $affectedRows = AppInfo::where('app_id', $appId)->where('platform', $platform)->update(['latest' => null]);
+
+        return $affectedRows;
+    }
 }

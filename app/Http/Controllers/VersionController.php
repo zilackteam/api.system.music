@@ -78,6 +78,8 @@ class VersionController extends Controller {
                 $appInfo->fill($data);
 
                 if ($data['latest']) {
+                    AppInfo::removeLatestVersion($app->id, $appInfo->platform);
+
                     $appInfo->latest = date('Y-m-d H:i:s');
                 }
 
@@ -105,6 +107,8 @@ class VersionController extends Controller {
             $appInfo->fill($data);
 
             if ($data['latest']) {
+                AppInfo::removeLatestVersion($appInfo->app_id, $appInfo->platform);
+
                 $appInfo->latest = date('Y-m-d H:i:s');
             } else {
                 $appInfo->latest = null;
