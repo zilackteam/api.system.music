@@ -23,7 +23,7 @@ class Video extends VeoModel {
     protected $guarded = [];
 
     protected $fillable = ['content_id', 'name', 'performer', 'video_url',
-                        'thumb_url', 'publish_time', 'is_feature', 'keywords', 'category'];
+                        'thumb_url', 'publish_time', 'is_feature', 'is_public', 'keywords', 'category'];
 
     protected $hidden = [];
 
