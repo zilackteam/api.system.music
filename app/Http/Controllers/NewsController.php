@@ -60,6 +60,15 @@ class NewsController extends Controller {
         try {
             $news = News::findOrFail($id);
 
+            $totalRelate = 2;
+            $relatedNews = News::where('id', '<>', $id)
+                ->where('content_id', $news->content_id)
+                ->orderBy('updated_at', 'DESC')
+                ->take($totalRelate)
+                ->get();
+
+            $news->relatedNews = $relatedNews;
+
             return $this->responseSuccess($news);
         } catch (\Exception $e) {
             return $this->responseErrorByException($e);
