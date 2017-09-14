@@ -25,6 +25,7 @@ class CreateVideosTable extends Migration
 			$table->datetime('publish_time')->nullable();
 			$table->integer('is_public')->nullable();
 			$table->string('keywords')->nullable();
+			$table->integer('price')->default(0);
 			$table->timestamps();
 			$table->softDeletes();
 		});

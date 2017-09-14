@@ -3,11 +3,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Upload;
 use App\Models\Video;
+use App\Models\UserStoreVideo;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Queries\VideoQueryBuilder;
+use DB;
 
 class VideoController extends Controller {
 
@@ -144,6 +146,43 @@ class VideoController extends Controller {
                 return $this->responseError('Could not do the upload', 200, $data);
             } else {
                 return json_encode(['link' => url('resources/uploads/' . $data['content_id'] . '/video/' . $upload)]);
+            }
+
+        } catch (\Exception $e) {
+            return $this->responseErrorByException($e);
+        }
+    }
+
+    public function buy($id) {
+        //
+        try {
+            $currentUser = $this->getAuthenticatedUser();
+            $video = Video::findOrFail($id);
+            $userStoreVideo = UserStoreVideo::where('video_id', $video->id)
+                ->where('content_id', $video->content_id)
+                ->where('user_id', $currentUser->id)
+                ->first();
+
+            if ($video->price > 0 && !empty($currentUser->userInfo)
+                && $currentUser->userVip->balance > $video->price && !$userStoreVideo) {
+
+                $userStoreVideo = new UserStoreVideo();
+                $userStoreVideo->video_id = $video->id;
+                $userStoreVideo->content_id = $video->content_id;
+                $userStoreVideo->user_id = $currentUser->id;
+                $userStoreVideo->pay = 1;
+
+                $currentUser->userInfo->balance = $currentUser->userInfo->balance - $video->price;
+
+                DB::transaction(function() use ($userStoreVideo, $currentUser) {
+                    $userStoreVideo->save();
+
+                    $currentUser->userInfo->save();
+                });
+
+                return $this->responseSuccess('Video bought success!');
+            } else {
+                return $this->responseError('Could not buy this video', 200);
             }
 
         } catch (\Exception $e) {

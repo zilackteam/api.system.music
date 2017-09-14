@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Album;
+use App\Models\UserStoreAlbum;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Facades\Image;
 use App\Http\Queries\AlbumQueryBuilder;
+use DB;
 
 class AlbumController extends Controller {
 
@@ -215,6 +217,43 @@ class AlbumController extends Controller {
             $album = Album::findOrFail($id);
             $album->delete();
             return $this->responseSuccess('record_deleted');
+        } catch (\Exception $e) {
+            return $this->responseErrorByException($e);
+        }
+    }
+
+    public function buy($id) {
+        //
+        try {
+            $currentUser = $this->getAuthenticatedUser();
+            $album = Album::findOrFail($id);
+            $userStoreAlbum = UserStoreAlbum::where('album_id', $album->id)
+                ->where('content_id', $album->content_id)
+                ->where('user_id', $currentUser->id)
+                ->first();
+
+            if ($album->price > 0 && !empty($currentUser->userInfo)
+                && $currentUser->userInfo->balance > $album->price && !$userStoreAlbum) {
+
+                $userStoreAlbum = new UserStoreAlbum();
+                $userStoreAlbum->album_id = $album->id;
+                $userStoreAlbum->content_id = $album->content_id;
+                $userStoreAlbum->user_id = $currentUser->id;
+                $userStoreAlbum->pay = 1;
+
+                $currentUser->userInfo->balance = $currentUser->userInfo->balance - $album->price;
+
+                DB::transaction(function() use ($userStoreAlbum, $currentUser) {
+                    $userStoreAlbum->save();
+
+                    $currentUser->userInfo->save();
+                });
+
+                return $this->responseSuccess('Album bought success!');
+            } else {
+                return $this->responseError('Could not buy this album', 200);
+            }
+
         } catch (\Exception $e) {
             return $this->responseErrorByException($e);
         }

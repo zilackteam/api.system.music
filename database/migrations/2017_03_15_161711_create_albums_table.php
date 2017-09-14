@@ -25,6 +25,7 @@ class CreateAlbumsTable extends Migration
 			$table->integer('is_public')->nullable();
 			$table->integer('is_single')->nullable();
 			$table->string('keywords')->nullable();
+			$table->integer('price')->default(0);
 			$table->timestamps();
 			$table->softDeletes();
 		});

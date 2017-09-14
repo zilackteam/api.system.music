@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\AlbumSong;
 use App\Models\Song;
+use App\Models\UserStoreSong;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Intervention\Image\Facades\Image;
 use App\Http\Queries\SongQueryBuilder;
+use DB;
 
 class SongController extends Controller {
 
@@ -294,6 +296,43 @@ class SongController extends Controller {
             Song::whereIn('id', $ids)->update(['is_public' => $data['is_public']]);
 
             return $this->responseSuccess('Song updated success!');
+        } catch (\Exception $e) {
+            return $this->responseErrorByException($e);
+        }
+    }
+
+    public function buy($id) {
+        //
+        try {
+            $currentUser = $this->getAuthenticatedUser();
+            $song = Song::findOrFail($id);
+            $userStoreSong = UserStoreSong::where('song_id', $song->id)
+                ->where('content_id', $song->content_id)
+                ->where('user_id', $currentUser->id)
+                ->first();
+
+            if ($song->price > 0 && !empty($currentUser->userInfo)
+                && $currentUser->userInfo->balance > $song->price && !$userStoreSong) {
+
+                $userStoreSong = new UserStoreSong();
+                $userStoreSong->song_id = $song->id;
+                $userStoreSong->content_id = $song->content_id;
+                $userStoreSong->user_id = $currentUser->id;
+                $userStoreSong->pay = 1;
+
+                $currentUser->userInfo->balance = $currentUser->userInfo->balance - $song->price;
+
+                DB::transaction(function() use ($userStoreSong, $currentUser) {
+                    $userStoreSong->save();
+
+                    $currentUser->userInfo->save();
+                });
+
+                return $this->responseSuccess('Song bought success!');
+            } else {
+                return $this->responseError('Could not buy this song', 200);
+            }
+
         } catch (\Exception $e) {
             return $this->responseErrorByException($e);
         }

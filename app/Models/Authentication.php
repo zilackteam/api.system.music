@@ -97,4 +97,37 @@ class Authentication extends VeoModel implements AuthenticatableContract, CanRes
     public function application() {
         return $this->belongsTo('App\Models\App', 'content_id', 'content_id');
     }
+
+    /**
+     * The songs that belong to the authentication.
+     */
+    public function songs()
+    {
+        return $this->belongsToMany('App\Models\Song', 'user_store_songs', 'user_id', 'song_id');
+    }
+
+    /**
+     * The albums that belong to the authentication.
+     */
+    public function albums()
+    {
+        return $this->belongsToMany('App\Models\Album', 'user_store_albums', 'user_id', 'album_id');
+    }
+
+    /**
+     * The videos that belong to the authentication.
+     */
+    public function videos()
+    {
+        return $this->belongsToMany('App\Models\Video', 'user_store_videos', 'user_id', 'video_id');
+    }
+
+    /**
+     * The user vip relation.
+     */
+    public function userInfo()
+    {
+        return $this->hasOne('App\Models\UserInfo', 'user_id', 'id');
+    }
+
 }

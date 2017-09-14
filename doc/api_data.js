@@ -1565,5 +1565,265 @@ define({ "api": [
     "version": "0.0.0",
     "filename": "app/Http/Controllers/LiveController.php",
     "groupTitle": "Live"
+  },
+  {
+    "type": "post",
+    "url": "/payment/:charge",
+    "title": "Create a charge",
+    "name": "PaymentCharge",
+    "group": "Payment",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "optional": false,
+            "field": "provider",
+            "description": "Provicder. Example: VNP | VMS | VTT | MGC"
+          },
+          {
+            "group": "Parameter",
+            "optional": false,
+            "field": "pin",
+            "description": "Pin code. Example: 123456789"
+          },
+          {
+            "group": "Parameter",
+            "optional": false,
+            "field": "serial",
+            "description": "Pin code. Example: 123456789"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "POST Request-Example:",
+          "content": "     {\n         'provider' : 'VNP | VMS | VTT | MGC',\n         'pin': '123..',\n         'serial' : '123..',\n     }\n`",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n\n {\n     \"error\": false,\n     \"data\": {\n\n     }\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "app/Http/Controllers/PaymentController.php",
+    "groupTitle": "Payment"
+  },
+  {
+    "type": "post",
+    "url": "/song/:id/buy",
+    "title": "Buy a song",
+    "name": "BuySong",
+    "group": "Payment",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "optional": false,
+            "field": "id",
+            "description": "Song ID"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "POST Request-Example:",
+          "content": "",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n\n {\n     \"error\": false,\n     \"data\": {\n\n     }\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "app/Http/Controllers/SongController.php",
+    "groupTitle": "Buy Song"
+  },
+  {
+    "type": "post",
+    "url": "/album/:id/buy",
+    "title": "Buy a album",
+    "name": "BuyAlbum",
+    "group": "Payment",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "optional": false,
+            "field": "id",
+            "description": "Album ID"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "POST Request-Example:",
+          "content": "",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n\n {\n     \"error\": false,\n     \"data\": {\n\n     }\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "app/Http/Controllers/SongController.php",
+    "groupTitle": "Buy Song"
+  },
+  {
+    "type": "post",
+    "url": "/video/:id/buy",
+    "title": "Buy a video",
+    "name": "BuyVideo",
+    "group": "Payment",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "optional": false,
+            "field": "id",
+            "description": "Video ID"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "POST Request-Example:",
+          "content": "",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n\n {\n     \"error\": false,\n     \"data\": {\n\n     }\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "app/Http/Controllers/SongController.php",
+    "groupTitle": "Buy Song"
+  },
+  {
+    "type": "post",
+    "url": "/payment/songs",
+    "title": "List song bought by user",
+    "name": "PaymentSongs",
+    "group": "Payment",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+        ]
+      },
+      "examples": [
+        {
+          "title": "POST Request-Example:",
+          "content": "",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n\n {\n     \"error\": false,\n     \"data\": {\n\n     }\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "app/Http/Controllers/SongController.php",
+    "groupTitle": "Payment Songs"
+  },
+  {
+    "type": "post",
+    "url": "/payment/albums",
+    "title": "List albums bought by user",
+    "name": "PaymentAlbums",
+    "group": "Payment",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+        ]
+      },
+      "examples": [
+        {
+          "title": "POST Request-Example:",
+          "content": "",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n\n {\n     \"error\": false,\n     \"data\": {\n\n     }\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "app/Http/Controllers/UserController.php",
+    "groupTitle": "Payment Albums"
+  },
+  {
+    "type": "post",
+    "url": "/payment/videos",
+    "title": "List videos bought by user",
+    "name": "PaymentVideos",
+    "group": "Payment",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+        ]
+      },
+      "examples": [
+        {
+          "title": "POST Request-Example:",
+          "content": "",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n\n {\n     \"error\": false,\n     \"data\": {\n\n     }\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "app/Http/Controllers/UserController.php",
+    "groupTitle": "Payment Videos"
   }
 ] });

@@ -22,12 +22,14 @@ class Payment extends VeoModel {
             'pin'=> 'required|regex:/(^[0-9 ]+$)+/',
             'serial'=> 'required|regex:/(^[0-9 ]+$)+/',
         ];
+
         $rules = [
             'create' => array_merge($common, [
             ]),
             'update' => array_merge($common, [
             ])
         ];
+
         return array_get($rules, $key);
     }
 

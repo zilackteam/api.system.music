@@ -139,9 +139,7 @@ Route::group(['middleware' => ['jwt.auth']], function () {
     Route::post('post/{post_id}/unlike', 'PostController@unlike');
 
     // /payment/
-    Route::post('payment/{singer_id}/charge', 'PaymentController@charge');
-    Route::get('payment/{singer_id}/status', 'PaymentController@status');
-    Route::post('payment/{singer_id}/subscribe', 'PaymentController@subscribe');
+    Route::post('payment/charge', 'PaymentController@charge');
 
     // /website/
     Route::post('website/{singer_id}/setup', 'WebsiteController@setup');
@@ -162,6 +160,16 @@ Route::group(['middleware' => ['jwt.auth']], function () {
     Route::put('live/', 'LiveController@update');
     Route::post('live/finish', 'LiveController@finish');
 
+    // /songs bought by user/
+    Route::get('payment/songs', 'UserController@songs');
+    // /albums bought by user/
+    Route::get('payment/albums', 'UserController@albums');
+    // /videos bought by user/
+    Route::get('payment/videos', 'UserController@videos');
+
+    Route::post('song/{id}/buy', 'SongController@buy');
+    Route::post('album/{id}/buy', 'AlbumController@buy');
+    Route::post('video/{id}/buy', 'VideoController@buy');
 });
 
 

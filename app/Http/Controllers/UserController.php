@@ -307,4 +307,87 @@ class UserController extends Controller {
         }
     }
 
+    /**
+     * @api {get} /songs/  Get songs bought by user
+     * @apiName Songs
+     * @apiGroup User
+     *
+     *
+     * @apiSuccessExample Success-Response:
+     *     HTTP/1.1 200 OK
+     *
+     *      {
+     *          "error": false,
+     *          "data": {
+     *
+     *          }
+     *      }
+     */
+    public function songs() {
+        $currentUser = $this->getAuthenticatedUser();
+
+        if ($currentUser->level == Authentication::AUTH_ADMIN) {
+
+        } else {
+            $songs = $currentUser->songs;
+
+            return $this->responseSuccess($songs);
+        }
+    }
+
+    /**
+     * @api {get} /albums/  Get albums bought by user
+     * @apiName Albums
+     * @apiGroup User
+     *
+     *
+     * @apiSuccessExample Success-Response:
+     *     HTTP/1.1 200 OK
+     *
+     *      {
+     *          "error": false,
+     *          "data": {
+     *
+     *          }
+     *      }
+     */
+    public function albums() {
+        $currentUser = $this->getAuthenticatedUser();
+
+        if ($currentUser->level == Authentication::AUTH_ADMIN) {
+
+        } else {
+            $albums = $currentUser->albums;
+
+            return $this->responseSuccess($albums);
+        }
+    }
+
+    /**
+     * @api {get} /videos/  Get videos bought by user
+     * @apiName Videos
+     * @apiGroup User
+     *
+     *
+     * @apiSuccessExample Success-Response:
+     *     HTTP/1.1 200 OK
+     *
+     *      {
+     *          "error": false,
+     *          "data": {
+     *
+     *          }
+     *      }
+     */
+    public function videos() {
+        $currentUser = $this->getAuthenticatedUser();
+
+        if ($currentUser->level == Authentication::AUTH_ADMIN) {
+
+        } else {
+            $videos = $currentUser->videos;
+
+            return $this->responseSuccess($videos);
+        }
+    }
 }

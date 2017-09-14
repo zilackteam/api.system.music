@@ -28,6 +28,7 @@ class CreateSongsTable extends Migration
 			$table->string('file320')->nullable();
 			$table->string('file_lossless')->nullable();
 			$table->string('keywords')->nullable();
+			$table->integer('price')->default(0);
 			$table->timestamps();
 			$table->softDeletes();
 		});
