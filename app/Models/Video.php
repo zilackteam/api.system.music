@@ -43,4 +43,12 @@ class Video extends VeoModel {
         return array_get($rules, $key);
     }
 
+    /**
+     * Relationship
+     */
+
+    public function category() {
+        return $this->belongsTo('App\Models\Category', 'category');
+    }
+
 }
