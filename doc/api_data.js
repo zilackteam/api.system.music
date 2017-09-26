@@ -1731,7 +1731,7 @@ define({ "api": [
     "groupTitle": "Buy Song"
   },
   {
-    "type": "post",
+    "type": "get",
     "url": "/payment/songs",
     "title": "List song bought by user",
     "name": "PaymentSongs",
@@ -1763,7 +1763,7 @@ define({ "api": [
     "groupTitle": "Payment Songs"
   },
   {
-    "type": "post",
+    "type": "get",
     "url": "/payment/albums",
     "title": "List albums bought by user",
     "name": "PaymentAlbums",
@@ -1795,7 +1795,7 @@ define({ "api": [
     "groupTitle": "Payment Albums"
   },
   {
-    "type": "post",
+    "type": "get",
     "url": "/payment/videos",
     "title": "List videos bought by user",
     "name": "PaymentVideos",
