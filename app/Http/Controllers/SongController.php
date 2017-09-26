@@ -312,7 +312,7 @@ class SongController extends Controller {
                 ->first();
 
             if ($song->price > 0 && !empty($currentUser->userInfo)
-                && $currentUser->userInfo->balance > $song->price && !$userStoreSong) {
+                && ($currentUser->userInfo->balance > $song->price) && !$userStoreSong) {
 
                 $userStoreSong = new UserStoreSong();
                 $userStoreSong->song_id = $song->id;
