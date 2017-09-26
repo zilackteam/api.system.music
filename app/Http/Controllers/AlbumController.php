@@ -73,7 +73,7 @@ class AlbumController extends Controller {
                 }
 
                 $imgSaved = Image::make($image->getRealPath())->save($dir . DS . $fileName);
-                $thumbSaved = Image::make($image->getRealPath())->fit(300, 300)->save($dir . DS . 'thumb_' .$fileName);
+                $thumbSaved = Image::make($image->getRealPath())->widen(300)->save($dir . DS . 'thumb_' .$fileName);
 
                 if (!$imgSaved || !$thumbSaved || !$fileName) {
                     return $this->responseError('cant_save_image', 507);
@@ -174,7 +174,7 @@ class AlbumController extends Controller {
                 }
 
                 $imgSaved = Image::make($image->getRealPath())->save($dir . DS . $fileName);
-                $thumbSaved = Image::make($image->getRealPath())->fit(300, 300)->save($dir . DS . 'thumb_' .$fileName);
+                $thumbSaved = Image::make($image->getRealPath())->widen(300)->save($dir . DS . 'thumb_' .$fileName);
 
                 if (!$imgSaved || !$thumbSaved || !$fileName) {
                     return $this->responseError('cant_save_image', 507);
