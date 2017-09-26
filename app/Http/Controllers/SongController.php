@@ -311,8 +311,8 @@ class SongController extends Controller {
                 ->where('user_id', $currentUser->id)
                 ->first();
 
-            if ($song->price > 0 && !empty($currentUser->userInfo)
-                && ($currentUser->userInfo->balance > $song->price) && !$userStoreSong) {
+            if (($song->price > 0) && !empty($currentUser->userInfo)
+                && ($currentUser->userInfo->balance > $song->price) && $userStoreSong->isEmpty()) {
 
                 $userStoreSong = new UserStoreSong();
                 $userStoreSong->song_id = $song->id;

@@ -163,8 +163,8 @@ class VideoController extends Controller {
                 ->where('user_id', $currentUser->id)
                 ->first();
 
-            if ($video->price > 0 && !empty($currentUser->userInfo)
-                && ($currentUser->userVip->balance > $video->price) && !$userStoreVideo) {
+            if (($video->price > 0) && !empty($currentUser->userInfo)
+                && ($currentUser->userVip->balance > $video->price) && $userStoreVideo->isEmpty()) {
 
                 $userStoreVideo = new UserStoreVideo();
                 $userStoreVideo->video_id = $video->id;

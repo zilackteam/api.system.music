@@ -232,8 +232,8 @@ class AlbumController extends Controller {
                 ->where('user_id', $currentUser->id)
                 ->first();
 
-            if ($album->price > 0 && !empty($currentUser->userInfo)
-                && ($currentUser->userInfo->balance > $album->price) && !$userStoreAlbum) {
+            if (($album->price > 0) && !empty($currentUser->userInfo)
+                && ($currentUser->userInfo->balance > $album->price) && $userStoreAlbum->isEmpty()) {
 
                 $userStoreAlbum = new UserStoreAlbum();
                 $userStoreAlbum->album_id = $album->id;
