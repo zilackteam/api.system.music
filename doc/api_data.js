@@ -1568,7 +1568,7 @@ define({ "api": [
   },
   {
     "type": "post",
-    "url": "/payment/:charge",
+    "url": "/payment/charge",
     "title": "Create a charge",
     "name": "PaymentCharge",
     "group": "Payment",
