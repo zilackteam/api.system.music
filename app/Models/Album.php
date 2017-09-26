@@ -59,4 +59,8 @@ class Album extends VeoModel {
     {
         return $this->belongsToMany('App\Models\Song', 'album_songs', 'album_id', 'song_id');
     }
+
+    public function users() {
+        return $this->belongsToMany('App\Models\Authentication', 'user_store_albums', 'album_id', 'user_id');
+    }
 }

@@ -44,11 +44,14 @@ class Video extends VeoModel {
     }
 
     /**
-     * Relationship
-     */
+ * Relationship
+ */
 
     public function category() {
         return $this->belongsTo('App\Models\Category', 'category');
     }
 
+    public function users() {
+        return $this->belongsToMany('App\Models\Authentication', 'user_store_videos', 'video_id', 'user_id');
+    }
 }

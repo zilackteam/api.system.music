@@ -12,6 +12,9 @@ use App\Models\Auth;
 use App\Models\Authentication;
 use App\Models\AuthToken;
 use App\Models\Song;
+use App\Models\UserStoreAlbum;
+use App\Models\UserStoreSong;
+use App\Models\UserStoreVideo;
 use App\Models\Video;
 use Illuminate\Http\Request;
 
@@ -323,13 +326,17 @@ class UserController extends Controller {
      *          }
      *      }
      */
-    public function songs() {
+    public function songs(Request $request) {
         $currentUser = $this->getAuthenticatedUser();
 
         if ($currentUser->level == Authentication::AUTH_ADMIN) {
 
         } else {
-            $songs = $currentUser->songs;
+//            $songs = $currentUser->songs;
+            $songs = Song::whereHas('users', function ($query) use ($currentUser, $request) {
+                $query->where('user_store_songs.user_id', $currentUser->id);
+                $query->where('user_store_songs.content_id', $request->get('content_id'));
+            })->get();
 
             return $this->responseSuccess($songs);
         }
@@ -351,13 +358,17 @@ class UserController extends Controller {
      *          }
      *      }
      */
-    public function albums() {
+    public function albums(Request $request) {
         $currentUser = $this->getAuthenticatedUser();
 
         if ($currentUser->level == Authentication::AUTH_ADMIN) {
 
         } else {
-            $albums = $currentUser->albums;
+//            $albums = $currentUser->albums;
+            $albums = Album::whereHas('users', function ($query) use ($currentUser, $request) {
+                $query->where('user_store_albums.user_id', $currentUser->id);
+                $query->where('user_store_albums.content_id', $request->get('content_id'));
+            })->get();
 
             return $this->responseSuccess($albums);
         }
@@ -379,13 +390,17 @@ class UserController extends Controller {
      *          }
      *      }
      */
-    public function videos() {
+    public function videos(Request $request) {
         $currentUser = $this->getAuthenticatedUser();
 
         if ($currentUser->level == Authentication::AUTH_ADMIN) {
 
         } else {
-            $videos = $currentUser->videos;
+//            $videos = $currentUser->videos;
+            $videos = Video::whereHas('users', function ($query) use ($currentUser, $request) {
+                $query->where('user_store_videos.user_id', $currentUser->id);
+                $query->where('user_store_videos.content_id', $request->get('content_id'));
+            })->get();
 
             return $this->responseSuccess($videos);
         }
