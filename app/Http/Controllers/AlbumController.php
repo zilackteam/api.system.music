@@ -258,4 +258,19 @@ class AlbumController extends Controller {
             return $this->responseErrorByException($e);
         }
     }
+
+
+    public function removeSong(Request $request, $id) {
+        //
+        try {
+            $album = Album::findOrFail($id);
+            $data = $request->all();
+
+            if ($album) {
+                $album->songs()->detach($data['song_id']);
+            }
+        } catch (\Exception $e) {
+            return $this->responseErrorByException($e);
+        }
+    }
 }

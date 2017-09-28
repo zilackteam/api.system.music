@@ -43,7 +43,7 @@ Route::resource('notification', 'NotificationController', ['except' => ['create'
 Route::get('live/', 'LiveController@getCurrentLive');
 
 //Route::group(['middleware' => ['jwt.auth']], function() {
-Route::group(['middleware' => []], function () {
+Route::group(['middleware' => ['jwt.auth']], function () {
     // Auth
     Route::get('auth/authenticated', 'AuthController@authenticated')->name('auth.authenticated')->middleware('jwt.auth');
     Route::get('auth/type', 'AuthController@type')->name('auth.type');
@@ -60,6 +60,7 @@ Route::group(['middleware' => []], function () {
     // Album
     Route::resource('album', 'AlbumController', ['except' => ['create', 'edit', 'update']]);
     Route::post('album/{id}', 'AlbumController@update')->name('album.update');
+    Route::post('album/{id}/removeSong', 'AlbumController@removeSong')->name('album.removeSong');
 
     // Song
     Route::post('song/delete', 'SongController@delete');
