@@ -43,7 +43,7 @@ Route::resource('notification', 'NotificationController', ['except' => ['create'
 Route::get('live/', 'LiveController@getCurrentLive');
 
 //Route::group(['middleware' => ['jwt.auth']], function() {
-Route::group(['middleware' => ['jwt.auth']], function () {
+Route::group(['middleware' => []], function () {
     // Auth
     Route::get('auth/authenticated', 'AuthController@authenticated')->name('auth.authenticated')->middleware('jwt.auth');
     Route::get('auth/type', 'AuthController@type')->name('auth.type');
