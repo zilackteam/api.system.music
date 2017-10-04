@@ -78,7 +78,7 @@ class PaymentController extends Controller {
                 $myInfo->balance += 50000;
                 $myInfo->save();
 
-                return $this->responseSuccess(['Charge successfully']);
+                return $this->responseSuccess($myInfo);
             } else {
                 // Not success
                 return $this->responseError(['Unable to charge, please check your card and retry']);

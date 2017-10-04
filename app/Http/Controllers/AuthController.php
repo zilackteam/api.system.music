@@ -67,7 +67,7 @@ class AuthController extends Controller {
                 return $this->responseError(['Invalid credentials'], 401);
             }
 
-            $auth = Authentication::where('sec_name', $request->get('sec_name'))->firstOrFail();
+            $auth = Authentication::with('userInfo')->where('sec_name', $request->get('sec_name'))->firstOrFail();
 
             $app = App::where('id', $data['app_id'])->first();
 
