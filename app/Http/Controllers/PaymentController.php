@@ -72,7 +72,7 @@ class PaymentController extends Controller {
                 $myInfo->balance += 50000;
                 $myInfo->save();
 
-                $auth = Authentication::with('userInfo')->where('user_id', \Auth::user()->id)->firstOrFail();
+                $auth = Authentication::with('userInfo')->where('id', \Auth::user()->id)->firstOrFail();
 
                 return $this->responseSuccess($auth);
             } else {
