@@ -95,7 +95,7 @@ class AuthController extends Controller {
     }
 
     /**
-     * @api {post} /user/login/facebook Use Facebook to Login
+     * @api {post} /auth/login/facebook Use Facebook to Login
      * @apiName FacebookLogin
      * @apiGroup User
      *
@@ -138,7 +138,7 @@ class AuthController extends Controller {
                 'sec_pass' => $response->id
             ];
 
-            $authExisted = Authentication::where([
+            $authExisted = Authentication::with('userInfo')->where([
                 'sec_name' => $data['sec_name'],
             ])->first();
 
