@@ -2,16 +2,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Payment;
-use App\Models\User;
 use App\Models\UserInfo;
-use App\Models\UserVip;
-use Carbon\Carbon;
-use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\Request;
-use GuzzleHttp\Client;
-
 use App\Http\Requests;
-use App\Http\Controllers\Controller;
+use App\Models\Authentication;
 
 class PaymentController extends Controller {
 
@@ -78,7 +72,9 @@ class PaymentController extends Controller {
                 $myInfo->balance += 50000;
                 $myInfo->save();
 
-                return $this->responseSuccess($myInfo);
+                $auth = Authentication::with('userInfo')->where('user_id', \Auth::user()->id)->firstOrFail();
+
+                return $this->responseSuccess($auth);
             } else {
                 // Not success
                 return $this->responseError(['Unable to charge, please check your card and retry']);
