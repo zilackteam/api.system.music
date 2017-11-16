@@ -9,6 +9,8 @@ class App extends VeoModel {
 
     protected $hidden = [];
 
+    public $timestamps = false;
+
     public static function rules($key = 'create', $id = '') {
         $common = [
             'name' => 'required',
