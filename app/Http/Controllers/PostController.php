@@ -99,24 +99,24 @@ class PostController extends Controller {
             $post->fill($data);
             $post->save();
 
-            if ($request->file('photo') && $request->file('photo')->isValid()) {
-                $post->photo = $data['photo'];
-                $namePhoto = "post_{$post->id}_" .  date('YmdHis');
-                $uploadPhoto = uploadImage($request, 'photo', post_path($post->content_id), $namePhoto);
-                if ($uploadPhoto) {
-                    $oldImg = post_path($post->content_id) . DS . $post->getAttributes()['photo'];
-                    if (is_file($oldImg)) unlink($oldImg);
-
-                    $oldThumb = post_path($post->content_id) . DS . 'thumb_' . $post->getAttributes()['photo'];
-                    if (is_file($oldThumb)) unlink($oldThumb);
-
-                    $post->photo = $uploadPhoto;
-                    $post->save();
-
-                } else {
-                    return $this->responseError('Could not update song file', 200, $post);
-                }
-            }
+//            if ($request->file('photo') && $request->file('photo')->isValid()) {
+//                $post->photo = $data['photo'];
+//                $namePhoto = "post_{$post->id}_" .  date('YmdHis');
+//                $uploadPhoto = uploadImage($request, 'photo', post_path($post->content_id), $namePhoto);
+//                if ($uploadPhoto) {
+//                    $oldImg = post_path($post->content_id) . DS . $post->getAttributes()['photo'];
+//                    if (is_file($oldImg)) unlink($oldImg);
+//
+//                    $oldThumb = post_path($post->content_id) . DS . 'thumb_' . $post->getAttributes()['photo'];
+//                    if (is_file($oldThumb)) unlink($oldThumb);
+//
+//                    $post->photo = $uploadPhoto;
+//                    $post->save();
+//
+//                } else {
+//                    return $this->responseError('Could not update song file', 200, $post);
+//                }
+//            }
 
             $dataPush = array(
                 'content_id' => $auth->content_id,
@@ -285,18 +285,18 @@ class PostController extends Controller {
             $post->fill($data);
             $post->save();
 
-            if ($request->file('photo') && $request->file('photo')->isValid()) {
-                $namePhoto = "post_{$post->id}_" .  date('YmdHis');
-                $uploadPhoto = uploadImage($request, 'photo', post_path($post->content_id), $namePhoto);
-
-                if ($uploadPhoto) {
-                    $post->photo = $uploadPhoto;
-                    $post->save();
-
-                } else {
-                    return $this->responseError('Could not update song file', 200, $post);
-                }
-            }
+//            if ($request->file('photo') && $request->file('photo')->isValid()) {
+//                $namePhoto = "post_{$post->id}_" .  date('YmdHis');
+//                $uploadPhoto = uploadImage($request, 'photo', post_path($post->content_id), $namePhoto);
+//
+//                if ($uploadPhoto) {
+//                    $post->photo = $uploadPhoto;
+//                    $post->save();
+//
+//                } else {
+//                    return $this->responseError('Could not update song file', 200, $post);
+//                }
+//            }
 
             return $this->responseSuccess($post);
         } catch (\Exception $e) {
@@ -333,6 +333,25 @@ class PostController extends Controller {
             $likes = PostLike::where('post_id', $id)->delete();
 
             return $this->responseSuccess('Post is deleted!');
+        } catch (\Exception $e) {
+            return $this->responseErrorByException($e);
+        }
+    }
+
+    public function upload(Request $request) {
+        try {
+            $data = $request->all();
+
+            if ($request->file('photo') && $request->file('photo')->isValid()) {
+                $namePhoto = "post_" .  date('YmdHis');
+                $uploadPhoto = uploadImage($request, 'photo', post_path($data['content_id']), $namePhoto);
+                if ($uploadPhoto) {
+                    $url = url('resources' . DS . 'uploads' . DS . $data['content_id'] . DS . 'post' . DS . $uploadPhoto);
+                    return $this->responseSuccess($url);
+                } else {
+                    return $this->responseError('Could not update photo file', 200, $data);
+                }
+            }
         } catch (\Exception $e) {
             return $this->responseErrorByException($e);
         }

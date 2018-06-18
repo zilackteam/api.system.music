@@ -128,7 +128,7 @@ Route::group(['middleware' => ['jwt.auth']], function () {
     Route::post('post/', 'PostController@store');
     Route::post('post/{id}', 'PostController@update');
     Route::delete('post/{id}', 'PostController@destroy');
-    //Route::post('post/upload', 'PostController@upload');
+    Route::post('post/upload', 'PostController@upload');
 
     // /comment/
     Route::post('post/{post_id}/comment', 'CommentController@store');

@@ -128,10 +128,10 @@ class Post extends VeoModel {
     /**
      * Get/Set attributes
      */
-    public function getPhotoAttribute() {
-        return ($this->attributes['photo']) ?
-            url('resources' . DS . 'uploads' . DS . $this->attributes['content_id'] . DS . 'post' . DS . $this->attributes['photo']) : '';
-    }
+//    public function getPhotoAttribute() {
+//        return ($this->attributes['photo']) ?
+//            url('resources' . DS . 'uploads' . DS . $this->attributes['content_id'] . DS . 'post' . DS . $this->attributes['photo']) : '';
+//    }
 
     public function getContentAttribute() {
         $string = $this->attributes['content'];
